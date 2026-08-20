@@ -1,0 +1,46 @@
+﻿@model RestauranteSaborCasero.Models.Plato
+
+<h1>Eliminar Plato</h1>
+
+<h3>¿Está seguro de eliminar este plato?</h3>
+
+<div>
+
+    <strong>Nombre:</strong>
+    @Model.Nombre
+
+    <br />
+
+    <strong>Precio:</strong>
+    @Model.Precio
+
+    <br />
+
+    <strong>Estado:</strong>
+    @Model.Estado
+
+    <br />
+
+    <strong>Tiempo estimado:</strong>
+    @Model.TiempoEstimado minutos
+
+</div>
+
+<br />
+
+<form asp-action="Delete" method="post">
+
+    <input type="hidden"
+           asp-for="IdPlato" />
+
+    <button type="submit"
+            class="btn btn-danger">
+        Eliminar
+    </button>
+
+    <a asp-action="Index"
+           class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>

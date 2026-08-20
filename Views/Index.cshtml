@@ -1,0 +1,56 @@
+﻿@model IEnumerable<RestauranteSaborCasero.Models.Plato>
+
+<h1>Platos</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Nuevo Plato
+    </a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Tiempo estimado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var plato in Model)
+        {
+            <tr>
+                <td>@plato.IdPlato</td>
+                <td>@plato.Nombre</td>
+                <td>@plato.Precio</td>
+                <td>@plato.Estado</td>
+                <td>@plato.TiempoEstimado minutos</td>
+
+                <td>
+                    <a asp-action="Details"
+                           asp-route-id="@plato.IdPlato">
+                        Ver
+                    </a>
+
+                    |
+
+                    <a asp-action="Edit"
+                           asp-route-id="@plato.IdPlato">
+                        Editar
+                    </a>
+
+                    |
+
+                    <a asp-action="Delete"
+                           asp-route-id="@plato.IdPlato">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

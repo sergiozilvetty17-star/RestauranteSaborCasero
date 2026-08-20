@@ -1,0 +1,75 @@
+﻿@model RestauranteSaborCasero.Models.Plato
+
+<h1>Editar Plato</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden"
+           asp-for="IdPlato" />
+
+    <div class="mb-3">
+        <label asp-for="Nombre"
+               class="form-label">
+        </label>
+
+        <input asp-for="Nombre"
+               class="form-control" />
+
+        <span asp-validation-for="Nombre"
+              class="text-danger">
+        </span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Precio"
+               class="form-label">
+        </label>
+
+        <input asp-for="Precio"
+               class="form-control"
+               type="number"
+               step="0.01" />
+
+        <span asp-validation-for="Precio"
+              class="text-danger">
+        </span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Estado"
+               class="form-label">
+        </label>
+
+        <input asp-for="Estado"
+               class="form-control" />
+
+        <span asp-validation-for="Estado"
+              class="text-danger">
+        </span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TiempoEstimado"
+               class="form-label">
+        </label>
+
+        <input asp-for="TiempoEstimado"
+               class="form-control"
+               type="number" />
+
+        <span asp-validation-for="TiempoEstimado"
+              class="text-danger">
+        </span>
+    </div>
+
+    <button type="submit"
+            class="btn btn-primary">
+        Actualizar
+    </button>
+
+    <a asp-action="Index"
+           class="btn btn-secondary">
+        Cancelar
+    </a>
+
+</form>
