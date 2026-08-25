@@ -26,27 +26,27 @@
             <tr>
                 <td>@plato.IdPlato</td>
                 <td>@plato.Nombre</td>
-                <td>@plato.Precio</td>
+                <td>Bs @plato.Precio.ToString("N2")</td>
                 <td>@plato.Estado</td>
                 <td>@plato.TiempoEstimado minutos</td>
 
                 <td>
                     <a asp-action="Details"
-                           asp-route-id="@plato.IdPlato">
+                       asp-route-id="@plato.IdPlato">
                         Ver
                     </a>
 
                     |
 
                     <a asp-action="Edit"
-                           asp-route-id="@plato.IdPlato">
+                       asp-route-id="@plato.IdPlato">
                         Editar
                     </a>
 
                     |
 
                     <a asp-action="Delete"
-                           asp-route-id="@plato.IdPlato">
+                       asp-route-id="@plato.IdPlato">
                         Eliminar
                     </a>
                 </td>
