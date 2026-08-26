@@ -1,4 +1,4 @@
-namespace nombtre.Models
+namespace SaborCaseroRestaurante.Models
 {
     public class ErrorViewModel
     {

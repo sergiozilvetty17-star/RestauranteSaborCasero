@@ -1,49 +1,620 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿```html
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - nombtre</title>
+
+    <title>@ViewData["Title"] - Sabor Casero</title>
+
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- CSS del proyecto -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/nombtre.styles.css" asp-append-version="true" />
+
+    <style>
+
+            /* =========================================================
+                       VARIABLES DEL SISTEMA
+                    ========================================================= */
+
+            :root {
+                --sc-primary: #8b3a2b;
+                --sc-primary-dark: #68291f;
+                --sc-secondary: #d69b45;
+                --sc-secondary-dark: #b77c2f;
+                --sc-light: #f8f5f0;
+                --sc-white: #ffffff;
+                --sc-dark: #292522;
+                --sc-gray: #746f6a;
+                --sc-light-gray: #a19a93;
+                --sc-border: #e9e2da;
+                --sc-success: #3d8b5f;
+                --sc-danger: #c94a4a;
+                --sc-warning: #d69b45;
+                --sc-shadow: 0 8px 25px rgba(70, 45, 30, 0.08);
+                --sc-shadow-hover: 0 12px 30px rgba(70, 45, 30, 0.14);
+            }
+
+
+            /* =========================================================
+                       CONFIGURACIÓN GENERAL
+                    ========================================================= */
+
+            html {
+                font-size: 14px;
+                min-height: 100%;
+            }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                background: var(--sc-light);
+                color: var(--sc-dark);
+                font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+                -webkit-font-smoothing: antialiased;
+            }
+
+
+            /* =========================================================
+                       NAVBAR
+                    ========================================================= */
+
+            .navbar {
+                min-height: 72px;
+                background: var(--sc-white) !important;
+                border-bottom: 1px solid var(--sc-border) !important;
+                box-shadow: 0 3px 15px rgba(0, 0, 0, 0.04);
+                padding: 0.7rem 1.5rem;
+                position: relative;
+                z-index: 1000;
+            }
+
+
+                .navbar .container-fluid {
+                    max-width: 1400px;
+                }
+
+
+            /* =========================================================
+                       LOGO
+                    ========================================================= */
+
+            .navbar-brand {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: var(--sc-primary) !important;
+                font-size: 1.45rem;
+                font-weight: 800;
+                letter-spacing: -0.4px;
+                text-decoration: none;
+                transition: all 0.2s ease;
+            }
+
+
+                .navbar-brand:hover {
+                    color: var(--sc-primary-dark) !important;
+                    transform: translateY(-1px);
+                }
+
+
+                .navbar-brand::before {
+                    content: "🍽";
+                    width: 42px;
+                    height: 42px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: var(--sc-primary);
+                    color: white;
+                    border-radius: 12px;
+                    font-size: 21px;
+                    box-shadow: 0 5px 14px rgba(139, 58, 43, 0.20);
+                }
+
+
+            /* =========================================================
+                       MENÚ
+                    ========================================================= */
+
+            .navbar-nav {
+                gap: 5px;
+            }
+
+
+                .navbar-nav .nav-item {
+                    margin-left: 3px;
+                }
+
+
+                .navbar-nav .nav-link {
+                    position: relative;
+                    color: var(--sc-gray) !important;
+                    font-weight: 600;
+                    padding: 10px 16px !important;
+                    border-radius: 10px;
+                    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+                }
+
+
+                    .navbar-nav .nav-link:hover {
+                        color: var(--sc-primary) !important;
+                        background: #f7eee9;
+                        transform: translateY(-1px);
+                    }
+
+
+                    .navbar-nav .nav-link::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 4px;
+                        left: 16px;
+                        right: 16px;
+                        height: 2px;
+                        background: var(--sc-primary);
+                        transform: scaleX(0);
+                        transition: transform 0.2s ease;
+                        border-radius: 10px;
+                    }
+
+
+                    .navbar-nav .nav-link:hover::after {
+                        transform: scaleX(1);
+                    }
+
+
+            /* =========================================================
+                       BOTÓN MENÚ MÓVIL
+                    ========================================================= */
+
+            .navbar-toggler {
+                border: 1px solid var(--sc-border);
+                border-radius: 10px;
+                padding: 7px 10px;
+            }
+
+
+                .navbar-toggler:focus {
+                    box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.12);
+                }
+
+
+            /* =========================================================
+                       CONTENEDOR PRINCIPAL
+                    ========================================================= */
+
+            .container {
+                max-width: 1400px;
+            }
+
+
+            main {
+                min-height: calc(100vh - 160px);
+                padding-top: 15px;
+            }
+
+
+            /* =========================================================
+                       TARJETAS
+                    ========================================================= */
+
+            .card {
+                border: 1px solid var(--sc-border);
+                border-radius: 16px;
+                background: var(--sc-white);
+                box-shadow: var(--sc-shadow);
+                overflow: hidden;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+
+
+                .card:hover {
+                    box-shadow: var(--sc-shadow-hover);
+                }
+
+
+            .card-header {
+                background: var(--sc-white);
+                border-bottom: 1px solid var(--sc-border);
+                font-weight: 700;
+                color: var(--sc-primary);
+                padding: 16px 20px;
+            }
+
+
+            .card-body {
+                background: var(--sc-white);
+                padding: 22px;
+            }
+
+
+            /* =========================================================
+                       BOTONES
+                    ========================================================= */
+
+            .btn {
+                border-radius: 10px;
+                padding: 9px 17px;
+                font-weight: 600;
+                transition: all 0.2s ease;
+            }
+
+
+                .btn:hover {
+                    transform: translateY(-1px);
+                }
+
+
+            .btn-primary {
+                background: var(--sc-primary);
+                border-color: var(--sc-primary);
+                color: white;
+            }
+
+
+                .btn-primary:hover {
+                    background: var(--sc-primary-dark);
+                    border-color: var(--sc-primary-dark);
+                    color: white;
+                    box-shadow: 0 5px 12px rgba(139, 58, 43, 0.20);
+                }
+
+
+            .btn-warning {
+                background: var(--sc-secondary);
+                border-color: var(--sc-secondary);
+                color: white;
+            }
+
+
+                .btn-warning:hover {
+                    background: var(--sc-secondary-dark);
+                    border-color: var(--sc-secondary-dark);
+                    color: white;
+                }
+
+
+            .btn-success {
+                border-radius: 10px;
+            }
+
+
+            .btn-danger {
+                border-radius: 10px;
+            }
+
+
+            .btn-secondary {
+                border-radius: 10px;
+            }
+
+
+            /* =========================================================
+                       FORMULARIOS
+                    ========================================================= */
+
+            .form-control,
+            .form-select {
+                border: 1px solid #ddd5cc;
+                border-radius: 10px;
+                padding: 10px 13px;
+                background: white;
+                color: var(--sc-dark);
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            }
+
+
+                .form-control:focus,
+                .form-select:focus {
+                    border-color: var(--sc-primary);
+                    box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.10);
+                }
+
+
+            .form-label {
+                font-weight: 600;
+                color: var(--sc-dark);
+                margin-bottom: 6px;
+            }
+
+
+            /* =========================================================
+                       TABLAS
+                    ========================================================= */
+
+            .table {
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
+                vertical-align: middle;
+                border-color: var(--sc-border);
+            }
+
+
+                .table thead th {
+                    background: #f5eee8;
+                    color: var(--sc-primary);
+                    border-bottom: 2px solid var(--sc-border);
+                    font-weight: 700;
+                    padding: 13px 15px;
+                    white-space: nowrap;
+                }
+
+
+                .table tbody td {
+                    padding: 12px 15px;
+                    border-color: #eee8e2;
+                }
+
+
+                .table tbody tr {
+                    transition: background 0.15s ease;
+                }
+
+
+                    .table tbody tr:hover {
+                        background: #fcf8f4;
+                    }
+
+
+            /* =========================================================
+                       BADGES
+                    ========================================================= */
+
+            .badge {
+                border-radius: 8px;
+                padding: 6px 10px;
+                font-weight: 600;
+            }
+
+
+            /* =========================================================
+                       ALERTAS
+                    ========================================================= */
+
+            .alert {
+                border-radius: 12px;
+                border: none;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            }
+
+
+            /* =========================================================
+                       LINKS
+                    ========================================================= */
+
+            a {
+                transition: color 0.2s ease;
+            }
+
+
+            /* =========================================================
+                       FOOTER
+                    ========================================================= */
+
+            footer.footer {
+                background: var(--sc-white);
+                border-top: 1px solid var(--sc-border) !important;
+                padding: 18px 0;
+                margin-top: 30px;
+            }
+
+
+            footer .container {
+                color: #8a827b;
+                font-size: 0.9rem;
+            }
+
+
+            footer a {
+                color: var(--sc-primary);
+                font-weight: 600;
+                text-decoration: none;
+            }
+
+
+                footer a:hover {
+                    color: var(--sc-primary-dark);
+                    text-decoration: underline;
+                }
+
+
+            /* =========================================================
+                       RESPONSIVE
+
+                       IMPORTANTE:
+                       En Razor se utiliza @@media para generar @media .
+            ========================================================= */
+
+            @@media (max-width: 576px) {
+
+                .navbar {
+                    padding: 0.7rem 1rem;
+                }
+
+
+                .navbar-brand {
+                    font-size: 1.2rem;
+                }
+
+
+                    .navbar-brand::before {
+                        width: 36px;
+                        height: 36px;
+                        font-size: 17px;
+                    }
+
+
+                .navbar-nav {
+                    padding-top: 10px;
+                }
+
+
+                    .navbar-nav .nav-link {
+                        padding: 10px 12px !important;
+                    }
+
+
+                main {
+                    padding-top: 10px;
+                }
+
+
+                .card-body {
+                    padding: 16px;
+                }
+
+
+                .table {
+                    font-size: 0.9rem;
+                }
+            }
+
+    </style>
 </head>
+
+
 <body>
+
+    <!-- =========================================================
+         BARRA DE NAVEGACIÓN
+    ========================================================= -->
+
     <header>
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">nombtre</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <!-- LOGO / NOMBRE -->
+
+                <a class="navbar-brand"
+                   asp-area=""
+                   asp-controller="Home"
+                   asp-action="Index">
+
+                    Sabor Casero
+
+                </a>
+
+
+                <!-- BOTÓN MENÚ MÓVIL -->
+
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Mostrar navegación">
+
                     <span class="navbar-toggler-icon"></span>
+
                 </button>
+
+
+                <!-- MENÚ -->
+
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+
                     <ul class="navbar-nav flex-grow-1">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+
+                            <a class="nav-link text-dark"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Index">
+
+                                Inicio
+
+                            </a>
+
                         </li>
+
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+                            <a class="nav-link text-dark"
+                               asp-area=""
+                               asp-controller="Home"
+                               asp-action="Privacy">
+
+                                Privacidad
+
+                            </a>
+
                         </li>
+
                     </ul>
+
                 </div>
+
             </div>
+
         </nav>
+
     </header>
+
+
+    <!-- =========================================================
+         CONTENIDO PRINCIPAL
+
+         IMPORTANTE:
+         NO SE MODIFICA RenderBody().
+    ========================================================= -->
+
     <div class="container">
+
         <main role="main" class="pb-3">
+
             @RenderBody()
+
         </main>
+
     </div>
 
+
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
     <footer class="border-top footer text-muted">
+
         <div class="container">
-            &copy; 2026 - nombtre - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+            &copy; 2026 - Sabor Casero -
+
+            <a asp-area=""
+               asp-controller="Home"
+               asp-action="Privacy">
+
+                Privacidad
+
+            </a>
+
         </div>
+
     </footer>
+
+
+    <!-- =========================================================
+         SCRIPTS
+
+NO SE MODIFICAN.
+    ========================================================= -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>
+```

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace nombtre.Models
+namespace SaborCaseroRestaurante.Models
 {
     public class Producto_Modelos : Controller
     {
