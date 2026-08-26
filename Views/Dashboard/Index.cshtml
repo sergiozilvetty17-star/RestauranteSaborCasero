@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Panel de Administrador";
+}
+
+<h2 class="mb-4">Resumen del Restaurante</h2>
+
+<div class="row">
+    <!-- Tarjeta Pedidos -->
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Pedidos Pendientes</h5>
+                <h2 class="card-text">@ViewBag.PedidosPendientes</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Mesas -->
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Mesas Disponibles</h5>
+                <h2 class="card-text">@ViewBag.MesasDisponibles</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Inventario -->
+    <div class="col-md-3">
+        <div class="card text-white bg-danger mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Alertas Inventario</h5>
+                <h2 class="card-text">@ViewBag.AlertasInventario</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tarjeta Empleados -->
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Empleados Activos</h5>
+                <h2 class="card-text">@ViewBag.EmpleadosActivos</h2>
+            </div>
+        </div>
+    </div>
+</div>
