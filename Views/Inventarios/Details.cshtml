@@ -1,5 +1,74 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.Inventario
+
 @{
+    ViewData["Title"] = "Detalles del movimiento";
 }
+
+<h1>Detalles del movimiento</h1>
+
+<div>
+
+    <h4>Movimiento #@Model.IdInventario</h4>
+
+    <dl>
+
+        <dt>Ingrediente</dt>
+        <dd>
+            @Model.Ingrediente.Nombre
+        </dd>
+
+        <dt>Unidad de medida</dt>
+        <dd>
+            @Model.Ingrediente.UnidadMedida
+        </dd>
+
+        <dt>Tipo de movimiento</dt>
+        <dd>
+            @Model.TipoMovimiento
+        </dd>
+
+        <dt>Cantidad del movimiento</dt>
+        <dd>
+            @Model.Cantidad
+        </dd>
+
+        <dt>Fecha</dt>
+        <dd>
+            @Model.Fecha.ToString("dd/MM/yyyy HH:mm")
+        </dd>
+
+        <dt>Motivo</dt>
+        <dd>
+            @(string.IsNullOrEmpty(Model.Motivo)
+                ? "Sin motivo"
+                : Model.Motivo)
+        </dd>
+
+        <dt>Cantidad disponible actual</dt>
+        <dd>
+            @Model.Ingrediente.CantidadDisponible
+            @Model.Ingrediente.UnidadMedida
+        </dd>
+
+        <dt>Cantidad mínima</dt>
+        <dd>
+            @Model.Ingrediente.CantidadMinima
+            @Model.Ingrediente.UnidadMedida
+        </dd>
+
+        <dt>Estado del ingrediente</dt>
+        <dd>
+            @Model.Ingrediente.Estado
+        </dd>
+
+    </dl>
+
+</div>
+
+<div>
+
+    <a asp-action="Index">
+        Volver al inventario
+    </a>
+
+</div>
