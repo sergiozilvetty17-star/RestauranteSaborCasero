@@ -1,22 +1,40 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestauranteSaborCasero.Data;
+using RestauranteSaborCasero.Models;
+using SaborCaseroRestaurante.Models;
+using System.Diagnostics;
 
-namespace proyecto_final.Controllers
+namespace RestauranteSaborCasero.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        // ==========================================
+        // GET: Home
+        // ==========================================
 
-        public HomeController(ApplicationDbContext context)
+        public IActionResult Index()
         {
-            _context = context;
+            return View();
         }
 
-        public async Task<IActionResult> Index()
+
+        // ==========================================
+        // GET: Home/Error
+        // ==========================================
+
+        [ResponseCache(
+            Duration = 0,
+            Location = ResponseCacheLocation.None,
+            NoStore = true
+        )]
+        public IActionResult Error()
         {
-            var platos = await _context.Platos.ToListAsync();
-            return View(platos);
+            return View(
+                new ErrorViewModel
+                {
+                    RequestId = Activity.Current?.Id
+                                 ?? HttpContext.TraceIdentifier
+                }
+            );
         }
     }
 }
