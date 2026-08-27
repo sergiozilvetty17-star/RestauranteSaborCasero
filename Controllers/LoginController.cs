@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RestauranteSaborCasero.Data;
-using RestauranteSaborCasero.Models;
 
 namespace RestauranteSaborCasero.Controllers
 {
@@ -17,30 +16,16 @@ namespace RestauranteSaborCasero.Controllers
             _context = context;
         }
 
-        // ==========================================
-        // GET: Login
-        // ==========================================
-
         [HttpGet]
         public IActionResult Index()
         {
-            // Si ya existe una sesión iniciada,
-            // enviamos al usuario al Dashboard.
             if (User.Identity?.IsAuthenticated == true)
             {
-                return RedirectToAction(
-                    "Index",
-                    "Dashboard"
-                );
+                return RedirectToAction("Index", "Dashboard");
             }
 
             return View();
         }
-
-
-        // ==========================================
-        // POST: Login
-        // ==========================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -69,12 +54,10 @@ namespace RestauranteSaborCasero.Controllers
                 return View();
             }
 
-            // Buscar usuario por correo.
             var usuario = await _context.Usuarios
                 .FirstOrDefaultAsync(u =>
                     u.Correo == correo);
 
-            // Verificar que exista y esté activo.
             if (usuario == null || !usuario.Activo)
             {
                 ModelState.AddModelError(
@@ -85,7 +68,6 @@ namespace RestauranteSaborCasero.Controllers
                 return View();
             }
 
-            // Verificar contraseña utilizando BCrypt.
             bool contraseñaCorrecta =
                 BCrypt.Net.BCrypt.Verify(
                     contrasena,
@@ -101,10 +83,6 @@ namespace RestauranteSaborCasero.Controllers
 
                 return View();
             }
-
-            // ==========================================
-            // CREAR CLAIMS
-            // ==========================================
 
             var claims = new List<Claim>
             {
@@ -129,25 +107,21 @@ namespace RestauranteSaborCasero.Controllers
                 )
             };
 
-            var claimsIdentity = new ClaimsIdentity(
+            var identity = new ClaimsIdentity(
                 claims,
                 CookieAuthenticationDefaults.AuthenticationScheme
             );
 
-            var authProperties = new AuthenticationProperties
-            {
-                IsPersistent = false,
-                AllowRefresh = true
-            };
-
-            // ==========================================
-            // INICIAR SESIÓN
-            // ==========================================
+            var principal = new ClaimsPrincipal(identity);
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity),
-                authProperties
+                principal,
+                new AuthenticationProperties
+                {
+                    IsPersistent = false,
+                    AllowRefresh = true
+                }
             );
 
             return RedirectToAction(
@@ -155,11 +129,6 @@ namespace RestauranteSaborCasero.Controllers
                 "Dashboard"
             );
         }
-
-
-        // ==========================================
-        // LOGOUT
-        // ==========================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]

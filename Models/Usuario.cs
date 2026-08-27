@@ -1,5 +1,4 @@
-﻿using RestauranteSaborCasero.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace RestauranteSaborCasero.Models
 {
@@ -33,7 +32,6 @@ namespace RestauranteSaborCasero.Models
 
         public bool Activo { get; set; } = true;
 
-        // Relaciones
         public ICollection<Pedido> Pedidos { get; set; }
             = new List<Pedido>();
 
