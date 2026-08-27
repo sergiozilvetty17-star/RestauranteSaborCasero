@@ -1,4 +1,4 @@
-﻿using proyecto_final.Models;
+﻿using RestauranteSaborCasero.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace RestauranteSaborCasero.Models

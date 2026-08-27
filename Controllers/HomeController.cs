@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RestauranteSaborCasero.Models;
-using SaborCaseroRestaurante.Models;
 using System.Diagnostics;
 
 namespace RestauranteSaborCasero.Controllers
