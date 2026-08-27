@@ -37,12 +37,16 @@ namespace RestauranteSaborCasero.Controllers
                 .CountAsync();
 
             ViewBag.PedidosPendientes = await _context.Pedidos
-                .CountAsync(p =>
-                    p.Estado == EstadoPedido.Pendiente);
+                .CountAsync(p => p.Estado == EstadoPedido.Pendiente);
 
             ViewBag.PedidosEnPreparacion = await _context.Pedidos
-                .CountAsync(p =>
-                    p.Estado == EstadoPedido.EnPreparacion);
+                .CountAsync(p => p.Estado == EstadoPedido.EnPreparacion);
+
+            ViewBag.AlertasInventario = await _context.Ingredientes
+                .CountAsync(i => i.CantidadDisponible <= i.CantidadMinima);
+
+            ViewBag.EmpleadosActivos = await _context.Usuarios
+                .CountAsync(u => u.Activo);
 
             return View();
         }

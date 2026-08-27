@@ -1,55 +1,111 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RestauranteSaborCasero.Data;
-using RestauranteSaborCasero.Models;
-
-namespace RestauranteSaborCasero.Controllers
-{
-[Authorize]
-public class DashboardController : Controller
-{
-private readonly ApplicationDbContext _context;
-
-public DashboardController(ApplicationDbContext context)
-{
-_context = context;
+﻿@{
+    ViewData["Title"] = "Panel de Administrador";
 }
 
-public async Task<IActionResult>
-Index()
-{
-ViewBag.TotalUsuarios = await _context.Usuarios
-.CountAsync(u => u.Activo);
+<div class="container mt-4">
 
-ViewBag.TotalMesas = await _context.Mesas
-.CountAsync();
+    <h2 class="mb-4">Resumen del Restaurante</h2>
 
-ViewBag.MesasDisponibles = await _context.Mesas
-.CountAsync(m => m.Estado == EstadoMesa.Disponible);
+    <div class="row">
 
-ViewBag.TotalPlatos = await _context.Platos
-.CountAsync();
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Pedidos Pendientes</h5>
+                    <h2 class="card-text">@ViewBag.PedidosPendientes</h2>
+                </div>
+            </div>
+        </div>
 
-ViewBag.TotalIngredientes = await _context.Ingredientes
-.CountAsync();
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Mesas Disponibles</h5>
+                    <h2 class="card-text">@ViewBag.MesasDisponibles</h2>
+                </div>
+            </div>
+        </div>
 
-ViewBag.TotalPedidos = await _context.Pedidos
-.CountAsync();
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Alertas Inventario</h5>
+                    <h2 class="card-text">@ViewBag.AlertasInventario</h2>
+                </div>
+            </div>
+        </div>
 
-ViewBag.PedidosPendientes = await _context.Pedidos
-.CountAsync(p => p.Estado == EstadoPedido.Pendiente);
+        <div class="col-md-3">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Empleados Activos</h5>
+                    <h2 class="card-text">@ViewBag.EmpleadosActivos</h2>
+                </div>
+            </div>
+        </div>
 
-ViewBag.PedidosEnPreparacion = await _context.Pedidos
-.CountAsync(p => p.Estado == EstadoPedido.EnPreparacion);
+    </div>
 
-ViewBag.AlertasInventario = await _context.Ingredientes
-.CountAsync(i => i.CantidadDisponible <= i.CantidadMinima);
+    <div class="row">
 
-ViewBag.EmpleadosActivos = await _context.Usuarios
-.CountAsync(u => u.Activo);
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Usuarios</h5>
+                    <h3>@ViewBag.TotalUsuarios</h3>
+                </div>
+            </div>
+        </div>
 
-return View();
-}
-}
-}
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Mesas</h5>
+                    <h3>@ViewBag.TotalMesas</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Platos</h5>
+                    <h3>@ViewBag.TotalPlatos</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Ingredientes</h5>
+                    <h3>@ViewBag.TotalIngredientes</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Total Pedidos</h5>
+                    <h3>@ViewBag.TotalPedidos</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Pedidos en Preparación</h5>
+                    <h3>@ViewBag.PedidosEnPreparacion</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
