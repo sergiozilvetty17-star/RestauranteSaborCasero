@@ -1,5 +1,83 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.Inventario
+
 @{
+    ViewData["Title"] = "Registrar movimiento";
+}
+
+<h1>Registrar movimiento de inventario</h1>
+
+<form asp-action="Create" method="post">
+
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div>
+        <label asp-for="IdIngrediente">
+            Ingrediente
+        </label>
+
+        <select asp-for="IdIngrediente"
+                asp-items="ViewBag.IdIngrediente">
+
+            <option value="">
+                Seleccione un ingrediente
+            </option>
+
+        </select>
+
+        <span asp-validation-for="IdIngrediente"></span>
+    </div>
+
+
+    <div>
+        <label asp-for="TipoMovimiento">
+            Tipo de movimiento
+        </label>
+
+        <select asp-for="TipoMovimiento"
+                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.TipoMovimientoInventario>()">
+        </select>
+
+        <span asp-validation-for="TipoMovimiento"></span>
+    </div>
+
+
+    <div>
+        <label asp-for="Cantidad">
+            Cantidad
+        </label>
+
+        <input asp-for="Cantidad"
+               type="number"
+               step="0.01"
+               min="0.01" />
+
+        <span asp-validation-for="Cantidad"></span>
+    </div>
+
+
+    <div>
+        <label asp-for="Motivo">
+            Motivo
+        </label>
+
+        <input asp-for="Motivo"
+               type="text"
+               maxlength="255" />
+
+        <span asp-validation-for="Motivo"></span>
+    </div>
+
+
+    <button type="submit">
+        Registrar movimiento
+    </button>
+
+    <a asp-action="Index">
+        Volver
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

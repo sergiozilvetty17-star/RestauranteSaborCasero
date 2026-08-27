@@ -12,51 +12,86 @@
 
     <dl>
 
-        <dt>Ingrediente</dt>
+        <dt>
+            Ingrediente
+        </dt>
+
         <dd>
             @Model.Ingrediente.Nombre
         </dd>
 
-        <dt>Unidad de medida</dt>
-        <dd>
-            @Model.Ingrediente.UnidadMedida
-        </dd>
 
-        <dt>Tipo de movimiento</dt>
+        <dt>
+            Tipo de movimiento
+        </dt>
+
         <dd>
             @Model.TipoMovimiento
         </dd>
 
-        <dt>Cantidad del movimiento</dt>
+
+        <dt>
+            Cantidad
+        </dt>
+
         <dd>
             @Model.Cantidad
         </dd>
 
-        <dt>Fecha</dt>
+
+        <dt>
+            Unidad de medida
+        </dt>
+
+        <dd>
+            @Model.Ingrediente.UnidadMedida
+        </dd>
+
+
+        <dt>
+            Fecha
+        </dt>
+
         <dd>
             @Model.Fecha.ToString("dd/MM/yyyy HH:mm")
         </dd>
 
-        <dt>Motivo</dt>
+
+        <dt>
+            Motivo
+        </dt>
+
         <dd>
             @(string.IsNullOrEmpty(Model.Motivo)
                 ? "Sin motivo"
                 : Model.Motivo)
         </dd>
 
-        <dt>Cantidad disponible actual</dt>
+
+        <dt>
+            Cantidad disponible actual
+        </dt>
+
         <dd>
             @Model.Ingrediente.CantidadDisponible
             @Model.Ingrediente.UnidadMedida
         </dd>
 
-        <dt>Cantidad mínima</dt>
+
+        <dt>
+            Cantidad mínima
+        </dt>
+
         <dd>
             @Model.Ingrediente.CantidadMinima
             @Model.Ingrediente.UnidadMedida
         </dd>
 
-        <dt>Estado del ingrediente</dt>
+
+        <dt>
+            Estado del ingrediente
+        </dt>
+
         <dd>
             @Model.Ingrediente.Estado
         </dd>

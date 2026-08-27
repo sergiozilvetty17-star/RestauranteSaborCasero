@@ -1,5 +1,75 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<RestauranteSaborCasero.Models.Pedido>
+
 @{
+    ViewData["Title"] = "Pedidos";
 }
+
+<h1>Pedidos</h1>
+
+<p>
+    <a asp-action="Create">Crear nuevo pedido</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Pedido</th>
+            <th>Mesero</th>
+            <th>Mesa</th>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Hora inicio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var pedido in Model)
+        {
+            <tr>
+                <td>
+                    @pedido.IdPedido
+                </td>
+
+                <td>
+                    @pedido.Usuario.Nombre
+                </td>
+
+                <td>
+                    @(pedido.Mesa != null
+                        ? pedido.Mesa.NumeroMesa.ToString()
+                        : "Sin mesa")
+                </td>
+
+                <td>
+                    @pedido.TipoPedido
+                </td>
+
+                <td>
+                    @pedido.Fecha.ToString("dd/MM/yyyy")
+                </td>
+
+                <td>
+                    @pedido.HoraInicio
+                </td>
+
+                <td>
+                    @pedido.Estado
+                </td>
+
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@pedido.IdPedido">
+                        Detalles
+                    </a>
+
+                    <a asp-action="Edit"
+                       asp-route-id="@pedido.IdPedido">
+                        Editar
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

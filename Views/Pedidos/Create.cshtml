@@ -1,5 +1,105 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.Pedido
+
 @{
+    ViewData["Title"] = "Crear Pedido";
+}
+
+<h1>Crear Pedido</h1>
+
+<form asp-action="Create" method="post">
+
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div>
+        <label asp-for="IdMesero">
+            Mesero
+        </label>
+
+        <select asp-for="IdMesero"
+                asp-items="ViewBag.IdMesero">
+
+            <option value="">
+                Seleccione un mesero
+            </option>
+
+        </select>
+
+        <span asp-validation-for="IdMesero"></span>
+    </div>
+
+    <div>
+        <label asp-for="TipoPedido">
+            Tipo de pedido
+        </label>
+
+        <select asp-for="TipoPedido"
+                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.TipoPedido>()">
+        </select>
+
+        <span asp-validation-for="TipoPedido"></span>
+    </div>
+
+    <div>
+        <label asp-for="IdMesa">
+            Mesa
+        </label>
+
+        <select asp-for="IdMesa"
+                asp-items="ViewBag.IdMesa">
+
+            <option value="">
+                Sin mesa
+            </option>
+
+        </select>
+
+        <span asp-validation-for="IdMesa"></span>
+    </div>
+
+    <div>
+        <label asp-for="Estado">
+            Estado
+        </label>
+
+        <select asp-for="Estado"
+                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoPedido>()">
+        </select>
+
+        <span asp-validation-for="Estado"></span>
+    </div>
+
+    <div>
+        <label asp-for="Fecha">
+            Fecha
+        </label>
+
+        <input asp-for="Fecha"
+               type="date" />
+
+        <span asp-validation-for="Fecha"></span>
+    </div>
+
+    <div>
+        <label asp-for="HoraInicio">
+            Hora de inicio
+        </label>
+
+        <input asp-for="HoraInicio"
+               type="time" />
+
+        <span asp-validation-for="HoraInicio"></span>
+    </div>
+
+    <button type="submit">
+        Guardar
+    </button>
+
+    <a asp-action="Index">
+        Volver
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }

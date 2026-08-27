@@ -1,5 +1,65 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<RestauranteSaborCasero.Models.Inventario>
+
 @{
+    ViewData["Title"] = "Inventario";
 }
+
+<h1>Inventario</h1>
+
+<p>
+    <a asp-action="Create">Registrar movimiento</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Ingrediente</th>
+            <th>Tipo de movimiento</th>
+            <th>Cantidad</th>
+            <th>Unidad de medida</th>
+            <th>Fecha</th>
+            <th>Motivo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var movimiento in Model)
+        {
+            <tr>
+                <td>
+                    @movimiento.Ingrediente.Nombre
+                </td>
+
+                <td>
+                    @movimiento.TipoMovimiento
+                </td>
+
+                <td>
+                    @movimiento.Cantidad
+                </td>
+
+                <td>
+                    @movimiento.Ingrediente.UnidadMedida
+                </td>
+
+                <td>
+                    @movimiento.Fecha.ToString("dd/MM/yyyy HH:mm")
+                </td>
+
+                <td>
+                    @(string.IsNullOrEmpty(movimiento.Motivo)
+                        ? "Sin motivo"
+                        : movimiento.Motivo)
+                </td>
+
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@movimiento.IdInventario">
+                        Detalles
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
