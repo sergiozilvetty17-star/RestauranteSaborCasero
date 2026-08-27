@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model IEnumerable<RestauranteSaborCasero.Models.Ingrediente>
+
+<h1>Lista de Ingredientes</h1>
+
+<p>
+    <a asp-action="Create">Crear Nuevo Ingrediente</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Cantidad Disponible</th>
+            <th>Cantidad Mínima</th>
+            <th>Unidad de Medida</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Nombre</td>
+                    <td>@item.CantidadDisponible</td>
+                    <td>@item.CantidadMinima</td>
+                    <td>@item.UnidadMedida</td>
+                    <td>@item.Estado</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdIngrediente">Editar</a> |
+                        <a asp-action="Details" asp-route-id="@item.IdIngrediente">Detalles</a> |
+                        <a asp-action="Delete" asp-route-id="@item.IdIngrediente">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

@@ -1,5 +1,16 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model RestauranteSaborCasero.Models.Ingrediente
+
+<h1>Eliminar Ingrediente</h1>
+
+<h3>¿Estás seguro de que deseas eliminar este ingrediente?</h3>
+<div>
+    <p><strong>Nombre:</strong> @Model.Nombre</p>
+    <p><strong>Cantidad Disponible:</strong> @Model.CantidadDisponible @Model.UnidadMedida</p>
+    <p><strong>Estado:</strong> @Model.Estado</p>
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="IdIngrediente" />
+    <input type="submit" value="Eliminar Permanentemente" /> |
+    <a asp-action="Index">Cancelar y volver a la lista</a>
+</form>
