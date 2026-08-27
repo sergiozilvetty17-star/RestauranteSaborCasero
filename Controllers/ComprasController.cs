@@ -73,6 +73,10 @@ namespace RestauranteSaborCasero.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Compra compra)
         {
+            // Ignorar las propiedades de navegación en la validación
+            ModelState.Remove("Usuario");
+            ModelState.Remove("Detalles");
+
             if (ModelState.IsValid)
             {
                 if (compra.Fecha == default)
@@ -91,7 +95,6 @@ namespace RestauranteSaborCasero.Controllers
 
             return View(compra);
         }
-
 
         // ==========================================
         // GET: Compras/Edit/5

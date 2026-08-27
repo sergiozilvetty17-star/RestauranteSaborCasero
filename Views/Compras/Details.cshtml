@@ -1,5 +1,43 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model RestauranteSaborCasero.Models.Compra
+
+<h1>Detalles de la Compra</h1>
+
+<div>
+    <p><strong>Fecha:</strong> @Model.Fecha.ToShortDateString()</p>
+    <p><strong>Proveedor:</strong> @Model.Proveedor</p>
+    <p><strong>Usuario que registró:</strong> @Model.Usuario?.Nombre</p>
+</div>
+
+<h2>Ingredientes Comprados en esta orden</h2>
+<table>
+    <thead>
+        <tr>
+            <th>Ingrediente</th>
+            <th>Cantidad</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Detalles != null && Model.Detalles.Any())
+        {
+            foreach (var detalle in Model.Detalles)
+            {
+                <tr>
+                    <td>@detalle.Ingrediente?.Nombre</td>
+                    <td>@detalle.Cantidad</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2">No hay ingredientes registrados para esta compra.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.IdCompra">Editar</a> |
+    <a asp-action="Index">Volver a la lista</a>
+</div> details
