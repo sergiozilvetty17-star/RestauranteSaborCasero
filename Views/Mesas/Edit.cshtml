@@ -1,5 +1,53 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.Mesa
+
 @{
+    ViewData["Title"] = "Editar Mesa";
+}
+
+<h1>Editar Mesa</h1>
+
+<form asp-action="Edit" method="post">
+
+    <input type="hidden"
+           asp-for="IdMesa" />
+
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div>
+        <label asp-for="NumeroMesa">
+            Número de mesa
+        </label>
+
+        <input asp-for="NumeroMesa"
+               type="number"
+               min="1"
+               max="999" />
+
+        <span asp-validation-for="NumeroMesa"></span>
+    </div>
+
+    <div>
+        <label asp-for="Estado">
+            Estado
+        </label>
+
+        <select asp-for="Estado"
+                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoMesa>()">
+        </select>
+
+        <span asp-validation-for="Estado"></span>
+    </div>
+
+    <button type="submit">
+        Guardar cambios
+    </button>
+
+    <a asp-action="Index">
+        Volver
+    </a>
+
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
