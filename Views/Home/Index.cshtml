@@ -1,56 +1,57 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.Plato>
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
 
-<h1>Platos</h1>
+<div class="text-center py-5">
+    <h1 class="display-4">Sabor Casero</h1>
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        Nuevo Plato
-    </a>
-</p>
+    <p class="lead mt-3">
+        Sistema de gestión para restaurante
+    </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Estado</th>
-            <th>Tiempo estimado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+    <div class="row justify-content-center mt-5 g-4">
 
-    <tbody>
-        @foreach (var plato in Model)
-        {
-            <tr>
-                <td>@plato.IdPlato</td>
-                <td>@plato.Nombre</td>
-                <td>Bs @plato.Precio.ToString("N2")</td>
-                <td>@plato.Estado</td>
-                <td>@plato.TiempoEstimado minutos</td>
-
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@plato.IdPlato">
-                        Ver
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3>🍽 Platos</h3>
+                    <p>Administra los platos del restaurante.</p>
+                    <a asp-controller="Platos"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Ver Platos
                     </a>
+                </div>
+            </div>
+        </div>
 
-                    |
-
-                    <a asp-action="Edit"
-                       asp-route-id="@plato.IdPlato">
-                        Editar
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3>🪑 Mesas</h3>
+                    <p>Administra las mesas del restaurante.</p>
+                    <a asp-controller="Mesas"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Ver Mesas
                     </a>
+                </div>
+            </div>
+        </div>
 
-                    |
-
-                    <a asp-action="Delete"
-                       asp-route-id="@plato.IdPlato">
-                        Eliminar
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <h3>🥕 Ingredientes</h3>
+                    <p>Administra los ingredientes disponibles.</p>
+                    <a asp-controller="Ingredientes"
+                       asp-action="Index"
+                       class="btn btn-primary">
+                        Ver Ingredientes
                     </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
