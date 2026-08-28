@@ -50,6 +50,7 @@
                 --sc-transition: 0.2s ease;
             }
 
+
             /* =========================================================
                        BASE
                        ========================================================= */
@@ -83,6 +84,7 @@
                     color: var(--sc-primary-dark);
                 }
 
+
             /* =========================================================
                        NAVBAR
                        ========================================================= */
@@ -104,6 +106,7 @@
                     max-width: 1480px;
                     padding: 0;
                 }
+
 
             /* =========================================================
                        LOGO
@@ -164,6 +167,7 @@
                 letter-spacing: 1.2px;
                 text-transform: uppercase;
             }
+
 
             /* =========================================================
                        NAVIGATION
@@ -227,6 +231,7 @@
                     stroke: currentColor;
                 }
 
+
             /* =========================================================
                        CONTENIDO
                        ========================================================= */
@@ -241,6 +246,7 @@
             main {
                 min-height: calc(100vh - 160px);
             }
+
 
             /* =========================================================
                        CARDS
@@ -277,6 +283,7 @@
                 background: #fcfaf8;
                 border-top: 1px solid var(--sc-border);
             }
+
 
             /* =========================================================
                        BOTONES
@@ -368,6 +375,7 @@
                     color: var(--sc-dark);
                 }
 
+
             /* =========================================================
                        FORMULARIOS
                        ========================================================= */
@@ -414,6 +422,7 @@
                 resize: vertical;
             }
 
+
             /* =========================================================
                        TABLAS
                        ========================================================= */
@@ -456,6 +465,7 @@
                     box-shadow: none;
                 }
 
+
             /* =========================================================
                        BADGES
                        ========================================================= */
@@ -491,6 +501,7 @@
                     color: var(--sc-info) !important;
                 }
 
+
             /* =========================================================
                        ALERTAS
                        ========================================================= */
@@ -502,6 +513,7 @@
                 box-shadow: var(--sc-shadow-sm);
                 font-size: 0.88rem;
             }
+
 
             /* =========================================================
                        FOOTER
@@ -532,6 +544,7 @@
                     text-decoration: underline;
                 }
 
+
             /* =========================================================
                        SCROLLBAR
                        ========================================================= */
@@ -553,6 +566,104 @@
                 ::-webkit-scrollbar-thumb:hover {
                     background: #a99f96;
                 }
+
+
+            /* =========================================================
+                       RESPONSIVE
+                       ========================================================= */
+
+            @@media (max-width: 1200px) {
+
+                .navbar {
+                    padding: 0 20px;
+                }
+
+                .navbar-brand {
+                    margin-right: 20px;
+                }
+
+                .navbar-nav .nav-link {
+                    padding: 9px 10px !important;
+                    font-size: 0.82rem;
+                }
+
+                .sc-page-wrapper {
+                    padding-left: 20px;
+                    padding-right: 20px;
+                }
+            }
+
+            @@media (max-width: 992px) {
+
+                .navbar {
+                    min-height: auto;
+                    padding: 12px 20px;
+                }
+
+                    .navbar .container-fluid {
+                        flex-wrap: wrap;
+                    }
+
+                .navbar-collapse {
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                .navbar-nav {
+                    flex-wrap: wrap;
+                    width: 100%;
+                }
+
+                    .navbar-nav .nav-link {
+                        padding: 9px 12px !important;
+                    }
+            }
+
+            @@media (max-width: 576px) {
+
+                html {
+                    font-size: 13px;
+                }
+
+                .navbar {
+                    padding: 10px 15px;
+                }
+
+                .navbar-brand {
+                    margin-right: 0;
+                }
+
+                .brand-icon {
+                    width: 38px;
+                    height: 38px;
+                }
+
+                .brand-name {
+                    font-size: 1.15rem;
+                }
+
+                .brand-subtitle {
+                    font-size: 0.58rem;
+                }
+
+                .sc-page-wrapper {
+                    padding: 20px 15px 30px;
+                }
+
+                .navbar-nav {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    width: 100%;
+                }
+
+                    .navbar-nav .nav-link {
+                        width: 100%;
+                    }
+
+                footer.footer {
+                    padding: 18px 15px;
+                }
+            }
     </style>
 </head>
 
@@ -568,7 +679,10 @@
 
             <div class="container-fluid">
 
-                <!-- LOGO -->
+                <!-- =================================================
+                     LOGO
+                     ================================================= -->
+
                 <a class="navbar-brand"
                    asp-area=""
                    asp-controller="Home"
@@ -583,10 +697,12 @@
                              stroke-linecap="round"
                              stroke-linejoin="round">
 
+                            <!-- Tenedor -->
                             <path d="M6 3v7" />
                             <path d="M4 3v7a2 2 0 0 0 4 0V3" />
                             <path d="M6 12v9" />
 
+                            <!-- Cuchillo -->
                             <path d="M14 3v18" />
                             <path d="M14 3c3 1 4 3.2 4 6v1h-4" />
 
@@ -609,297 +725,290 @@
                 </a>
 
 
-                <!-- NAVEGACIÓN -->
+                <!-- =================================================
+                     NAVEGACIÓN
+                     ================================================= -->
 
                 <div class="navbar-collapse">
 
                     <ul class="navbar-nav flex-grow-1">
 
-<<<<<<< HEAD
-                        <!-- Inicio: Lo ven todos los usuarios que hayan iniciado sesión -->
+
+                        <!-- =================================================
+                             INICIO
+                             Todos los usuarios autenticados
+                             ================================================= -->
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Dashboard" asp-action="Index">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Dashboard"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M3 10.5 12 3l9 7.5" />
+                                            <path d="M5 9.5V21h14V9.5" />
+                                            <path d="M9 21v-6h6v6" />
+
+                                        </svg>
+
+                                    </span>
+
                                     Inicio
+
                                 </a>
+
                             </li>
                         }
 
-                        <!-- Platos e Ingredientes: Solo Cocinero y Administrador -->
+
+                        <!-- =================================================
+                             PLATOS
+                             Administrador + Cocinero
+                             ================================================= -->
                         @if (User.IsInRole("Administrador") || User.IsInRole("Cocinero"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Platos" asp-action="Index">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Platos"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="12" r="8" />
+                                            <path d="M4 12h16" />
+                                            <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+                                            <path d="M12 4c-2.5 2-3.5 4.5-3.5 8s1 6 3.5 8" />
+
+                                        </svg>
+
+                                    </span>
+
                                     Platos
+
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Ingredientes" asp-action="Index">
-                                    Ingredientes
-                                </a>
+
                             </li>
                         }
 
-                        <!-- Mesas: Solo Mesero y Administrador -->
+
+                        <!-- =================================================
+                             MESAS
+                             Administrador + Mesero
+                             ================================================= -->
                         @if (User.IsInRole("Administrador") || User.IsInRole("Mesero"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Mesas" asp-action="Index">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Mesas"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <rect x="4"
+                                                  y="7"
+                                                  width="16"
+                                                  height="8"
+                                                  rx="2" />
+
+                                            <path d="M7 15v5" />
+                                            <path d="M17 15v5" />
+                                            <path d="M3 7h18" />
+
+                                        </svg>
+
+                                    </span>
+
                                     Mesas
+
                                 </a>
+
                             </li>
                         }
 
-                        <!-- Pedidos: Lo ven todos (Administrador, Mesero, Cocinero) -->
+
+                        <!-- =================================================
+                             INGREDIENTES
+                             Administrador + Cocinero
+                             ================================================= -->
+                        @if (User.IsInRole("Administrador") || User.IsInRole("Cocinero"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Ingredientes"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M12 3c-3 3-6 6.5-6 10a6 6 0 0 0 12 0c0-3.5-3-7-6-10Z" />
+
+                                            <path d="M9 15c.5 1.3 1.5 2 3 2" />
+
+                                        </svg>
+
+                                    </span>
+
+                                    Ingredientes
+
+                                </a>
+
+                            </li>
+                        }
+
+
+                        <!-- =================================================
+                             PEDIDOS
+                             Todos los usuarios autenticados
+                             ================================================= -->
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Pedidos" asp-action="Index">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Pedidos"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M6 3h12v18H6z" />
+
+                                            <path d="M9 7h6" />
+                                            <path d="M9 11h6" />
+                                            <path d="M9 15h4" />
+
+                                        </svg>
+
+                                    </span>
+
                                     Pedidos
+
                                 </a>
+
                             </li>
                         }
-=======
-                        <!-- INICIO -->
-                        <li class="nav-item">
 
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Home"
-                               asp-action="Index">
 
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <path d="M3 10.5 12 3l9 7.5" />
-                                        <path d="M5 9.5V21h14V9.5" />
-                                        <path d="M9 21v-6h6v6" />
-
-                                    </svg>
-
-                                </span>
-
-                                Inicio
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- PLATOS -->
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Platos"
-                               asp-action="Index">
-
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <circle cx="12" cy="12" r="8" />
-                                        <path d="M4 12h16" />
-                                        <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
-                                        <path d="M12 4c-2.5 2-3.5 4.5-3.5 8s1 6 3.5 8" />
-
-                                    </svg>
-
-                                </span>
-
-                                Platos
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- MESAS -->
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Mesas"
-                               asp-action="Index">
-
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <rect x="4" y="7" width="16" height="8" rx="2" />
-                                        <path d="M7 15v5" />
-                                        <path d="M17 15v5" />
-                                        <path d="M3 7h18" />
-
-                                    </svg>
-
-                                </span>
-
-                                Mesas
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- INGREDIENTES -->
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Ingredientes"
-                               asp-action="Index">
-
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <path d="M12 3c-3 3-6 6.5-6 10a6 6 0 0 0 12 0c0-3.5-3-7-6-10Z" />
-                                        <path d="M9 15c.5 1.3 1.5 2 3 2" />
-
-                                    </svg>
-
-                                </span>
-
-                                Ingredientes
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- PEDIDOS -->
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Pedidos"
-                               asp-action="Index">
-
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <path d="M6 3h12v18H6z" />
-                                        <path d="M9 7h6" />
-                                        <path d="M9 11h6" />
-                                        <path d="M9 15h4" />
-
-                                    </svg>
-
-                                </span>
-
-                                Pedidos
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- COMPRAS -->
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Compras"
-                               asp-action="Index">
-
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <path d="M3 5h2l2.2 11h10.5L20 8H6" />
-                                        <circle cx="10" cy="20" r="1" />
-                                        <circle cx="17" cy="20" r="1" />
-
-                                    </svg>
-
-                                </span>
-
-                                Compras
-
-                            </a>
-
-                        </li>
-
-
-                        <!-- USUARIOS -->
-                        <li class="nav-item">
-
-                            <a class="nav-link"
-                               asp-area=""
-                               asp-controller="Usuarios"
-                               asp-action="Index">
-
-                                <span class="nav-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <circle cx="12" cy="8" r="3" />
-                                        <path d="M5 21c0-3.5 2.8-6 7-6s7 2.5 7 6" />
-
-                                    </svg>
-
-                                </span>
-
-                                Usuarios
-
-                            </a>
-
-                        </li>
->>>>>>> 28241a710031acbb6d584d67cc42d476483c8599
-
-                        <!-- Compras y Usuarios: ACCESO EXCLUSIVO ADMINISTRADOR -->
+                        <!-- =================================================
+                             COMPRAS
+                             Solo Administrador
+                             ================================================= -->
                         @if (User.IsInRole("Administrador"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Compras" asp-action="Index">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Compras"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M3 5h2l2.2 11h10.5L20 8H6" />
+
+                                            <circle cx="10" cy="20" r="1" />
+                                            <circle cx="17" cy="20" r="1" />
+
+                                        </svg>
+
+                                    </span>
+
                                     Compras
+
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Usuarios" asp-action="Index">
-                                    Usuarios
-                                </a>
+
                             </li>
                         }
+
+
+                        <!-- =================================================
+                             USUARIOS
+                             Solo Administrador
+                             ================================================= -->
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <li class="nav-item">
+
+                                <a class="nav-link"
+                                   asp-area=""
+                                   asp-controller="Usuarios"
+                                   asp-action="Index">
+
+                                    <span class="nav-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="8" r="3" />
+
+                                            <path d="M5 21c0-3.5 2.8-6 7-6s7 2.5 7 6" />
+
+                                        </svg>
+
+                                    </span>
+
+                                    Usuarios
+
+                                </a>
+
+                            </li>
+                        }
+
                     </ul>
 
                 </div>
@@ -963,4 +1072,3 @@
 
 </body>
 </html>
-```
