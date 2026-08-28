@@ -6,11 +6,7 @@ using RestauranteSaborCasero.Data;
 
 namespace RestauranteSaborCasero.Controllers
 {
-<<<<<<< HEAD
     [Authorize(Roles = "Administrador,Cocinero")]
-=======
-    [Authorize(Roles = "Administrador")]
->>>>>>> 28241a710031acbb6d584d67cc42d476483c8599
     public class PlatosController : Controller
     {
         private readonly ApplicationDbContext _context;
