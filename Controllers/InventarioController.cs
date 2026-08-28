@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RestauranteSaborCasero.Data;
@@ -6,6 +7,7 @@ using RestauranteSaborCasero.Models;
 
 namespace RestauranteSaborCasero.Controllers
 {
+    [Authorize(Roles = "Administrador,Cocinero")]
     public class InventarioController : Controller
     {
         private readonly ApplicationDbContext _context;
