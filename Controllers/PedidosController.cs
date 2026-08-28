@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ using RestauranteSaborCasero.Models;
 
 namespace RestauranteSaborCasero.Controllers
 {
+    [Authorize]
     public class PedidosController : Controller
     {
         private readonly ApplicationDbContext _context;
