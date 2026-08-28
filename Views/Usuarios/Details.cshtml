@@ -1,5 +1,83 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.Usuario
+
 @{
+    ViewData["Title"] = "Detalles del usuario";
 }
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold">Detalles del usuario</h1>
+        <p class="text-muted mb-0">
+            Información registrada del usuario seleccionado.
+        </p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+
+            <dl class="row mb-0">
+
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.IdUsuario</dd>
+
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3">Correo</dt>
+                <dd class="col-sm-9">@Model.Correo</dd>
+
+                <dt class="col-sm-3">Rol</dt>
+                <dd class="col-sm-9">
+
+                    @if (Model.Rol == RolUsuario.Administrador)
+                    {
+                        <span class="badge bg-danger">Administrador</span>
+                    }
+                    else if (Model.Rol == RolUsuario.Cocinero)
+                    {
+                        <span class="badge bg-warning text-dark">Cocinero</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-primary">Mesero</span>
+                    }
+
+                </dd>
+
+                <dt class="col-sm-3">Estado</dt>
+                <dd class="col-sm-9">
+
+                    @if (Model.Activo)
+                    {
+                        <span class="badge bg-success">Activo</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactivo</span>
+                    }
+
+                </dd>
+
+            </dl>
+
+            <hr />
+
+            <div class="d-flex gap-2">
+                <!-- Envía al formulario de edición del usuario actual. -->
+                <a asp-action="Edit"
+                   asp-route-id="@Model.IdUsuario"
+                   class="btn btn-warning">
+                    Editar
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-outline-secondary">
+                    Volver a la lista
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>

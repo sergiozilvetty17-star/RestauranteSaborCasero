@@ -1,5 +1,100 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<RestauranteSaborCasero.Models.PlatoIngrediente>
+
 @{
+    ViewData["Title"] = "Ingredientes por plato";
 }
+
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="fw-bold">Ingredientes por plato</h1>
+            <p class="text-muted mb-0">
+                Administra los ingredientes necesarios para cada plato.
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn btn-primary">
+            Asignar ingrediente
+        </a>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            @if (!Model.Any())
+            {
+                <div class="text-center py-5">
+                    <h4>No hay ingredientes asignados</h4>
+
+                    <p class="text-muted">
+                        Aún no se registraron relaciones entre platos e ingredientes.
+                    </p>
+
+                    <a asp-action="Create" class="btn btn-primary">
+                        Asignar primer ingrediente
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Plato</th>
+                                <th>Ingrediente</th>
+                                <th>Cantidad necesaria</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var relacion in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@relacion.Plato.Nombre</strong>
+                                    </td>
+
+                                    <td>@relacion.Ingrediente.Nombre</td>
+
+                                    <td>
+                                        @relacion.CantidadNecesaria
+                                        @relacion.Ingrediente.UnidadMedida
+                                    </td>
+
+                                    <td class="text-center">
+                                        <div class="btn-group" role="group">
+
+                                            <!-- Envía los dos IDs porque esta relación tiene clave compuesta. -->
+                                            <a asp-action="Edit"
+                                               asp-route-idPlato="@relacion.IdPlato"
+                                               asp-route-idIngrediente="@relacion.IdIngrediente"
+                                               class="btn btn-outline-warning btn-sm">
+                                                Editar
+                                            </a>
+
+                                            <a asp-action="Delete"
+                                               asp-route-idPlato="@relacion.IdPlato"
+                                               asp-route-idIngrediente="@relacion.IdIngrediente"
+                                               class="btn btn-outline-danger btn-sm">
+                                                Eliminar
+                                            </a>
+
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

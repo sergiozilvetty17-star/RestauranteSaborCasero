@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.Usuario
+
 @{
+    ViewData["Title"] = "Eliminar usuario";
 }
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold text-danger">Eliminar usuario</h1>
+        <p class="text-muted mb-0">
+            Confirma si deseas eliminar este usuario del sistema.
+        </p>
+    </div>
+
+    <div class="card border-danger shadow-sm">
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning" role="alert">
+                <strong>Atención:</strong> esta acción eliminará el usuario
+                seleccionado y no se puede deshacer.
+            </div>
+
+            <h5 class="mb-3">Usuario que se eliminará</h5>
+
+            <dl class="row">
+
+                <dt class="col-sm-3">ID</dt>
+                <dd class="col-sm-9">@Model.IdUsuario</dd>
+
+                <dt class="col-sm-3">Nombre</dt>
+                <dd class="col-sm-9">@Model.Nombre</dd>
+
+                <dt class="col-sm-3">Correo</dt>
+                <dd class="col-sm-9">@Model.Correo</dd>
+
+                <dt class="col-sm-3">Rol</dt>
+                <dd class="col-sm-9">@Model.Rol</dd>
+
+                <dt class="col-sm-3">Estado</dt>
+                <dd class="col-sm-9">
+                    @(Model.Activo ? "Activo" : "Inactivo")
+                </dd>
+
+            </dl>
+
+            <hr />
+
+            <!-- Envía la confirmación al método DeleteConfirmed del controlador. -->
+            <form asp-action="Delete" method="post">
+
+                <!-- Mantiene el ID del usuario que se debe borrar. -->
+                <input type="hidden" asp-for="IdUsuario" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        Sí, eliminar usuario
+                    </button>
+
+                    <a asp-action="Details"
+                       asp-route-id="@Model.IdUsuario"
+                       class="btn btn-outline-info">
+                        Ver detalles
+                    </a>
+
+                    <a asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>

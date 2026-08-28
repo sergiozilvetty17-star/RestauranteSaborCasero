@@ -1,5 +1,68 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model RestauranteSaborCasero.Models.PlatoIngrediente
+
 @{
+    ViewData["Title"] = "Eliminar ingrediente del plato";
 }
+
+<div class="container mt-4">
+
+    <div class="mb-4">
+        <h1 class="fw-bold text-danger">Eliminar ingrediente del plato</h1>
+        <p class="text-muted mb-0">
+            Confirma si deseas quitar este ingrediente del plato.
+        </p>
+    </div>
+
+    <div class="card border-danger shadow-sm">
+        <div class="card-body p-4">
+
+            <div class="alert alert-warning" role="alert">
+                <strong>Atención:</strong> el ingrediente dejará de estar
+                asignado a este plato.
+            </div>
+
+            <dl class="row mb-0">
+
+                <dt class="col-sm-4">Plato</dt>
+                <dd class="col-sm-8">
+                    <strong>@Model.Plato.Nombre</strong>
+                </dd>
+
+                <dt class="col-sm-4">Ingrediente</dt>
+                <dd class="col-sm-8">@Model.Ingrediente.Nombre</dd>
+
+                <dt class="col-sm-4">Cantidad necesaria</dt>
+                <dd class="col-sm-8">
+                    @Model.CantidadNecesaria @Model.Ingrediente.UnidadMedida
+                </dd>
+
+            </dl>
+
+            <hr />
+
+            <!-- Envía la confirmación al método DeleteConfirmed del controlador. -->
+            <form asp-action="Delete"
+                  asp-route-idPlato="@Model.IdPlato"
+                  asp-route-idIngrediente="@Model.IdIngrediente"
+                  method="post">
+
+                <!-- Mantienen la clave compuesta al enviar el formulario. -->
+                <input type="hidden" name="idPlato" value="@Model.IdPlato" />
+                <input type="hidden" name="idIngrediente" value="@Model.IdIngrediente" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        Sí, quitar ingrediente
+                    </button>
+
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
