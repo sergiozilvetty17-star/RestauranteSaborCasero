@@ -1,105 +1,344 @@
-﻿@model RestauranteSaborCasero.Models.Pedido
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Pedido
 
 @{
     ViewData["Title"] = "Crear Pedido";
 }
 
-<h1>Crear Pedido</h1>
+<style>
+    .crear-pedido-container {
+        padding: 30px;
+    }
 
-<form asp-action="Create" method="post">
+    .crear-pedido-header {
+        margin-bottom: 25px;
+    }
 
-    <div asp-validation-summary="ModelOnly"></div>
+    .crear-pedido-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-    <div>
-        <label asp-for="IdMesero">
-            Mesero
-        </label>
+    .crear-pedido-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-        <select asp-for="IdMesero"
-                asp-items="ViewBag.IdMesero">
+    .crear-pedido-card {
+        width: 700px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+    }
 
-            <option value="">
-                Seleccione un mesero
-            </option>
+    .seccion {
+        margin-bottom: 25px;
+    }
 
-        </select>
+    .seccion-titulo {
+        font-size: 17px;
+        font-weight: 700;
+        color: #343a40;
+        margin: 0 0 15px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #eeeeee;
+    }
 
-        <span asp-validation-for="IdMesero"></span>
+    .campo {
+        margin-bottom: 18px;
+    }
+
+        .campo:last-child {
+            margin-bottom: 0;
+        }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .campo select,
+        .campo input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 7px;
+            background-color: white;
+            color: #333;
+            font-size: 15px;
+        }
+
+            .campo select:focus,
+            .campo input:focus {
+                outline: none;
+                border-color: #198754;
+                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
+            }
+
+    .campo-ayuda {
+        display: block;
+        margin-top: 5px;
+        color: #888;
+        font-size: 12px;
+    }
+
+    .campo-validation {
+        display: block;
+        margin-top: 5px;
+        color: #dc3545;
+        font-size: 13px;
+    }
+
+    .validation-summary {
+        background-color: #f8d7da;
+        border: 1px solid #f1aeb5;
+        color: #842029;
+        border-radius: 7px;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+    }
+
+    .acciones-form {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-guardar {
+        border: none;
+        background-color: #198754;
+        color: white;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-guardar:hover {
+            background-color: #157347;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="crear-pedido-container">
+
+    <!-- ENCABEZADO -->
+    <div class="crear-pedido-header">
+
+        <h1 class="crear-pedido-titulo">
+            Crear nuevo pedido
+        </h1>
+
+        <p class="crear-pedido-subtitulo">
+            Registra un nuevo pedido de manera rápida y sencilla
+        </p>
+
     </div>
 
-    <div>
-        <label asp-for="TipoPedido">
-            Tipo de pedido
-        </label>
 
-        <select asp-for="TipoPedido"
-                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.TipoPedido>()">
-        </select>
+    <!-- FORMULARIO -->
+    <div class="crear-pedido-card">
 
-        <span asp-validation-for="TipoPedido"></span>
+        <form asp-action="Create" method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- INFORMACIÓN DEL PEDIDO -->
+            <div class="seccion">
+
+                <h2 class="seccion-titulo">
+                    Información del pedido
+                </h2>
+
+
+                <!-- MESERO -->
+                <div class="campo">
+
+                    <label asp-for="IdMesero">
+                        Mesero
+                    </label>
+
+                    <select asp-for="IdMesero"
+                            asp-items="ViewBag.IdMesero">
+
+                        <option value="">
+                            Seleccione un mesero
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="IdMesero"
+                          class="campo-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- TIPO DE PEDIDO -->
+                <div class="campo">
+
+                    <label asp-for="TipoPedido">
+                        Tipo de pedido
+                    </label>
+
+                    <select asp-for="TipoPedido"
+                            asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.TipoPedido>()">
+                    </select>
+
+                    <span class="campo-ayuda">
+                        Selecciona si el pedido es para el restaurante o para llevar.
+                    </span>
+
+                    <span asp-validation-for="TipoPedido"
+                          class="campo-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- MESA -->
+                <div class="campo">
+
+                    <label asp-for="IdMesa">
+                        Mesa
+                    </label>
+
+                    <select asp-for="IdMesa"
+                            asp-items="ViewBag.IdMesa">
+
+                        <option value="">
+                            Sin mesa
+                        </option>
+
+                    </select>
+
+                    <span class="campo-ayuda">
+                        Si es un pedido para llevar, puedes dejarlo sin mesa.
+                    </span>
+
+                    <span asp-validation-for="IdMesa"
+                          class="campo-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- ESTADO -->
+                <div class="campo">
+
+                    <label asp-for="Estado">
+                        Estado
+                    </label>
+
+                    <select asp-for="Estado"
+                            asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoPedido>()">
+                    </select>
+
+                    <span asp-validation-for="Estado"
+                          class="campo-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FECHA Y HORA -->
+            <div class="seccion">
+
+                <h2 class="seccion-titulo">
+                    Fecha y hora
+                </h2>
+
+
+                <!-- FECHA -->
+                <div class="campo">
+
+                    <label asp-for="Fecha">
+                        Fecha
+                    </label>
+
+                    <input asp-for="Fecha"
+                           type="date" />
+
+                    <span asp-validation-for="Fecha"
+                          class="campo-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- HORA -->
+                <div class="campo">
+
+                    <label asp-for="HoraInicio">
+                        Hora de inicio
+                    </label>
+
+                    <input asp-for="HoraInicio"
+                           type="time" />
+
+                    <span asp-validation-for="HoraInicio"
+                          class="campo-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- BOTONES -->
+            <div class="acciones-form">
+
+                <button type="submit"
+                        class="btn-guardar">
+                    Guardar pedido
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-volver">
+                    Volver a pedidos
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
 
-    <div>
-        <label asp-for="IdMesa">
-            Mesa
-        </label>
+</div>
 
-        <select asp-for="IdMesa"
-                asp-items="ViewBag.IdMesa">
-
-            <option value="">
-                Sin mesa
-            </option>
-
-        </select>
-
-        <span asp-validation-for="IdMesa"></span>
-    </div>
-
-    <div>
-        <label asp-for="Estado">
-            Estado
-        </label>
-
-        <select asp-for="Estado"
-                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoPedido>()">
-        </select>
-
-        <span asp-validation-for="Estado"></span>
-    </div>
-
-    <div>
-        <label asp-for="Fecha">
-            Fecha
-        </label>
-
-        <input asp-for="Fecha"
-               type="date" />
-
-        <span asp-validation-for="Fecha"></span>
-    </div>
-
-    <div>
-        <label asp-for="HoraInicio">
-            Hora de inicio
-        </label>
-
-        <input asp-for="HoraInicio"
-               type="time" />
-
-        <span asp-validation-for="HoraInicio"></span>
-    </div>
-
-    <button type="submit">
-        Guardar
-    </button>
-
-    <a asp-action="Index">
-        Volver
-    </a>
-
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+```

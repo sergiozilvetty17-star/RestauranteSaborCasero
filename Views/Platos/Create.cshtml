@@ -1,66 +1,923 @@
 ﻿@model RestauranteSaborCasero.Models.Plato
 
-<h1>Nuevo Plato</h1>
+@{
+    ViewData["Title"] = "Nuevo Plato";
+}
 
-<form asp-action="Create" method="post">
+<style>
+    /* =========================================================
+           CREAR PLATO - SABOR CASERO
+           ========================================================= */
 
-    <div class="mb-3">
-        <label asp-for="Nombre" class="form-label"></label>
+    .plato-create-page {
+        width: 100%;
+        padding-top: 12px;
+    }
 
-        <input asp-for="Nombre"
-               class="form-control" />
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
 
-        <span asp-validation-for="Nombre"
-              class="text-danger">
-        </span>
+    .plato-create-header {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 25px;
+    }
+
+    .plato-create-header-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .plato-create-header-icon svg {
+            width: 25px;
+            height: 25px;
+            stroke: currentColor;
+        }
+
+    .plato-create-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .plato-create-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.9rem;
+        font-weight: 800;
+        letter-spacing: -0.7px;
+        line-height: 1.1;
+    }
+
+    .plato-create-description {
+        margin: 6px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.82rem;
+    }
+
+    /* =========================================================
+           CONTENEDOR PRINCIPAL
+           ========================================================= */
+
+    .plato-create-layout {
+        display: grid;
+        grid-template-columns: 1fr 310px;
+        gap: 20px;
+        align-items: start;
+    }
+
+    /* =========================================================
+           FORMULARIO
+           ========================================================= */
+
+    .plato-form-card {
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .plato-form-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 17px 21px;
+        background: #ffffff;
+        border-bottom: 1px solid var(--sc-border);
+    }
+
+    .plato-form-card-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 0.92rem;
+        font-weight: 800;
+    }
+
+    .plato-form-card-subtitle {
+        margin: 3px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.72rem;
+    }
+
+    .plato-form-badge {
+        padding: 6px 9px;
+        background: var(--sc-primary-soft);
+        border-radius: 7px;
+        color: var(--sc-primary);
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+    }
+
+    .plato-form-body {
+        padding: 24px;
+    }
+
+    /* =========================================================
+           CAMPOS
+           ========================================================= */
+
+    .plato-form-group {
+        margin-bottom: 20px;
+    }
+
+    .plato-form-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 7px;
+        color: var(--sc-dark);
+        font-size: 0.76rem;
+        font-weight: 800;
+    }
+
+    .plato-form-required {
+        color: var(--sc-danger);
+        font-size: 0.72rem;
+    }
+
+    .plato-form-input-wrapper {
+        position: relative;
+    }
+
+    .plato-form-input-icon {
+        position: absolute;
+        left: 13px;
+        top: 50%;
+        width: 17px;
+        height: 17px;
+        color: #9a8d84;
+        transform: translateY(-50%);
+        pointer-events: none;
+    }
+
+        .plato-form-input-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+        }
+
+    .plato-form-input {
+        width: 100%;
+        height: 45px;
+        padding: 0 13px 0 40px;
+        background: #ffffff;
+        border: 1px solid #ddd5cc;
+        border-radius: 9px;
+        color: var(--sc-dark);
+        font-size: 0.8rem;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+        .plato-form-input:hover {
+            border-color: #cfc2b8;
+        }
+
+        .plato-form-input:focus {
+            background: #ffffff;
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.09);
+        }
+
+        .plato-form-input::placeholder {
+            color: #aaa19a;
+        }
+
+        /* El campo de número no debe mostrar demasiada decoración */
+
+        .plato-form-input[type="number"] {
+            padding-right: 14px;
+        }
+
+    /* =========================================================
+           CAMPOS EN DOS COLUMNAS
+           ========================================================= */
+
+    .plato-form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    /* =========================================================
+           AYUDA
+           ========================================================= */
+
+    .plato-form-help {
+        margin: 6px 0 0;
+        color: #918780;
+        font-size: 0.67rem;
+        line-height: 1.4;
+    }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+
+    .plato-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger);
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           BOTONES
+           ========================================================= */
+
+    .plato-form-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-top: 7px;
+        padding-top: 20px;
+        border-top: 1px solid var(--sc-border);
+    }
+
+    .plato-save-btn,
+    .plato-cancel-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        height: 40px;
+        padding: 0 16px;
+        border-radius: 9px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .plato-save-btn {
+        background: var(--sc-primary);
+        border: 1px solid var(--sc-primary);
+        color: #ffffff;
+    }
+
+        .plato-save-btn:hover {
+            background: var(--sc-primary-dark);
+            border-color: var(--sc-primary-dark);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(139, 58, 43, 0.18);
+        }
+
+    .plato-cancel-btn {
+        background: #f3f0ed;
+        border: 1px solid #e5ddd6;
+        color: #665d57;
+    }
+
+        .plato-cancel-btn:hover {
+            background: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-1px);
+        }
+
+        .plato-save-btn svg,
+        .plato-cancel-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+    /* =========================================================
+           TARJETA LATERAL
+           ========================================================= */
+
+    .plato-info-card {
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .plato-info-top {
+        padding: 23px 21px;
+        background: linear-gradient( 145deg, #8b3a2b 0%, #68291f 100% );
+        color: #ffffff;
+    }
+
+    .plato-info-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 16px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 11px;
+    }
+
+        .plato-info-icon svg {
+            width: 23px;
+            height: 23px;
+            stroke: currentColor;
+        }
+
+    .plato-info-title {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .plato-info-text {
+        margin: 7px 0 0;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.72rem;
+        line-height: 1.5;
+    }
+
+    .plato-info-body {
+        padding: 19px 21px;
+    }
+
+    .plato-info-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .plato-info-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .plato-info-item-icon {
+        width: 29px;
+        height: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #f7f1ec;
+        border-radius: 8px;
+        color: var(--sc-primary);
+    }
+
+        .plato-info-item-icon svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+        }
+
+    .plato-info-item-title {
+        margin: 1px 0 2px;
+        color: var(--sc-dark);
+        font-size: 0.72rem;
+        font-weight: 800;
+    }
+
+    .plato-info-item-text {
+        margin: 0;
+        color: var(--sc-gray);
+        font-size: 0.67rem;
+        line-height: 1.4;
+    }
+
+    /* =========================================================
+           LÍNEA INFERIOR
+           ========================================================= */
+
+    .plato-info-footer {
+        padding: 13px 21px;
+        background: #faf8f6;
+        border-top: 1px solid var(--sc-border);
+        color: #8c827a;
+        font-size: 0.65rem;
+        line-height: 1.4;
+    }
+</style>
+
+
+<div class="plato-create-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
+    <div class="plato-create-header">
+
+        <div class="plato-create-header-icon">
+
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <circle cx="12" cy="12" r="8" />
+                <path d="M4 12h16" />
+                <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+
+            </svg>
+
+        </div>
+
+        <div>
+
+            <p class="plato-create-eyebrow">
+                Gestión del menú
+            </p>
+
+            <h1 class="plato-create-title">
+                Nuevo plato
+            </h1>
+
+            <p class="plato-create-description">
+                Registra un nuevo plato en el menú de Sabor Casero.
+            </p>
+
+        </div>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Precio" class="form-label"></label>
 
-        <input asp-for="Precio"
-               class="form-control"
-               type="number"
-               step="0.01" />
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
 
-        <span asp-validation-for="Precio"
-              class="text-danger">
-        </span>
+    <div class="plato-create-layout">
+
+
+        <!-- =================================================
+             FORMULARIO
+             ================================================= -->
+
+        <div class="plato-form-card">
+
+            <div class="plato-form-card-header">
+
+                <div>
+
+                    <h2 class="plato-form-card-title">
+                        Información del plato
+                    </h2>
+
+                    <p class="plato-form-card-subtitle">
+                        Completa los datos principales del producto.
+                    </p>
+
+                </div>
+
+                <span class="plato-form-badge">
+                    Nuevo registro
+                </span>
+
+            </div>
+
+
+            <div class="plato-form-body">
+
+                <form asp-action="Create"
+                      method="post">
+
+
+                    <!-- NOMBRE -->
+
+                    <div class="plato-form-group">
+
+                        <label asp-for="Nombre"
+                               class="plato-form-label">
+
+                            Nombre del plato
+
+                            <span class="plato-form-required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <div class="plato-form-input-wrapper">
+
+                            <span class="plato-form-input-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <circle cx="12" cy="12" r="8" />
+                                    <path d="M4 12h16" />
+
+                                </svg>
+
+                            </span>
+
+                            <input asp-for="Nombre"
+                                   class="plato-form-input"
+                                   placeholder="Ej. Pollo a la plancha" />
+
+                        </div>
+
+                        <span asp-validation-for="Nombre"
+                              class="plato-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- PRECIO + TIEMPO -->
+
+                    <div class="plato-form-row">
+
+
+                        <!-- PRECIO -->
+
+                        <div class="plato-form-group">
+
+                            <label asp-for="Precio"
+                                   class="plato-form-label">
+
+                                Precio
+
+                                <span class="plato-form-required">
+                                    *
+                                </span>
+
+                            </label>
+
+                            <div class="plato-form-input-wrapper">
+
+                                <span class="plato-form-input-icon">
+
+                                    <svg viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round">
+
+                                        <path d="M12 3v18" />
+                                        <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
+
+                                    </svg>
+
+                                </span>
+
+                                <input asp-for="Precio"
+                                       class="plato-form-input"
+                                       type="number"
+                                       step="0.01"
+                                       min="0"
+                                       placeholder="0.00" />
+
+                            </div>
+
+                            <p class="plato-form-help">
+                                Precio de venta expresado en bolivianos.
+                            </p>
+
+                            <span asp-validation-for="Precio"
+                                  class="plato-validation">
+                            </span>
+
+                        </div>
+
+
+                        <!-- TIEMPO -->
+
+                        <div class="plato-form-group">
+
+                            <label asp-for="TiempoEstimado"
+                                   class="plato-form-label">
+
+                                Tiempo estimado
+
+                                <span class="plato-form-required">
+                                    *
+                                </span>
+
+                            </label>
+
+                            <div class="plato-form-input-wrapper">
+
+                                <span class="plato-form-input-icon">
+
+                                    <svg viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round">
+
+                                        <circle cx="12" cy="12" r="9" />
+                                        <path d="M12 7v5l3 2" />
+
+                                    </svg>
+
+                                </span>
+
+                                <input asp-for="TiempoEstimado"
+                                       class="plato-form-input"
+                                       type="number"
+                                       min="1"
+                                       placeholder="Ej. 20" />
+
+                            </div>
+
+                            <p class="plato-form-help">
+                                Tiempo aproximado de preparación en minutos.
+                            </p>
+
+                            <span asp-validation-for="TiempoEstimado"
+                                  class="plato-validation">
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ESTADO -->
+
+                    <div class="plato-form-group">
+
+                        <label asp-for="Estado"
+                               class="plato-form-label">
+
+                            Estado del plato
+
+                            <span class="plato-form-required">
+                                *
+                            </span>
+
+                        </label>
+
+                        <div class="plato-form-input-wrapper">
+
+                            <span class="plato-form-input-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="m8 12 2.5 2.5L16 9" />
+
+                                </svg>
+
+                            </span>
+
+                            <input asp-for="Estado"
+                                   class="plato-form-input"
+                                   placeholder="Ej. Disponible" />
+
+                        </div>
+
+                        <p class="plato-form-help">
+                            Indica si el plato está disponible para los clientes.
+                        </p>
+
+                        <span asp-validation-for="Estado"
+                              class="plato-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- BOTONES -->
+
+                    <div class="plato-form-actions">
+
+                        <button type="submit"
+                                class="plato-save-btn">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.9"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M5 4h11l3 3v13H5z" />
+                                <path d="M8 4v6h8V4" />
+                                <path d="M8 17h8" />
+
+                            </svg>
+
+                            Guardar plato
+
+                        </button>
+
+
+                        <a asp-action="Index"
+                           class="plato-cancel-btn">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M18 6 6 18" />
+                                <path d="m6 6 12 12" />
+
+                            </svg>
+
+                            Cancelar
+
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             INFORMACIÓN LATERAL
+             ================================================= -->
+
+        <aside class="plato-info-card">
+
+
+            <div class="plato-info-top">
+
+                <div class="plato-info-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12" cy="12" r="8" />
+                        <path d="M4 12h16" />
+                        <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+
+                    </svg>
+
+                </div>
+
+                <h2 class="plato-info-title">
+                    Registro de plato
+                </h2>
+
+                <p class="plato-info-text">
+                    Los datos registrados aquí se utilizarán
+                    para administrar el menú del restaurante.
+                </p>
+
+            </div>
+
+
+            <div class="plato-info-body">
+
+                <ul class="plato-info-list">
+
+
+                    <li class="plato-info-item">
+
+                        <span class="plato-info-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M12 3v18" />
+                                <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
+
+                            </svg>
+
+                        </span>
+
+                        <div>
+
+                            <p class="plato-info-item-title">
+                                Precio
+                            </p>
+
+                            <p class="plato-info-item-text">
+                                Define el precio de venta del plato.
+                            </p>
+
+                        </div>
+
+                    </li>
+
+
+                    <li class="plato-info-item">
+
+                        <span class="plato-info-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M12 7v5l3 2" />
+
+                            </svg>
+
+                        </span>
+
+                        <div>
+
+                            <p class="plato-info-item-title">
+                                Preparación
+                            </p>
+
+                            <p class="plato-info-item-text">
+                                Establece el tiempo aproximado que requiere.
+                            </p>
+
+                        </div>
+
+                    </li>
+
+
+                    <li class="plato-info-item">
+
+                        <span class="plato-info-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="m8 12 2.5 2.5L16 9" />
+
+                            </svg>
+
+                        </span>
+
+                        <div>
+
+                            <p class="plato-info-item-title">
+                                Disponibilidad
+                            </p>
+
+                            <p class="plato-info-item-text">
+                                Controla si el plato puede ofrecerse actualmente.
+                            </p>
+
+                        </div>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="plato-info-footer">
+                Los campos marcados con <strong>*</strong> son obligatorios.
+            </div>
+
+        </aside>
+
     </div>
 
-    <div class="mb-3">
-        <label asp-for="Estado" class="form-label"></label>
+</div>
 
-        <input asp-for="Estado"
-               class="form-control" />
 
-        <span asp-validation-for="Estado"
-              class="text-danger">
-        </span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="TiempoEstimado"
-               class="form-label">
-        </label>
-
-        <input asp-for="TiempoEstimado"
-               class="form-control"
-               type="number" />
-
-        <span asp-validation-for="TiempoEstimado"
-              class="text-danger">
-        </span>
-    </div>
-
-    <button type="submit"
-            class="btn btn-success">
-        Guardar
-    </button>
-
-    <a asp-action="Index"
-           class="btn btn-secondary">
-        Cancelar
-    </a>
-
-</form>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+```

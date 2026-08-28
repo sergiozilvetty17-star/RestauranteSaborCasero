@@ -1,28 +1,267 @@
-﻿@model RestauranteSaborCasero.Models.Compra
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Compra
 
-<h1>Crear Compra</h1>
+@{
+    ViewData["Title"] = "Crear Compra";
+}
 
-<form asp-action="Create">
-    <div>
-        <label asp-for="IdUsuario">Usuario que compra:</label>
-        <select asp-for="IdUsuario" asp-items="ViewBag.IdUsuario"></select>
+<style>
+    .compra-container {
+        padding: 30px;
+    }
+
+    .compra-header {
+        margin-bottom: 25px;
+    }
+
+    .compra-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .compra-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .compra-card {
+        width: 600px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .seccion-titulo {
+        margin: 0 0 25px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #eeeeee;
+        font-size: 18px;
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .campo {
+        margin-bottom: 20px;
+    }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 7px;
+            background-color: white;
+            color: #333;
+            font-size: 15px;
+        }
+
+            .campo input:focus,
+            .campo select:focus {
+                outline: none;
+                border-color: #198754;
+                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
+            }
+
+    .ayuda {
+        display: block;
+        margin-top: 6px;
+        color: #888;
+        font-size: 12px;
+    }
+
+    .validation {
+        display: block;
+        margin-top: 5px;
+        color: #dc3545;
+        font-size: 13px;
+    }
+
+    .validation-summary {
+        background-color: #f8d7da;
+        border: 1px solid #f1aeb5;
+        color: #842029;
+        border-radius: 7px;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-guardar {
+        border: none;
+        background-color: #198754;
+        color: white;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-guardar:hover {
+            background-color: #157347;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="compra-container">
+
+    <!-- ENCABEZADO -->
+    <div class="compra-header">
+
+        <h1 class="compra-titulo">
+            Crear compra
+        </h1>
+
+        <p class="compra-subtitulo">
+            Registra una nueva compra de ingredientes
+        </p>
+
     </div>
 
-    <div>
-        <label asp-for="Fecha">Fecha de Compra:</label>
-        <input asp-for="Fecha" type="date" />
+
+    <!-- FORMULARIO -->
+    <div class="compra-card">
+
+        <h2 class="seccion-titulo">
+            Información de la compra
+        </h2>
+
+
+        <form asp-action="Create"
+              method="post">
+
+            <!-- VALIDACIONES -->
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- USUARIO -->
+            <div class="campo">
+
+                <label asp-for="IdUsuario">
+                    Usuario que registra la compra
+                </label>
+
+                <select asp-for="IdUsuario"
+                        asp-items="ViewBag.IdUsuario">
+
+                    <option value="">
+                        Seleccione un usuario
+                    </option>
+
+                </select>
+
+                <span class="ayuda">
+                    Selecciona el usuario encargado de registrar la compra.
+                </span>
+
+                <span asp-validation-for="IdUsuario"
+                      class="validation">
+                </span>
+
+            </div>
+
+
+            <!-- FECHA -->
+            <div class="campo">
+
+                <label asp-for="Fecha">
+                    Fecha de compra
+                </label>
+
+                <input asp-for="Fecha"
+                       type="date" />
+
+                <span asp-validation-for="Fecha"
+                      class="validation">
+                </span>
+
+            </div>
+
+
+            <!-- PROVEEDOR -->
+            <div class="campo">
+
+                <label asp-for="Proveedor">
+                    Proveedor
+                </label>
+
+                <input asp-for="Proveedor"
+                       type="text"
+                       placeholder="Ejemplo: Distribuidora ABC" />
+
+                <span class="ayuda">
+                    Nombre del proveedor donde se realizó la compra.
+                </span>
+
+                <span asp-validation-for="Proveedor"
+                      class="validation">
+                </span>
+
+            </div>
+
+
+            <!-- ACCIONES -->
+            <div class="acciones">
+
+                <button type="submit"
+                        class="btn-guardar">
+                    Guardar compra
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-volver">
+                    Volver a compras
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
 
-    <div>
-        <label asp-for="Proveedor">Proveedor:</label>
-        <input asp-for="Proveedor" type="text" />
-    </div>
-
-    <div>
-        <input type="submit" value="Guardar Compra" />
-    </div>
-</form>
-
-<div>
-    <a asp-action="Index">Volver a la lista</a>
 </div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+```

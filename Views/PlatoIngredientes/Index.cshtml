@@ -1,100 +1,321 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.PlatoIngrediente>
+﻿```cshtml id="w3n6pa"
+@model IEnumerable<RestauranteSaborCasero.Models.PlatoIngrediente>
 
 @{
     ViewData["Title"] = "Ingredientes por plato";
 }
 
-<div class="container mt-4">
+<style>
+    .recetas-container {
+        padding: 30px;
+    }
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    .recetas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .recetas-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .recetas-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .btn-asignar {
+        display: inline-block;
+        background-color: #198754;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-asignar:hover {
+            background-color: #157347;
+            color: white;
+        }
+
+    .recetas-card {
+        width: 950px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .tabla-recetas {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-recetas thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .tabla-recetas th {
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+            .tabla-recetas th:last-child {
+                text-align: center;
+            }
+
+        .tabla-recetas td {
+            padding: 15px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .tabla-recetas tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .plato {
+        color: #198754;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .ingrediente {
+        color: #343a40;
+        font-weight: 600;
+    }
+
+    .cantidad {
+        font-weight: 700;
+        color: #0d6efd;
+    }
+
+    .unidad {
+        color: #777;
+        margin-left: 4px;
+    }
+
+    .acciones {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .btn-editar {
+        display: inline-block;
+        background-color: #ffc107;
+        color: #212529;
+        text-decoration: none;
+        padding: 7px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-right: 5px;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-eliminar {
+        display: inline-block;
+        background-color: #dc3545;
+        color: white;
+        text-decoration: none;
+        padding: 7px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+        .btn-eliminar:hover {
+            background-color: #bb2d3b;
+            color: white;
+        }
+
+    .sin-registros {
+        width: 950px;
+        box-sizing: border-box;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 50px 30px;
+        text-align: center;
+    }
+
+        .sin-registros h3 {
+            margin: 0 0 10px;
+            color: #343a40;
+            font-size: 20px;
+        }
+
+        .sin-registros p {
+            margin: 0 0 20px;
+            color: #777;
+            font-size: 14px;
+        }
+</style>
+
+
+<div class="recetas-container">
+
+    <!-- ENCABEZADO -->
+    <div class="recetas-header">
+
         <div>
-            <h1 class="fw-bold">Ingredientes por plato</h1>
-            <p class="text-muted mb-0">
-                Administra los ingredientes necesarios para cada plato.
+
+            <h1 class="recetas-titulo">
+                Ingredientes por plato
+            </h1>
+
+            <p class="recetas-subtitulo">
+                Indica qué ingredientes necesita cada plato.
             </p>
+
         </div>
 
-        <a asp-action="Create" class="btn btn-primary">
-            Asignar ingrediente
+
+        <a asp-action="Create"
+           class="btn-asignar">
+            + Asignar ingrediente
         </a>
+
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body">
 
-            @if (!Model.Any())
-            {
-                <div class="text-center py-5">
-                    <h4>No hay ingredientes asignados</h4>
+    @if (Model != null && Model.Any())
+    {
+        <!-- TABLA -->
+        <div class="recetas-card">
 
-                    <p class="text-muted">
-                        Aún no se registraron relaciones entre platos e ingredientes.
-                    </p>
+            <table class="tabla-recetas">
 
-                    <a asp-action="Create" class="btn btn-primary">
-                        Asignar primer ingrediente
-                    </a>
-                </div>
-            }
-            else
-            {
-                <div class="table-responsive">
+                <thead>
 
-                    <table class="table table-hover align-middle mb-0">
-                        <thead>
-                            <tr>
-                                <th>Plato</th>
-                                <th>Ingrediente</th>
-                                <th>Cantidad necesaria</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
+                    <tr>
 
-                        <tbody>
-                            @foreach (var relacion in Model)
-                            {
-                                <tr>
-                                    <td>
-                                        <strong>@relacion.Plato.Nombre</strong>
-                                    </td>
+                        <th>
+                            Plato
+                        </th>
 
-                                    <td>@relacion.Ingrediente.Nombre</td>
+                        <th>
+                            Ingrediente
+                        </th>
 
-                                    <td>
-                                        @relacion.CantidadNecesaria
-                                        @relacion.Ingrediente.UnidadMedida
-                                    </td>
+                        <th>
+                            Cantidad necesaria
+                        </th>
 
-                                    <td class="text-center">
-                                        <div class="btn-group" role="group">
+                        <th>
+                            Acciones
+                        </th>
 
-                                            <!-- Envía los dos IDs porque esta relación tiene clave compuesta. -->
-                                            <a asp-action="Edit"
-                                               asp-route-idPlato="@relacion.IdPlato"
-                                               asp-route-idIngrediente="@relacion.IdIngrediente"
-                                               class="btn btn-outline-warning btn-sm">
-                                                Editar
-                                            </a>
+                    </tr>
 
-                                            <a asp-action="Delete"
-                                               asp-route-idPlato="@relacion.IdPlato"
-                                               asp-route-idIngrediente="@relacion.IdIngrediente"
-                                               class="btn btn-outline-danger btn-sm">
-                                                Eliminar
-                                            </a>
+                </thead>
 
-                                        </div>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
 
-                    </table>
+                <tbody>
 
-                </div>
-            }
+                    @foreach (var relacion in Model)
+                    {
+                        <tr>
+
+                            <!-- PLATO -->
+                            <td>
+
+                                <span class="plato">
+                                    @relacion.Plato.Nombre
+                                </span>
+
+                            </td>
+
+
+                            <!-- INGREDIENTE -->
+                            <td>
+
+                                <span class="ingrediente">
+                                    @relacion.Ingrediente.Nombre
+                                </span>
+
+                            </td>
+
+
+                            <!-- CANTIDAD -->
+                            <td>
+
+                                <span class="cantidad">
+                                    @relacion.CantidadNecesaria
+                                </span>
+
+                                <span class="unidad">
+                                    @relacion.Ingrediente.UnidadMedida
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACCIONES -->
+                            <td class="acciones">
+
+                                <a asp-action="Edit"
+                                   asp-route-idPlato="@relacion.IdPlato"
+                                   asp-route-idIngrediente="@relacion.IdIngrediente"
+                                   class="btn-editar">
+                                    Editar
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-idPlato="@relacion.IdPlato"
+                                   asp-route-idIngrediente="@relacion.IdIngrediente"
+                                   class="btn-eliminar">
+                                    Eliminar
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
 
         </div>
-    </div>
+    }
+    else
+    {
+        <!-- SIN REGISTROS -->
+        <div class="sin-registros">
+
+            <h3>
+                No hay ingredientes asignados
+            </h3>
+
+            <p>
+                Todavía no se han asignado ingredientes a ningún plato.
+            </p>
+
+            <a asp-action="Create"
+               class="btn-asignar">
+                + Asignar primer ingrediente
+            </a>
+
+        </div>
+    }
 
 </div>
+```

@@ -1,60 +1,250 @@
-﻿@model RestauranteSaborCasero.Models.Mesa
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Mesa
 
 @{
     ViewData["Title"] = "Eliminar Mesa";
 }
 
-<h1>Eliminar Mesa</h1>
+<style>
+    .eliminar-container {
+        padding: 30px;
+    }
 
-<h3>
-    ¿Está seguro de que desea eliminar esta mesa?
-</h3>
+    .eliminar-header {
+        margin-bottom: 25px;
+    }
 
-<div>
+    .eliminar-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-    <h4>Mesa #@Model.NumeroMesa</h4>
+    .eliminar-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-    <dl>
+    .eliminar-card {
+        width: 600px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+    }
 
-        <dt>
-            ID de mesa
-        </dt>
+    .advertencia {
+        background-color: #fff3cd;
+        border: 1px solid #ffecb5;
+        color: #664d03;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
 
-        <dd>
-            @Model.IdMesa
-        </dd>
+        .advertencia strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
 
-        <dt>
-            Número de mesa
-        </dt>
+    .mesa-identificacion {
+        font-size: 22px;
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 20px;
+    }
 
-        <dd>
-            @Model.NumeroMesa
-        </dd>
+    .informacion-mesa {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
 
-        <dt>
-            Estado
-        </dt>
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 13px 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
 
-        <dd>
-            @Model.Estado
-        </dd>
+        .dato:last-child {
+            border-bottom: none;
+        }
 
-    </dl>
+    .dato-titulo {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .estado {
+        background-color: #d1e7dd;
+        color: #0f5132;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-eliminar {
+        border: none;
+        background-color: #dc3545;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-eliminar:hover {
+            background-color: #bb2d3b;
+        }
+
+    .btn-cancelar {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-cancelar:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="eliminar-container">
+
+    <!-- ENCABEZADO -->
+    <div class="eliminar-header">
+
+        <h1 class="eliminar-titulo">
+            Eliminar mesa
+        </h1>
+
+        <p class="eliminar-subtitulo">
+            Revisa la información antes de confirmar
+        </p>
+
+    </div>
+
+
+    <!-- TARJETA -->
+    <div class="eliminar-card">
+
+        <!-- ADVERTENCIA -->
+        <div class="advertencia">
+
+            <strong>
+                Atención
+            </strong>
+
+            ¿Está seguro de que desea eliminar esta mesa?
+            Esta acción no se puede deshacer.
+
+        </div>
+
+
+        <!-- IDENTIFICACIÓN -->
+        <div class="mesa-identificacion">
+            Mesa #@Model.NumeroMesa
+        </div>
+
+
+        <!-- INFORMACIÓN -->
+        <div class="informacion-mesa">
+
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    ID de mesa
+                </span>
+
+                <span class="dato-valor">
+                    @Model.IdMesa
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Número de mesa
+                </span>
+
+                <span class="dato-valor">
+                    @Model.NumeroMesa
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Estado
+                </span>
+
+                <span class="estado">
+                    @Model.Estado
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCIONES -->
+        <form asp-action="Delete"
+              method="post">
+
+            <input type="hidden"
+                   asp-for="IdMesa" />
+
+            <div class="acciones">
+
+                <button type="submit"
+                        class="btn-eliminar">
+                    Confirmar eliminación
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
 
 </div>
-
-<form asp-action="Delete" method="post">
-
-    <input type="hidden"
-           asp-for="IdMesa" />
-
-    <button type="submit">
-        Confirmar eliminación
-    </button>
-
-    <a asp-action="Index">
-        Cancelar
-    </a>
-
-</form>
+```

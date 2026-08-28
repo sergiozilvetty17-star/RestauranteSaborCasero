@@ -6,7 +6,11 @@ using RestauranteSaborCasero.Data;
 
 namespace RestauranteSaborCasero.Controllers
 {
+<<<<<<< HEAD
     [Authorize(Roles = "Administrador,Cocinero")]
+=======
+    [Authorize(Roles = "Administrador")]
+>>>>>>> 28241a710031acbb6d584d67cc42d476483c8599
     public class PlatosController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,7 +20,6 @@ namespace RestauranteSaborCasero.Controllers
             _context = context;
         }
 
-        // GET: Platos
         public async Task<IActionResult> Index()
         {
             var platos = await _context.Platos
@@ -26,7 +29,6 @@ namespace RestauranteSaborCasero.Controllers
             return View(platos);
         }
 
-        // GET: Platos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -41,13 +43,11 @@ namespace RestauranteSaborCasero.Controllers
             return View(plato);
         }
 
-        // GET: Platos/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Platos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Plato plato)
@@ -63,7 +63,6 @@ namespace RestauranteSaborCasero.Controllers
             return View(plato);
         }
 
-        // GET: Platos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,7 +76,6 @@ namespace RestauranteSaborCasero.Controllers
             return View(plato);
         }
 
-        // POST: Platos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Plato plato)
@@ -106,7 +104,6 @@ namespace RestauranteSaborCasero.Controllers
             return View(plato);
         }
 
-        // GET: Platos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,7 +118,6 @@ namespace RestauranteSaborCasero.Controllers
             return View(plato);
         }
 
-        // POST: Platos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

@@ -1,75 +1,734 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.Pedido>
+﻿```cshtml
+@model IEnumerable<RestauranteSaborCasero.Models.Pedido>
 
 @{
     ViewData["Title"] = "Pedidos";
 }
 
-<h1>Pedidos</h1>
+<style>
+    .pedidos-container {
+        padding: 30px;
+    }
 
-<p>
-    <a asp-action="Create">Crear nuevo pedido</a>
-</p>
+    .pedidos-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
 
-<table>
-    <thead>
-        <tr>
-            <th>Pedido</th>
-            <th>Mesero</th>
-            <th>Mesa</th>
-            <th>Tipo</th>
-            <th>Fecha</th>
-            <th>Hora inicio</th>
-            <th>Estado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+    .pedidos-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-    <tbody>
-        @foreach (var pedido in Model)
-        {
-            <tr>
-                <td>
-                    @pedido.IdPedido
-                </td>
+    .pedidos-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-                <td>
-                    @pedido.Usuario.Nombre
-                </td>
+    .btn-nuevo {
+        background-color: #198754;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        display: inline-block;
+    }
 
-                <td>
-                    @(pedido.Mesa != null
-                        ? pedido.Mesa.NumeroMesa.ToString()
-                        : "Sin mesa")
-                </td>
-
-                <td>
-                    @pedido.TipoPedido
-                </td>
-
-                <td>
-                    @pedido.Fecha.ToString("dd/MM/yyyy")
-                </td>
-
-                <td>
-                    @pedido.HoraInicio
-                </td>
-
-                <td>
-                    @pedido.Estado
-                </td>
-
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@pedido.IdPedido">
-                        Detalles
-                    </a>
-
-                    <a asp-action="Edit"
-                       asp-route-id="@pedido.IdPedido">
-                        Editar
-                    </a>
-                </td>
-            </tr>
+        .btn-nuevo:hover {
+            background-color: #157347;
+            color: white;
         }
-    </tbody>
-</table>
+
+    .tabla-contenedor {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e5e5e5;
+    }
+
+    .tabla-pedidos {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-pedidos thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .tabla-pedidos th {
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .tabla-pedidos td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+            vertical-align: middle;
+        }
+
+        .tabla-pedidos tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .pedido-id {
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .sin-mesa {
+        color: #999;
+        font-style: italic;
+    }
+
+    /* ==========================================
+           ESTADOS
+           ========================================== */
+
+    .estado {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .estado-pendiente {
+        background-color: #fff3cd;
+        color: #856404;
+    }
+
+    .estado-proceso {
+        background-color: #cfe2ff;
+        color: #084298;
+    }
+
+    .estado-listo {
+        background-color: #cff4fc;
+        color: #055160;
+    }
+
+    .estado-entregado {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .estado-cancelado {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    /* ==========================================
+           HORAS
+           ========================================== */
+
+    .horas {
+        font-size: 12px;
+        line-height: 1.7;
+        color: #666;
+        min-width: 150px;
+    }
+
+        .horas strong {
+            color: #444;
+        }
+
+    .hora-activa {
+        color: #198754;
+        font-weight: 600;
+    }
+
+    /* ==========================================
+           ACCIONES
+           ========================================== */
+
+    .acciones {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        white-space: nowrap;
+    }
+
+    .acciones-principales {
+        display: flex;
+        gap: 8px;
+    }
+
+    .btn-accion {
+        padding: 7px 12px;
+        border-radius: 6px;
+        text-decoration: none;
+        border: none;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .btn-detalles {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+        .btn-detalles:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    /* ==========================================
+           BOTONES DE ESTADO
+           ========================================== */
+
+    .cambio-estado {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+
+    .btn-estado {
+        padding: 6px 9px;
+        border: none;
+        border-radius: 5px;
+        font-size: 11px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    .btn-preparacion {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+        .btn-preparacion:hover {
+            background-color: #0b5ed7;
+        }
+
+    .btn-listo {
+        background-color: #0dcaf0;
+        color: #055160;
+    }
+
+        .btn-listo:hover {
+            background-color: #31d2f2;
+        }
+
+    .btn-entregado {
+        background-color: #198754;
+        color: white;
+    }
+
+        .btn-entregado:hover {
+            background-color: #157347;
+        }
+
+    .btn-cancelar {
+        background-color: #dc3545;
+        color: white;
+    }
+
+        .btn-cancelar:hover {
+            background-color: #bb2d3b;
+        }
+
+    .estado-final {
+        color: #777;
+        font-size: 12px;
+        font-style: italic;
+    }
+
+    .tabla-vacia {
+        text-align: center;
+        padding: 45px;
+        color: #777;
+        font-size: 16px;
+    }
+
+    /* ==========================================
+           RESPONSIVE
+           ========================================== */
+
+    @@media (max-width: 1200px) {
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        .tabla-pedidos {
+            min-width: 1100px;
+        }
+    }
+</style>
+
+
+<div class="pedidos-container">
+
+    <!-- ==========================================
+         ENCABEZADO
+         ========================================== -->
+
+    <div class="pedidos-header">
+
+        <div>
+            <h1 class="pedidos-titulo">
+                Pedidos
+            </h1>
+
+            <p class="pedidos-subtitulo">
+                Consulta y administra los pedidos del restaurante
+            </p>
+        </div>
+
+        <a asp-action="Create" class="btn-nuevo">
+            + Nuevo pedido
+        </a>
+
+    </div>
+
+
+    <!-- ==========================================
+         TABLA
+         ========================================== -->
+
+    <div class="tabla-contenedor">
+
+        <table class="tabla-pedidos">
+
+            <thead>
+                <tr>
+                    <th>Pedido</th>
+                    <th>Mesero</th>
+                    <th>Mesa</th>
+                    <th>Tipo</th>
+                    <th>Fecha</th>
+                    <th>Hora inicio</th>
+                    <th>Estado</th>
+                    <th>Horas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var pedido in Model)
+                    {
+                        <tr>
+
+                            <!-- ==================================
+                                 PEDIDO
+                                 ================================== -->
+
+                            <td>
+                                <span class="pedido-id">
+                                    #@pedido.IdPedido
+                                </span>
+                            </td>
+
+
+                            <!-- ==================================
+                                 MESERO
+                                 ================================== -->
+
+                            <td>
+                                @(pedido.Usuario != null
+                                    ? pedido.Usuario.Nombre
+                                    : "Sin mesero")
+                            </td>
+
+
+                            <!-- ==================================
+                                 MESA
+                                 ================================== -->
+
+                            <td>
+
+                                @if (pedido.Mesa != null)
+                                {
+                                    <strong>
+                                        Mesa @pedido.Mesa.NumeroMesa
+                                    </strong>
+                                }
+                                else
+                                {
+                                    <span class="sin-mesa">
+                                        Sin mesa
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ==================================
+                                 TIPO
+                                 ================================== -->
+
+                            <td>
+                                @pedido.TipoPedido
+                            </td>
+
+
+                            <!-- ==================================
+                                 FECHA
+                                 ================================== -->
+
+                            <td>
+                                @pedido.Fecha.ToString("dd/MM/yyyy")
+                            </td>
+
+
+                            <!-- ==================================
+                                 HORA INICIO
+                                 ================================== -->
+
+                            <td>
+                                @pedido.HoraInicio.ToString(@"hh\:mm\:ss")
+                            </td>
+
+
+                            <!-- ==================================
+                                 ESTADO
+                                 ================================== -->
+
+                            <td>
+
+                                @switch (pedido.Estado)
+                                {
+                                    case EstadoPedido.Pendiente:
+
+                                        <span class="estado estado-pendiente">
+                                            Pendiente
+                                        </span>
+
+                                        break;
+
+
+                                    case EstadoPedido.EnPreparacion:
+
+                                        <span class="estado estado-proceso">
+                                            En preparación
+                                        </span>
+
+                                        break;
+
+
+                                    case EstadoPedido.Listo:
+
+                                        <span class="estado estado-listo">
+                                            Listo
+                                        </span>
+
+                                        break;
+
+
+                                    case EstadoPedido.Entregado:
+
+                                        <span class="estado estado-entregado">
+                                            Entregado
+                                        </span>
+
+                                        break;
+
+
+                                    case EstadoPedido.Cancelado:
+
+                                        <span class="estado estado-cancelado">
+                                            Cancelado
+                                        </span>
+
+                                        break;
+                                }
+
+                            </td>
+
+
+                            <!-- ==================================
+                                 HORAS DE CAMBIO DE ESTADO
+                                 ================================== -->
+
+                            <td>
+
+                                <div class="horas">
+
+                                    <div>
+                                        <strong>Inicio:</strong>
+                                        @pedido.HoraInicio.ToString(@"hh\:mm")
+                                    </div>
+
+
+                                    @if (pedido.HoraEnPreparacion.HasValue)
+                                    {
+                                        <div>
+                                            <strong>Preparación:</strong>
+                                            <span class="hora-activa">
+                                                @pedido.HoraEnPreparacion.Value.ToString(@"hh\:mm")
+                                            </span>
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.HoraListo.HasValue)
+                                    {
+                                        <div>
+                                            <strong>Listo:</strong>
+                                            <span class="hora-activa">
+                                                @pedido.HoraListo.Value.ToString(@"hh\:mm")
+                                            </span>
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.HoraEntregado.HasValue)
+                                    {
+                                        <div>
+                                            <strong>Entregado:</strong>
+                                            <span class="hora-activa">
+                                                @pedido.HoraEntregado.Value.ToString(@"hh\:mm")
+                                            </span>
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.HoraCancelado.HasValue)
+                                    {
+                                        <div>
+                                            <strong>Cancelado:</strong>
+                                            <span class="hora-activa">
+                                                @pedido.HoraCancelado.Value.ToString(@"hh\:mm")
+                                            </span>
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.HoraFin.HasValue)
+                                    {
+                                        <div>
+                                            <strong>Fin:</strong>
+                                            <span class="hora-activa">
+                                                @pedido.HoraFin.Value.ToString(@"hh\:mm")
+                                            </span>
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- ==================================
+                                 ACCIONES
+                                 ================================== -->
+
+                            <td>
+
+                                <div class="acciones">
+
+                                    <!-- Acciones principales -->
+
+                                    <div class="acciones-principales">
+
+                                        <a asp-action="Details"
+                                           asp-route-id="@pedido.IdPedido"
+                                           class="btn-accion btn-detalles">
+                                            Ver detalles
+                                        </a>
+
+                                        <a asp-action="Edit"
+                                           asp-route-id="@pedido.IdPedido"
+                                           class="btn-accion btn-editar">
+                                            Editar
+                                        </a>
+
+                                    </div>
+
+
+                                    <!-- ==================================
+                                         CAMBIO DE ESTADO
+                                         ================================== -->
+                                    @if (pedido.Estado == EstadoPedido.Pendiente)
+                                    {
+                                        <div class="cambio-estado">
+
+                                            <form asp-action="CambiarEstado"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@pedido.IdPedido" />
+
+                                                <input type="hidden"
+                                                       name="nuevoEstado"
+                                                       value="EnPreparacion" />
+
+                                                <button type="submit"
+                                                        class="btn-estado btn-preparacion">
+                                                    ▶ Preparar
+                                                </button>
+
+                                            </form>
+
+
+                                            <form asp-action="CambiarEstado"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@pedido.IdPedido" />
+
+                                                <input type="hidden"
+                                                       name="nuevoEstado"
+                                                       value="Cancelado" />
+
+                                                <button type="submit"
+                                                        class="btn-estado btn-cancelar">
+                                                    ✕ Cancelar
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.Estado == EstadoPedido.EnPreparacion)
+                                    {
+                                        <div class="cambio-estado">
+
+                                            <form asp-action="CambiarEstado"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@pedido.IdPedido" />
+
+                                                <input type="hidden"
+                                                       name="nuevoEstado"
+                                                       value="Listo" />
+
+                                                <button type="submit"
+                                                        class="btn-estado btn-listo">
+                                                    ✓ Marcar listo
+                                                </button>
+
+                                            </form>
+
+
+                                            <form asp-action="CambiarEstado"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@pedido.IdPedido" />
+
+                                                <input type="hidden"
+                                                       name="nuevoEstado"
+                                                       value="Cancelado" />
+
+                                                <button type="submit"
+                                                        class="btn-estado btn-cancelar">
+                                                    ✕ Cancelar
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.Estado == EstadoPedido.Listo)
+                                    {
+                                        <div class="cambio-estado">
+
+                                            <form asp-action="CambiarEstado"
+                                                  method="post">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <input type="hidden"
+                                                       name="id"
+                                                       value="@pedido.IdPedido" />
+
+                                                <input type="hidden"
+                                                       name="nuevoEstado"
+                                                       value="Entregado" />
+
+                                                <button type="submit"
+                                                        class="btn-estado btn-entregado">
+                                                    ✓ Entregar
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+                                    }
+
+
+                                    @if (pedido.Estado == EstadoPedido.Entregado)
+                                    {
+                                        <span class="estado-final">
+                                            Pedido finalizado
+                                        </span>
+                                    }
+
+
+                                    @if (pedido.Estado == EstadoPedido.Cancelado)
+                                    {
+                                        <span class="estado-final">
+                                            Pedido cancelado
+                                        </span>
+                                    }
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="9" class="tabla-vacia">
+                            No hay pedidos registrados.
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```

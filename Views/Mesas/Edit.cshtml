@@ -1,53 +1,249 @@
-﻿@model RestauranteSaborCasero.Models.Mesa
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Mesa
 
 @{
     ViewData["Title"] = "Editar Mesa";
 }
 
-<h1>Editar Mesa</h1>
+<style>
+    .editar-mesa-container {
+        padding: 30px;
+    }
 
-<form asp-action="Edit" method="post">
+    .editar-mesa-header {
+        margin-bottom: 25px;
+    }
 
-    <input type="hidden"
-           asp-for="IdMesa" />
+    .editar-mesa-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-    <div asp-validation-summary="ModelOnly"></div>
+    .editar-mesa-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-    <div>
-        <label asp-for="NumeroMesa">
-            Número de mesa
-        </label>
+    .editar-mesa-card {
+        width: 550px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+    }
 
-        <input asp-for="NumeroMesa"
-               type="number"
-               min="1"
-               max="999" />
+    .identificacion {
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 25px;
+        color: #343a40;
+    }
 
-        <span asp-validation-for="NumeroMesa"></span>
+        .identificacion strong {
+            font-size: 18px;
+        }
+
+    .campo {
+        margin-bottom: 22px;
+    }
+
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .campo input,
+        .campo select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            border-radius: 7px;
+            background-color: white;
+            color: #333;
+            font-size: 15px;
+        }
+
+            .campo input:focus,
+            .campo select:focus {
+                outline: none;
+                border-color: #198754;
+                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
+            }
+
+    .ayuda {
+        display: block;
+        margin-top: 6px;
+        color: #888;
+        font-size: 12px;
+    }
+
+    .validation {
+        display: block;
+        margin-top: 5px;
+        color: #dc3545;
+        font-size: 13px;
+    }
+
+    .validation-summary {
+        background-color: #f8d7da;
+        border: 1px solid #f1aeb5;
+        color: #842029;
+        border-radius: 7px;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-guardar {
+        border: none;
+        background-color: #198754;
+        color: white;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-guardar:hover {
+            background-color: #157347;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="editar-mesa-container">
+
+    <!-- ENCABEZADO -->
+    <div class="editar-mesa-header">
+
+        <h1 class="editar-mesa-titulo">
+            Editar mesa
+        </h1>
+
+        <p class="editar-mesa-subtitulo">
+            Modifica la información de la mesa seleccionada
+        </p>
+
     </div>
 
-    <div>
-        <label asp-for="Estado">
-            Estado
-        </label>
 
-        <select asp-for="Estado"
-                asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoMesa>()">
-        </select>
+    <!-- FORMULARIO -->
+    <div class="editar-mesa-card">
 
-        <span asp-validation-for="Estado"></span>
+        <div class="identificacion">
+            Mesa <strong>#@Model.NumeroMesa</strong>
+        </div>
+
+
+        <form asp-action="Edit" method="post">
+
+            <input type="hidden"
+                   asp-for="IdMesa" />
+
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- NÚMERO DE MESA -->
+            <div class="campo">
+
+                <label asp-for="NumeroMesa">
+                    Número de mesa
+                </label>
+
+                <input asp-for="NumeroMesa"
+                       type="number"
+                       min="1"
+                       max="999" />
+
+                <span class="ayuda">
+                    El número debe estar entre 1 y 999.
+                </span>
+
+                <span asp-validation-for="NumeroMesa"
+                      class="validation">
+                </span>
+
+            </div>
+
+
+            <!-- ESTADO -->
+            <div class="campo">
+
+                <label asp-for="Estado">
+                    Estado de la mesa
+                </label>
+
+                <select asp-for="Estado"
+                        asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoMesa>()">
+                </select>
+
+                <span class="ayuda">
+                    Indica si la mesa está disponible u ocupada.
+                </span>
+
+                <span asp-validation-for="Estado"
+                      class="validation">
+                </span>
+
+            </div>
+
+
+            <!-- BOTONES -->
+            <div class="acciones">
+
+                <button type="submit"
+                        class="btn-guardar">
+                    Guardar cambios
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-volver">
+                    Volver a mesas
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
 
-    <button type="submit">
-        Guardar cambios
-    </button>
+</div>
 
-    <a asp-action="Index">
-        Volver
-    </a>
-
-</form>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+```

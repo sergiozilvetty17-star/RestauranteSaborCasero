@@ -1,16 +1,261 @@
-﻿@model RestauranteSaborCasero.Models.Ingrediente
+﻿```cshtml id="n7k4vp"
+@model RestauranteSaborCasero.Models.Ingrediente
 
-<h1>Eliminar Ingrediente</h1>
+@{
+    ViewData["Title"] = "Eliminar Ingrediente";
+}
 
-<h3>¿Estás seguro de que deseas eliminar este ingrediente?</h3>
-<div>
-    <p><strong>Nombre:</strong> @Model.Nombre</p>
-    <p><strong>Cantidad Disponible:</strong> @Model.CantidadDisponible @Model.UnidadMedida</p>
-    <p><strong>Estado:</strong> @Model.Estado</p>
+<style>
+    .eliminar-ingrediente-container {
+        padding: 30px;
+    }
+
+    .eliminar-ingrediente-header {
+        margin-bottom: 25px;
+    }
+
+    .eliminar-ingrediente-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .eliminar-ingrediente-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .ingrediente-card {
+        width: 600px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .advertencia {
+        background-color: #fff3cd;
+        border: 1px solid #ffecb5;
+        color: #664d03;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+        .advertencia strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 15px;
+        }
+
+    .ingrediente-nombre {
+        font-size: 22px;
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .informacion-ingrediente {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+    .dato-titulo {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .cantidad {
+        font-size: 16px;
+        font-weight: 700;
+    }
+
+    .estado {
+        background-color: #d1e7dd;
+        color: #0f5132;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-eliminar {
+        border: none;
+        background-color: #dc3545;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-eliminar:hover {
+            background-color: #bb2d3b;
+        }
+
+    .btn-cancelar {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-cancelar:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="eliminar-ingrediente-container">
+
+    <!-- ENCABEZADO -->
+    <div class="eliminar-ingrediente-header">
+
+        <h1 class="eliminar-ingrediente-titulo">
+            Eliminar ingrediente
+        </h1>
+
+        <p class="eliminar-ingrediente-subtitulo">
+            Revisa la información antes de confirmar
+        </p>
+
+    </div>
+
+
+    <!-- TARJETA -->
+    <div class="ingrediente-card">
+
+        <!-- ADVERTENCIA -->
+        <div class="advertencia">
+
+            <strong>
+                Atención
+            </strong>
+
+            ¿Estás seguro de que deseas eliminar este ingrediente?
+            Esta acción no se puede deshacer.
+
+        </div>
+
+
+        <!-- NOMBRE -->
+        <div class="ingrediente-nombre">
+            @Model.Nombre
+        </div>
+
+
+        <!-- INFORMACIÓN -->
+        <div class="informacion-ingrediente">
+
+            <!-- NOMBRE -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Nombre
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Nombre
+                </span>
+
+            </div>
+
+
+            <!-- CANTIDAD -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Cantidad disponible
+                </span>
+
+                <span class="dato-valor cantidad">
+                    @Model.CantidadDisponible
+                    @Model.UnidadMedida
+                </span>
+
+            </div>
+
+
+            <!-- ESTADO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Estado
+                </span>
+
+                <span class="estado">
+                    @Model.Estado
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCIONES -->
+        <form asp-action="Delete"
+              method="post">
+
+            <input type="hidden"
+                   asp-for="IdIngrediente" />
+
+            <div class="acciones">
+
+                <button type="submit"
+                        class="btn-eliminar">
+                    Eliminar permanentemente
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
-
-<form asp-action="Delete">
-    <input type="hidden" asp-for="IdIngrediente" />
-    <input type="submit" value="Eliminar Permanentemente" /> |
-    <a asp-action="Index">Cancelar y volver a la lista</a>
-</form>
+```

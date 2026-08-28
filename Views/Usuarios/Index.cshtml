@@ -1,159 +1,359 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.Usuario>
+﻿```cshtml
+@model IEnumerable<RestauranteSaborCasero.Models.Usuario>
 
 @{
     ViewData["Title"] = "Usuarios";
 }
 
-<div class="container mt-4">
+<style>
+    .usuarios-container {
+        padding: 30px;
+    }
 
-    <!-- Encabezado -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold">Usuarios</h1>
-            <p class="text-muted mb-0">
-                Administración de usuarios del restaurante
-            </p>
-        </div>
+    .usuarios-header {
+        margin-bottom: 25px;
+    }
 
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-person-plus"></i>
-            Nuevo usuario
+    .usuarios-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .usuarios-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .boton-nuevo {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 11px 18px;
+        background-color: #198754;
+        color: white;
+        text-decoration: none;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .boton-nuevo:hover {
+            background-color: #157347;
+            color: white;
+        }
+
+    .tabla-container {
+        width: 100%;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background-color: #f5f5f5;
+    }
+
+    th {
+        padding: 15px;
+        text-align: left;
+        color: #444;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 1px solid #ddd;
+    }
+
+    td {
+        padding: 14px 15px;
+        color: #444;
+        font-size: 14px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    tbody tr:hover {
+        background-color: #fafafa;
+    }
+
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .nombre {
+        font-weight: 600;
+        color: #222;
+    }
+
+    .rol {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .rol-admin {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    .rol-cocinero {
+        background-color: #fff3cd;
+        color: #664d03;
+    }
+
+    .rol-mesero {
+        background-color: #cfe2ff;
+        color: #084298;
+    }
+
+    .estado {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .activo {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .inactivo {
+        background-color: #e2e3e5;
+        color: #41464b;
+    }
+
+    .acciones {
+        white-space: nowrap;
+    }
+
+    .boton {
+        display: inline-block;
+        padding: 7px 11px;
+        margin-right: 4px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .boton-detalles {
+        color: #0d6efd;
+        border: 1px solid #0d6efd;
+    }
+
+        .boton-detalles:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+    .boton-editar {
+        color: #997404;
+        border: 1px solid #ffc107;
+    }
+
+        .boton-editar:hover {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+    .boton-eliminar {
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+        .boton-eliminar:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    .sin-usuarios {
+        padding: 50px;
+        text-align: center;
+        color: #777;
+    }
+
+        .sin-usuarios h3 {
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .sin-usuarios p {
+            margin-bottom: 20px;
+        }
+</style>
+
+
+<div class="usuarios-container">
+
+    <!-- ENCABEZADO -->
+    <div class="usuarios-header">
+
+        <h1 class="usuarios-titulo">
+            Usuarios
+        </h1>
+
+        <p class="usuarios-subtitulo">
+            Administración de los usuarios del restaurante.
+        </p>
+
+        <a asp-action="Create"
+           class="boton-nuevo">
+            + Nuevo usuario
         </a>
+
     </div>
 
-    <!-- Tabla de usuarios -->
-    <div class="card shadow-sm">
-        <div class="card-body">
 
-            @if (!Model.Any())
-            {
-                <div class="text-center py-5">
-                    <i class="bi bi-people fs-1 text-muted"></i>
+    <!-- CONTENIDO -->
+    @if (Model == null || !Model.Any())
+    {
+        <div class="tabla-container">
 
-                    <h4 class="mt-3">No hay usuarios registrados</h4>
+            <div class="sin-usuarios">
 
-                    <p class="text-muted">
-                        Actualmente no existen usuarios en el sistema.
-                    </p>
+                <h3>
+                    No hay usuarios registrados
+                </h3>
 
-                    <a asp-action="Create" class="btn btn-primary">
-                        Registrar primer usuario
-                    </a>
-                </div>
-            }
-            else
-            {
-                <div class="table-responsive">
+                <p>
+                    Todavía no existen usuarios en el sistema.
+                </p>
 
-                    <table class="table table-hover align-middle mb-0">
+                <a asp-action="Create"
+                   class="boton-nuevo">
+                    Registrar primer usuario
+                </a>
 
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Rol</th>
-                                <th>Estado</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            @foreach (var usuario in Model)
-                            {
-                                <tr>
-
-                                    <td>
-                                        @usuario.IdUsuario
-                                    </td>
-
-                                    <td>
-                                        <strong>@usuario.Nombre</strong>
-                                    </td>
-
-                                    <td>
-                                        @usuario.Correo
-                                    </td>
-
-                                    <td>
-                                        @switch (usuario.Rol)
-                                        {
-                                            case RolUsuario.Administrador:
-                                                <span class="badge bg-danger">
-                                                    Administrador
-                                                </span>
-                                                break;
-
-                                            case RolUsuario.Cocinero:
-                                                <span class="badge bg-warning text-dark">
-                                                    Cocinero
-                                                </span>
-                                                break;
-
-                                            case RolUsuario.Mesero:
-                                                <span class="badge bg-primary">
-                                                    Mesero
-                                                </span>
-                                                break;
-                                        }
-                                    </td>
-
-                                    <td>
-                                        @if (usuario.Activo)
-                                        {
-                                            <span class="badge bg-success">
-                                                Activo
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-secondary">
-                                                Inactivo
-                                            </span>
-                                        }
-                                    </td>
-
-                                    <td class="text-center">
-
-                                        <div class="btn-group" role="group">
-
-                                            <a asp-action="Details"
-                                               asp-route-id="@usuario.IdUsuario"
-                                               class="btn btn-outline-info btn-sm"
-                                               title="Ver detalles">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
-
-                                            <a asp-action="Edit"
-                                               asp-route-id="@usuario.IdUsuario"
-                                               class="btn btn-outline-warning btn-sm"
-                                               title="Editar">
-                                                <i class="bi bi-pencil"></i>
-                                            </a>
-
-                                            <a asp-action="Delete"
-                                               asp-route-id="@usuario.IdUsuario"
-                                               class="btn btn-outline-danger btn-sm"
-                                               title="Eliminar">
-                                                <i class="bi bi-trash"></i>
-                                            </a>
-
-                                        </div>
-
-                                    </td>
-
-                                </tr>
-                            }
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-            }
+            </div>
 
         </div>
-    </div>
+    }
+    else
+    {
+        <div class="tabla-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+
+                            <!-- ID -->
+                            <td>
+                                @usuario.IdUsuario
+                            </td>
+
+
+                            <!-- NOMBRE -->
+                            <td class="nombre">
+                                @usuario.Nombre
+                            </td>
+
+
+                            <!-- CORREO -->
+                            <td>
+                                @usuario.Correo
+                            </td>
+
+
+                            <!-- ROL -->
+                            <td>
+
+                                @if (usuario.Rol == RolUsuario.Administrador)
+                                {
+                                    <span class="rol rol-admin">
+                                        Administrador
+                                    </span>
+                                }
+                                else if (usuario.Rol == RolUsuario.Cocinero)
+                                {
+                                    <span class="rol rol-cocinero">
+                                        Cocinero
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="rol rol-mesero">
+                                        Mesero
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ESTADO -->
+                            <td>
+
+                                @if (usuario.Activo)
+                                {
+                                    <span class="estado activo">
+                                        Activo
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="estado inactivo">
+                                        Inactivo
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ACCIONES -->
+                            <td class="acciones">
+
+                                <a asp-action="Details"
+                                   asp-route-id="@usuario.IdUsuario"
+                                   class="boton boton-detalles">
+                                    Ver
+                                </a>
+
+                                <a asp-action="Edit"
+                                   asp-route-id="@usuario.IdUsuario"
+                                   class="boton boton-editar">
+                                    Editar
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@usuario.IdUsuario"
+                                   class="boton boton-eliminar">
+                                    Eliminar
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
 
 </div>
+```
