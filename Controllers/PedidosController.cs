@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RestauranteSaborCasero.Data;
@@ -61,6 +62,63 @@ namespace RestauranteSaborCasero.Controllers
 
         public async Task<IActionResult> Create()
         {
+            // ==========================================
+            // OBTENER USUARIO DE LA SESIÓN
+            // ==========================================
+
+            var idUsuarioClaim = User.FindFirstValue(
+                ClaimTypes.NameIdentifier
+            );
+
+            if (string.IsNullOrEmpty(idUsuarioClaim))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            if (!int.TryParse(idUsuarioClaim, out int idUsuario))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            // ==========================================
+            // BUSCAR USUARIO
+            // ==========================================
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u =>
+                    u.IdUsuario == idUsuario);
+
+            if (usuario == null || !usuario.Activo)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            // ==========================================
+            // VERIFICAR QUE SEA MESERO
+            // ==========================================
+
+            if (usuario.Rol != RolUsuario.Mesero)
+            {
+                TempData["Error"] =
+                    "Solo los usuarios con rol Mesero pueden registrar pedidos.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+
+            // ==========================================
+            // MOSTRAR NOMBRE DEL MESERO
+            // ==========================================
+
+            ViewData["NombreMesero"] = usuario.Nombre;
+
+
+            // ==========================================
+            // CARGAR MESAS
+            // ==========================================
+
             await CargarListas();
 
             return View();
@@ -75,52 +133,123 @@ namespace RestauranteSaborCasero.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Pedido pedido)
         {
+            // ==========================================
+            // OBTENER USUARIO DE LA SESIÓN
+            // ==========================================
+
+            var idUsuarioClaim = User.FindFirstValue(
+                ClaimTypes.NameIdentifier
+            );
+
+            if (string.IsNullOrEmpty(idUsuarioClaim))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+            if (!int.TryParse(idUsuarioClaim, out int idUsuario))
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            // ==========================================
+            // BUSCAR USUARIO ACTUAL
+            // ==========================================
+
+            var usuario = await _context.Usuarios
+                .FirstOrDefaultAsync(u =>
+                    u.IdUsuario == idUsuario);
+
+            if (usuario == null || !usuario.Activo)
+            {
+                return RedirectToAction("Index", "Login");
+            }
+
+
+            // ==========================================
+            // VERIFICAR QUE SEA MESERO
+            // ==========================================
+
+            if (usuario.Rol != RolUsuario.Mesero)
+            {
+                TempData["Error"] =
+                    "Solo los usuarios con rol Mesero pueden registrar pedidos.";
+
+                return RedirectToAction(nameof(Index));
+            }
+
+
+            // ==========================================
+            // ASIGNAR MESERO AUTOMÁTICAMENTE
+            // ==========================================
+
+            pedido.IdMesero = usuario.IdUsuario;
+
+
+            // ==========================================
+            // VALIDAR TIPO DE PEDIDO
+            // ==========================================
+
+            if (pedido.TipoPedido != TipoPedido.Mesa)
+            {
+                pedido.IdMesa = null;
+            }
+
+
+            // ==========================================
+            // FECHA AUTOMÁTICA
+            // ==========================================
+
+            if (pedido.Fecha == default)
+            {
+                pedido.Fecha = DateTime.Now.Date;
+            }
+
+
+            // ==========================================
+            // HORA DE INICIO AUTOMÁTICA
+            // ==========================================
+
+            if (pedido.HoraInicio == default)
+            {
+                pedido.HoraInicio = DateTime.Now.TimeOfDay;
+            }
+
+
+            // ==========================================
+            // ESTADO INICIAL
+            // ==========================================
+
+            pedido.Estado = EstadoPedido.Pendiente;
+
+
+            // ==========================================
+            // HORAS DE ESTADOS
+            // ==========================================
+
+            pedido.HoraFin = null;
+            pedido.HoraEnPreparacion = null;
+            pedido.HoraListo = null;
+            pedido.HoraEntregado = null;
+            pedido.HoraCancelado = null;
+
+
+            // ==========================================
+            // QUITAR VALIDACIONES AUTOMÁTICAS
+            // ==========================================
+
+            ModelState.Remove(nameof(Pedido.IdMesero));
+            ModelState.Remove(nameof(Pedido.Fecha));
+            ModelState.Remove(nameof(Pedido.HoraInicio));
+            ModelState.Remove(nameof(Pedido.Estado));
+
+
+            // ==========================================
+            // GUARDAR
+            // ==========================================
+
             if (ModelState.IsValid)
             {
-                // ==========================================
-                // VALIDAR MESA
-                // ==========================================
-
-                // Si el pedido no utiliza mesa,
-                // dejamos IdMesa como null.
-                if (pedido.TipoPedido != TipoPedido.Mesa)
-                {
-                    pedido.IdMesa = null;
-                }
-
-                // ==========================================
-                // FECHA Y HORA AUTOMÁTICAS
-                // ==========================================
-
-                if (pedido.Fecha == default)
-                {
-                    pedido.Fecha = DateTime.Now.Date;
-                }
-
-                if (pedido.HoraInicio == default)
-                {
-                    pedido.HoraInicio = DateTime.Now.TimeOfDay;
-                }
-
-                // ==========================================
-                // ESTADO INICIAL
-                // ==========================================
-
-                // Todo pedido nuevo comienza como Pendiente.
-                pedido.Estado = EstadoPedido.Pendiente;
-
-                // Al crear el pedido todavía no existe
-                // una hora de finalización.
-                pedido.HoraFin = null;
-                pedido.HoraEnPreparacion = null;
-                pedido.HoraListo = null;
-                pedido.HoraEntregado = null;
-                pedido.HoraCancelado = null;
-
-                // ==========================================
-                // GUARDAR PEDIDO
-                // ==========================================
-
                 _context.Pedidos.Add(pedido);
 
                 await _context.SaveChangesAsync();
@@ -128,12 +257,16 @@ namespace RestauranteSaborCasero.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // Si existen errores de validación,
-            // volvemos a cargar las listas.
+
+            // ==========================================
+            // SI HAY ERRORES
+            // ==========================================
+
             await CargarListas(
-                pedido.IdMesero,
                 pedido.IdMesa
             );
+
+            ViewData["NombreMesero"] = usuario.Nombre;
 
             return View(pedido);
         }
@@ -154,8 +287,24 @@ namespace RestauranteSaborCasero.Controllers
             if (pedido == null)
                 return NotFound();
 
+
+            // ==========================================
+            // OBTENER NOMBRE DEL MESERO
+            // ==========================================
+
+            var mesero = await _context.Usuarios
+                .FirstOrDefaultAsync(u =>
+                    u.IdUsuario == pedido.IdMesero);
+
+            ViewData["NombreMesero"] =
+                mesero?.Nombre ?? "Sin mesero";
+
+
+            // ==========================================
+            // CARGAR MESAS
+            // ==========================================
+
             await CargarListas(
-                pedido.IdMesero,
                 pedido.IdMesa
             );
 
@@ -176,23 +325,52 @@ namespace RestauranteSaborCasero.Controllers
             if (id != pedido.IdPedido)
                 return NotFound();
 
+
+            // ==========================================
+            // BUSCAR PEDIDO ORIGINAL
+            // ==========================================
+
+            var pedidoOriginal = await _context.Pedidos
+                .AsNoTracking()
+                .FirstOrDefaultAsync(p =>
+                    p.IdPedido == id);
+
+            if (pedidoOriginal == null)
+                return NotFound();
+
+
+            // ==========================================
+            // CONSERVAR MESERO ORIGINAL
+            // ==========================================
+
+            pedido.IdMesero = pedidoOriginal.IdMesero;
+
+
+            // ==========================================
+            // VALIDAR MESA
+            // ==========================================
+
+            if (pedido.TipoPedido != TipoPedido.Mesa)
+            {
+                pedido.IdMesa = null;
+            }
+
+
+            // ==========================================
+            // QUITAR VALIDACIÓN DEL MESERO
+            // ==========================================
+
+            ModelState.Remove(nameof(Pedido.IdMesero));
+
+
+            // ==========================================
+            // ACTUALIZAR
+            // ==========================================
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    // ==========================================
-                    // VALIDAR MESA
-                    // ==========================================
-
-                    if (pedido.TipoPedido != TipoPedido.Mesa)
-                    {
-                        pedido.IdMesa = null;
-                    }
-
-                    // ==========================================
-                    // ACTUALIZAR PEDIDO
-                    // ==========================================
-
                     _context.Update(pedido);
 
                     await _context.SaveChangesAsync();
@@ -211,10 +389,21 @@ namespace RestauranteSaborCasero.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+
+            // ==========================================
+            // SI HAY ERRORES
+            // ==========================================
+
             await CargarListas(
-                pedido.IdMesero,
                 pedido.IdMesa
             );
+
+            var mesero = await _context.Usuarios
+                .FirstOrDefaultAsync(u =>
+                    u.IdUsuario == pedido.IdMesero);
+
+            ViewData["NombreMesero"] =
+                mesero?.Nombre ?? "Sin mesero";
 
             return View(pedido);
         }
@@ -235,10 +424,12 @@ namespace RestauranteSaborCasero.Controllers
             // ==========================================
 
             var pedido = await _context.Pedidos
-                .FirstOrDefaultAsync(p => p.IdPedido == id);
+                .FirstOrDefaultAsync(p =>
+                    p.IdPedido == id);
 
             if (pedido == null)
                 return NotFound();
+
 
             // ==========================================
             // HORA ACTUAL
@@ -246,23 +437,21 @@ namespace RestauranteSaborCasero.Controllers
 
             var horaActual = DateTime.Now.TimeOfDay;
 
+
             // ==========================================
             // CAMBIAR ESTADO
             // ==========================================
 
             pedido.Estado = nuevoEstado;
 
+
             // ==========================================
-            // GUARDAR HORA SEGÚN EL ESTADO
+            // REGISTRAR HORA SEGÚN ESTADO
             // ==========================================
 
             switch (nuevoEstado)
             {
                 case EstadoPedido.Pendiente:
-
-                    // Si por alguna razón el pedido
-                    // no tiene hora de inicio,
-                    // la registramos ahora.
 
                     if (pedido.HoraInicio == default)
                     {
@@ -274,9 +463,6 @@ namespace RestauranteSaborCasero.Controllers
 
                 case EstadoPedido.EnPreparacion:
 
-                    // Registramos la hora en que
-                    // comenzó la preparación.
-
                     if (pedido.HoraEnPreparacion == null)
                     {
                         pedido.HoraEnPreparacion = horaActual;
@@ -286,9 +472,6 @@ namespace RestauranteSaborCasero.Controllers
 
 
                 case EstadoPedido.Listo:
-
-                    // Registramos la hora en que
-                    // el pedido quedó listo.
 
                     if (pedido.HoraListo == null)
                     {
@@ -300,15 +483,10 @@ namespace RestauranteSaborCasero.Controllers
 
                 case EstadoPedido.Entregado:
 
-                    // Registramos la hora de entrega.
-
                     if (pedido.HoraEntregado == null)
                     {
                         pedido.HoraEntregado = horaActual;
                     }
-
-                    // Al entregar el pedido,
-                    // también registramos la hora de finalización.
 
                     pedido.HoraFin = horaActual;
 
@@ -317,23 +495,19 @@ namespace RestauranteSaborCasero.Controllers
 
                 case EstadoPedido.Cancelado:
 
-                    // Registramos la hora de cancelación.
-
                     if (pedido.HoraCancelado == null)
                     {
                         pedido.HoraCancelado = horaActual;
                     }
-
-                    // Un pedido cancelado también
-                    // se considera finalizado.
 
                     pedido.HoraFin = horaActual;
 
                     break;
             }
 
+
             // ==========================================
-            // GUARDAR CAMBIOS
+            // GUARDAR
             // ==========================================
 
             await _context.SaveChangesAsync();
@@ -347,27 +521,8 @@ namespace RestauranteSaborCasero.Controllers
         // ==========================================
 
         private async Task CargarListas(
-            int? meseroSeleccionado = null,
             int? mesaSeleccionada = null)
         {
-            // ==========================================
-            // USUARIOS QUE PUEDEN SER MESEROS
-            // ==========================================
-
-            var meseros = await _context.Usuarios
-                .Where(u =>
-                    u.Rol == RolUsuario.Mesero &&
-                    u.Activo)
-                .OrderBy(u => u.Nombre)
-                .ToListAsync();
-
-            ViewData["IdMesero"] = new SelectList(
-                meseros,
-                "IdUsuario",
-                "Nombre",
-                meseroSeleccionado
-            );
-
             // ==========================================
             // MESAS DISPONIBLES
             // ==========================================

@@ -29,6 +29,7 @@
 
     .crear-pedido-card {
         width: 700px;
+        max-width: 100%;
         background-color: white;
         border: 1px solid #e5e5e5;
         border-radius: 10px;
@@ -74,6 +75,12 @@
             color: #333;
             font-size: 15px;
         }
+
+            .campo input[readonly] {
+                background-color: #f8f9fa;
+                color: #555;
+                cursor: not-allowed;
+            }
 
             .campo select:focus,
             .campo input:focus {
@@ -148,7 +155,10 @@
 
 <div class="crear-pedido-container">
 
+    <!-- ========================================== -->
     <!-- ENCABEZADO -->
+    <!-- ========================================== -->
+
     <div class="crear-pedido-header">
 
         <h1 class="crear-pedido-titulo">
@@ -162,17 +172,25 @@
     </div>
 
 
+    <!-- ========================================== -->
     <!-- FORMULARIO -->
+    <!-- ========================================== -->
+
     <div class="crear-pedido-card">
 
         <form asp-action="Create" method="post">
+
+            <!-- VALIDACIONES -->
 
             <div asp-validation-summary="ModelOnly"
                  class="validation-summary">
             </div>
 
 
+            <!-- ========================================== -->
             <!-- INFORMACIÓN DEL PEDIDO -->
+            <!-- ========================================== -->
+
             <div class="seccion">
 
                 <h2 class="seccion-titulo">
@@ -180,30 +198,31 @@
                 </h2>
 
 
-                <!-- MESERO -->
+                <!-- ========================================== -->
+                <!-- MESERO AUTOMÁTICO -->
+                <!-- ========================================== -->
+
                 <div class="campo">
 
-                    <label asp-for="IdMesero">
-                        Mesero
+                    <label>
+                        Mesero responsable
                     </label>
 
-                    <select asp-for="IdMesero"
-                            asp-items="ViewBag.IdMesero">
+                    <input type="text"
+                           value="@ViewData["NombreMesero"]"
+                           readonly />
 
-                        <option value="">
-                            Seleccione un mesero
-                        </option>
-
-                    </select>
-
-                    <span asp-validation-for="IdMesero"
-                          class="campo-validation">
+                    <span class="campo-ayuda">
+                        El mesero se asigna automáticamente según la cuenta que inició sesión.
                     </span>
 
                 </div>
 
 
+                <!-- ========================================== -->
                 <!-- TIPO DE PEDIDO -->
+                <!-- ========================================== -->
+
                 <div class="campo">
 
                     <label asp-for="TipoPedido">
@@ -225,7 +244,10 @@
                 </div>
 
 
+                <!-- ========================================== -->
                 <!-- MESA -->
+                <!-- ========================================== -->
+
                 <div class="campo">
 
                     <label asp-for="IdMesa">
@@ -252,19 +274,22 @@
                 </div>
 
 
+                <!-- ========================================== -->
                 <!-- ESTADO -->
+                <!-- ========================================== -->
+
                 <div class="campo">
 
-                    <label asp-for="Estado">
-                        Estado
+                    <label>
+                        Estado inicial
                     </label>
 
-                    <select asp-for="Estado"
-                            asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoPedido>()">
-                    </select>
+                    <input type="text"
+                           value="Pendiente"
+                           readonly />
 
-                    <span asp-validation-for="Estado"
-                          class="campo-validation">
+                    <span class="campo-ayuda">
+                        Todo pedido nuevo comienza automáticamente como Pendiente.
                     </span>
 
                 </div>
@@ -272,7 +297,10 @@
             </div>
 
 
+            <!-- ========================================== -->
             <!-- FECHA Y HORA -->
+            <!-- ========================================== -->
+
             <div class="seccion">
 
                 <h2 class="seccion-titulo">
@@ -280,35 +308,43 @@
                 </h2>
 
 
+                <!-- ========================================== -->
                 <!-- FECHA -->
+                <!-- ========================================== -->
+
                 <div class="campo">
 
-                    <label asp-for="Fecha">
+                    <label>
                         Fecha
                     </label>
 
-                    <input asp-for="Fecha"
-                           type="date" />
+                    <input type="text"
+                           value="@DateTime.Now.ToString("dd/MM/yyyy")"
+                           readonly />
 
-                    <span asp-validation-for="Fecha"
-                          class="campo-validation">
+                    <span class="campo-ayuda">
+                        La fecha se registra automáticamente al crear el pedido.
                     </span>
 
                 </div>
 
 
+                <!-- ========================================== -->
                 <!-- HORA -->
+                <!-- ========================================== -->
+
                 <div class="campo">
 
-                    <label asp-for="HoraInicio">
+                    <label>
                         Hora de inicio
                     </label>
 
-                    <input asp-for="HoraInicio"
-                           type="time" />
+                    <input type="text"
+                           value="@DateTime.Now.ToString("HH:mm")"
+                           readonly />
 
-                    <span asp-validation-for="HoraInicio"
-                          class="campo-validation">
+                    <span class="campo-ayuda">
+                        La hora de inicio se registra automáticamente al guardar el pedido.
                     </span>
 
                 </div>
@@ -316,17 +352,25 @@
             </div>
 
 
+            <!-- ========================================== -->
             <!-- BOTONES -->
+            <!-- ========================================== -->
+
             <div class="acciones-form">
 
                 <button type="submit"
                         class="btn-guardar">
+
                     Guardar pedido
+
                 </button>
+
 
                 <a asp-action="Index"
                    class="btn-volver">
+
                     Volver a pedidos
+
                 </a>
 
             </div>
@@ -339,6 +383,8 @@
 
 
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
 }
 ```
