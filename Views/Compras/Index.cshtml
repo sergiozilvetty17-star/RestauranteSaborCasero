@@ -1,35 +1,303 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.Compra>
+﻿```cshtml
+@model IEnumerable<RestauranteSaborCasero.Models.Compra>
 
-<h1>Lista de Compras</h1>
+@{
+    ViewData["Title"] = "Compras";
+}
 
-<p>
-    <a asp-action="Create">Crear Nueva Compra</a>
-</p>
+<style>
+    .compras-container {
+        padding: 30px;
+    }
 
-<table>
-    <thead>
-        <tr>
-            <th>Fecha</th>
-            <th>Proveedor</th>
-            <th>Usuario (Comprador)</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
-                <tr>
-                    <td>@item.Fecha.ToShortDateString()</td>
-                    <td>@item.Proveedor</td>
-                    <td>@item.Usuario?.Nombre</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.IdCompra">Editar</a> |
-                        <a asp-action="Details" asp-route-id="@item.IdCompra">Detalles</a>
-                    </td>
-                </tr>
-            }
+    .compras-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .compras-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .compras-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .btn-nueva-compra {
+        display: inline-block;
+        background-color: #198754;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-nueva-compra:hover {
+            background-color: #157347;
+            color: white;
         }
-    </tbody>
-</table>
+
+    .compras-card {
+        width: 900px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .tabla-compras {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-compras thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .tabla-compras th {
+            padding: 15px 16px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .tabla-compras td {
+            padding: 15px 16px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .tabla-compras tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .fecha {
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .proveedor {
+        font-weight: 600;
+        color: #198754;
+    }
+
+    .usuario {
+        color: #555;
+    }
+
+    .sin-dato {
+        color: #999;
+        font-style: italic;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 7px;
+        white-space: nowrap;
+    }
+
+    .btn-accion {
+        display: inline-block;
+        text-decoration: none;
+        padding: 7px 11px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-detalles {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+        .btn-detalles:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+
+    .tabla-vacia {
+        text-align: center;
+        padding: 45px;
+        color: #777;
+        font-size: 15px;
+    }
+</style>
+
+
+<div class="compras-container">
+
+    <!-- ENCABEZADO -->
+    <div class="compras-header">
+
+        <div>
+
+            <h1 class="compras-titulo">
+                Compras
+            </h1>
+
+            <p class="compras-subtitulo">
+                Registro de compras de ingredientes
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="btn-nueva-compra">
+            + Nueva compra
+        </a>
+
+    </div>
+
+
+    <!-- TABLA -->
+    <div class="compras-card">
+
+        <table class="tabla-compras">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        Proveedor
+                    </th>
+
+                    <th>
+                        Usuario
+                    </th>
+
+                    <th>
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+
+                            <!-- FECHA -->
+                            <td>
+
+                                <span class="fecha">
+                                    @item.Fecha.ToString("dd/MM/yyyy")
+                                </span>
+
+                            </td>
+
+
+                            <!-- PROVEEDOR -->
+                            <td>
+
+                                <span class="proveedor">
+                                    @item.Proveedor
+                                </span>
+
+                            </td>
+
+
+                            <!-- USUARIO -->
+                            <td>
+
+                                @if (item.Usuario != null)
+                                {
+                                    <span class="usuario">
+                                        @item.Usuario.Nombre
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="sin-dato">
+                                        Sin usuario
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ACCIONES -->
+                            <td>
+
+                                <div class="acciones">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.IdCompra"
+                                       class="btn-accion btn-detalles">
+                                        Ver
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@item.IdCompra"
+                                       class="btn-accion btn-editar">
+                                        Editar
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="4"
+                            class="tabla-vacia">
+
+                            No hay compras registradas.
+
+                            <br />
+
+                            Utiliza
+                            <strong>“Nueva compra”</strong>
+                            para registrar la primera.
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```

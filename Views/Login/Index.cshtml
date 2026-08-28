@@ -1,71 +1,225 @@
-﻿@{
+﻿```cshtml id="k8p3mz"
+@{
     ViewData["Title"] = "Iniciar sesión";
 }
 
-<div class="row justify-content-center mt-5">
-    <div class="col-md-5 col-lg-4">
+<style>
+    .login-page {
+        min-height: 75vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+    }
 
-        <div class="card shadow">
+    .login-card {
+        width: 420px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 35px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
 
-            <div class="card-body p-4">
+    .login-header {
+        text-align: center;
+        margin-bottom: 30px;
+    }
 
-                <div class="text-center mb-4">
-                    <h2 class="fw-bold">Sabor Casero</h2>
-                    <p class="text-muted">
-                        Iniciar sesión
-                    </p>
-                </div>
+    .login-logo {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        background-color: #198754;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 25px;
+        font-weight: 700;
+    }
 
-                <form asp-controller="Login"
-                      asp-action="Index"
-                      method="post">
+    .login-title {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-                    @Html.AntiForgeryToken()
+    .login-subtitle {
+        margin: 7px 0 0;
+        color: #777;
+        font-size: 14px;
+    }
 
-                    <div asp-validation-summary="ModelOnly"
-                         class="alert alert-danger">
-                    </div>
+    .login-welcome {
+        text-align: center;
+        color: #555;
+        font-size: 14px;
+        margin-bottom: 25px;
+    }
 
-                    <div class="mb-3">
-                        <label for="correo"
-                               class="form-label">
-                            Correo
-                        </label>
+    .campo {
+        margin-bottom: 20px;
+    }
 
-                        <input type="email"
-                               id="correo"
-                               name="correo"
-                               class="form-control"
-                               placeholder="correo@ejemplo.com"
-                               autocomplete="email"
-                               required />
-                    </div>
+        .campo label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
 
-                    <div class="mb-4">
-                        <label for="contrasena"
-                               class="form-label">
-                            Contraseña
-                        </label>
+        .campo input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #ced4da;
+            border-radius: 7px;
+            font-size: 15px;
+            color: #333;
+            background-color: white;
+        }
 
-                        <input type="password"
-                               id="contrasena"
-                               name="contrasena"
-                               class="form-control"
-                               placeholder="Ingrese su contraseña"
-                               autocomplete="current-password"
-                               required />
-                    </div>
+            .campo input:focus {
+                outline: none;
+                border-color: #198754;
+                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
+            }
 
-                    <button type="submit"
-                            class="btn btn-primary w-100">
-                        Iniciar sesión
-                    </button>
+            .campo input::placeholder {
+                color: #aaa;
+            }
 
-                </form>
+    .validation-summary {
+        background-color: #f8d7da;
+        border: 1px solid #f1aeb5;
+        color: #842029;
+        border-radius: 7px;
+        padding: 12px 15px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
 
+    .btn-login {
+        width: 100%;
+        border: none;
+        background-color: #198754;
+        color: white;
+        padding: 13px;
+        border-radius: 7px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 5px;
+    }
+
+        .btn-login:hover {
+            background-color: #157347;
+        }
+
+    .login-footer {
+        text-align: center;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 1px solid #eeeeee;
+        color: #999;
+        font-size: 12px;
+    }
+</style>
+
+
+<div class="login-page">
+
+    <div class="login-card">
+
+        <!-- ENCABEZADO -->
+        <div class="login-header">
+
+            <div class="login-logo">
+                SC
             </div>
+
+            <h1 class="login-title">
+                Sabor Casero
+            </h1>
+
+            <p class="login-subtitle">
+                Sistema de gestión del restaurante
+            </p>
 
         </div>
 
+
+        <p class="login-welcome">
+            Ingresa tus datos para acceder al sistema.
+        </p>
+
+
+        <!-- FORMULARIO -->
+        <form asp-controller="Login"
+              asp-action="Index"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+
+            <!-- MENSAJES DE ERROR -->
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary">
+            </div>
+
+
+            <!-- CORREO -->
+            <div class="campo">
+
+                <label for="correo">
+                    Correo electrónico
+                </label>
+
+                <input type="email"
+                       id="correo"
+                       name="correo"
+                       placeholder="correo@ejemplo.com"
+                       autocomplete="email"
+                       required />
+
+            </div>
+
+
+            <!-- CONTRASEÑA -->
+            <div class="campo">
+
+                <label for="contrasena">
+                    Contraseña
+                </label>
+
+                <input type="password"
+                       id="contrasena"
+                       name="contrasena"
+                       placeholder="Ingrese su contraseña"
+                       autocomplete="current-password"
+                       required />
+
+            </div>
+
+
+            <!-- BOTÓN -->
+            <button type="submit"
+                    class="btn-login">
+                Iniciar sesión
+            </button>
+
+        </form>
+
+
+        <div class="login-footer">
+            Sistema de gestión · Sabor Casero
+        </div>
+
     </div>
+
 </div>
+```

@@ -1,16 +1,243 @@
-﻿@model RestauranteSaborCasero.Models.Ingrediente
+﻿```cshtml id="p6m2xr"
+@model RestauranteSaborCasero.Models.Ingrediente
 
-<h1>Detalles del Ingrediente</h1>
+@{
+    ViewData["Title"] = "Detalles del Ingrediente";
+}
 
-<div>
-    <p><strong>Nombre:</strong> @Model.Nombre</p>
-    <p><strong>Cantidad Disponible:</strong> @Model.CantidadDisponible @Model.UnidadMedida</p>
-    <p><strong>Cantidad Mínima (Alerta):</strong> @Model.CantidadMinima @Model.UnidadMedida</p>
-    <p><strong>Estado:</strong> @Model.Estado</p>
+<style>
+    .ingrediente-detalles-container {
+        padding: 30px;
+    }
+
+    .ingrediente-header {
+        margin-bottom: 25px;
+    }
+
+    .ingrediente-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .ingrediente-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .ingrediente-card {
+        width: 650px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 20px;
+    }
+
+    .ingrediente-nombre {
+        font-size: 22px;
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .informacion {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+    .dato-titulo {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .cantidad-disponible {
+        font-size: 18px;
+        font-weight: 700;
+        color: #198754;
+    }
+
+    .cantidad-minima {
+        font-size: 16px;
+        font-weight: 700;
+        color: #dc3545;
+    }
+
+    .estado {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .btn {
+        display: inline-block;
+        text-decoration: none;
+        padding: 11px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="ingrediente-detalles-container">
+
+    <!-- ENCABEZADO -->
+    <div class="ingrediente-header">
+
+        <h1 class="ingrediente-titulo">
+            Detalles del ingrediente
+        </h1>
+
+        <p class="ingrediente-subtitulo">
+            Información actual del ingrediente en inventario
+        </p>
+
+    </div>
+
+
+    <!-- TARJETA -->
+    <div class="ingrediente-card">
+
+        <div class="ingrediente-nombre">
+            @Model.Nombre
+        </div>
+
+
+        <div class="informacion">
+
+            <!-- NOMBRE -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Nombre
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Nombre
+                </span>
+
+            </div>
+
+
+            <!-- CANTIDAD DISPONIBLE -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Cantidad disponible
+                </span>
+
+                <span class="dato-valor cantidad-disponible">
+                    @Model.CantidadDisponible
+                    @Model.UnidadMedida
+                </span>
+
+            </div>
+
+
+            <!-- CANTIDAD MÍNIMA -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Cantidad mínima
+                </span>
+
+                <span class="dato-valor cantidad-minima">
+                    @Model.CantidadMinima
+                    @Model.UnidadMedida
+                </span>
+
+            </div>
+
+
+            <!-- ESTADO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Estado
+                </span>
+
+                <span class="estado">
+                    @Model.Estado
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ACCIONES -->
+    <div class="acciones">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.IdIngrediente"
+           class="btn btn-editar">
+            Editar ingrediente
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-volver">
+            Volver al inventario
+        </a>
+
+    </div>
+
 </div>
-
-<br />
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.IdIngrediente">Editar</a> |
-    <a asp-action="Index">Volver a la lista</a>
-</div>
+```

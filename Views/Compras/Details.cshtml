@@ -1,43 +1,379 @@
-﻿@model RestauranteSaborCasero.Models.Compra
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Compra
 
-<h1>Detalles de la Compra</h1>
+@{
+    ViewData["Title"] = "Detalles de la Compra";
+}
 
-<div>
-    <p><strong>Fecha:</strong> @Model.Fecha.ToShortDateString()</p>
-    <p><strong>Proveedor:</strong> @Model.Proveedor</p>
-    <p><strong>Usuario que registró:</strong> @Model.Usuario?.Nombre</p>
-</div>
+<style>
+    .compra-detalles-container {
+        padding: 30px;
+    }
 
-<h2>Ingredientes Comprados en esta orden</h2>
-<table>
-    <thead>
-        <tr>
-            <th>Ingrediente</th>
-            <th>Cantidad</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Detalles != null && Model.Detalles.Any())
-        {
-            foreach (var detalle in Model.Detalles)
-            {
+    .compra-header {
+        margin-bottom: 25px;
+    }
+
+    .compra-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .compra-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .compra-card {
+        width: 650px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+        margin-bottom: 25px;
+    }
+
+    .compra-identificacion {
+        font-size: 22px;
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+    .informacion {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+    .dato-titulo {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .seccion {
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    .seccion-titulo {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .seccion-subtitulo {
+        margin: 5px 0 0;
+        color: #777;
+        font-size: 13px;
+    }
+
+    .ingredientes-card {
+        width: 850px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .tabla-ingredientes {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-ingredientes thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .tabla-ingredientes th {
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .tabla-ingredientes td {
+            padding: 14px 16px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+            font-size: 14px;
+        }
+
+        .tabla-ingredientes tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tabla-ingredientes tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .nombre-ingrediente {
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .cantidad {
+        font-weight: 700;
+        color: #198754;
+    }
+
+    .tabla-vacia {
+        text-align: center;
+        padding: 35px;
+        color: #777;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .btn {
+        display: inline-block;
+        text-decoration: none;
+        padding: 11px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="compra-detalles-container">
+
+    <!-- ENCABEZADO -->
+    <div class="compra-header">
+
+        <h1 class="compra-titulo">
+            Detalles de la compra
+        </h1>
+
+        <p class="compra-subtitulo">
+            Información de la compra y los ingredientes registrados
+        </p>
+
+    </div>
+
+
+    <!-- INFORMACIÓN GENERAL -->
+    <div class="compra-card">
+
+        <div class="compra-identificacion">
+            Compra #@Model.IdCompra
+        </div>
+
+
+        <div class="informacion">
+
+            <!-- FECHA -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Fecha de compra
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Fecha.ToString("dd/MM/yyyy")
+                </span>
+
+            </div>
+
+
+            <!-- PROVEEDOR -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Proveedor
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Proveedor
+                </span>
+
+            </div>
+
+
+            <!-- USUARIO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Usuario que registró
+                </span>
+
+                <span class="dato-valor">
+                    @if (Model.Usuario != null)
+                    {
+                        @Model.Usuario.Nombre
+                    }
+                    else
+                    {
+                        <span>No registrado</span>
+                    }
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- INGREDIENTES -->
+    <div class="seccion">
+
+        <h2 class="seccion-titulo">
+            Ingredientes comprados
+        </h2>
+
+        <p class="seccion-subtitulo">
+            Ingredientes incluidos en esta compra
+        </p>
+
+    </div>
+
+
+    <div class="ingredientes-card">
+
+        <table class="tabla-ingredientes">
+
+            <thead>
+
                 <tr>
-                    <td>@detalle.Ingrediente?.Nombre</td>
-                    <td>@detalle.Cantidad</td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="2">No hay ingredientes registrados para esta compra.</td>
-            </tr>
-        }
-    </tbody>
-</table>
 
-<br />
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.IdCompra">Editar</a> |
-    <a asp-action="Index">Volver a la lista</a>
-</div> details
+                    <th>
+                        Ingrediente
+                    </th>
+
+                    <th>
+                        Cantidad
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model.Detalles != null && Model.Detalles.Any())
+                {
+                    foreach (var detalle in Model.Detalles)
+                    {
+                        <tr>
+
+                            <td>
+
+                                <span class="nombre-ingrediente">
+
+                                    @if (detalle.Ingrediente != null)
+                                    {
+                                        @detalle.Ingrediente.Nombre
+                                    }
+                                    else
+                                    {
+                                        <span>Ingrediente no disponible</span>
+                                    }
+
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <span class="cantidad">
+                                    @detalle.Cantidad
+                                </span>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="2"
+                            class="tabla-vacia">
+
+                            No hay ingredientes registrados para esta compra.
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    <!-- ACCIONES -->
+    <div class="acciones">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.IdCompra"
+           class="btn btn-editar">
+            Editar compra
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-volver">
+            Volver a compras
+        </a>
+
+    </div>
+
+</div>
+```

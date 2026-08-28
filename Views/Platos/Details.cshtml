@@ -1,64 +1,876 @@
 ﻿@model RestauranteSaborCasero.Models.Plato
 
-<h1>Detalle del Plato</h1>
+@{
+    ViewData["Title"] = "Detalle del Plato";
+}
 
-<div>
-    <dl class="row">
+<style>
+    /* =========================================================
+           DETALLE DEL PLATO - SABOR CASERO
+           ========================================================= */
 
-        <dt class="col-sm-2">
-            Id
-        </dt>
+    .plato-details-page {
+        width: 100%;
+        padding-top: 12px;
+    }
 
-        <dd class="col-sm-10">
-            @Model.IdPlato
-        </dd>
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+
+    .plato-details-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 25px;
+    }
+
+    .plato-details-heading {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .plato-details-header-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7eee9;
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .plato-details-header-icon svg {
+            width: 25px;
+            height: 25px;
+            stroke: currentColor;
+        }
+
+    .plato-details-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .plato-details-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.9rem;
+        font-weight: 800;
+        letter-spacing: -0.7px;
+    }
+
+    .plato-details-subtitle {
+        margin: 6px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.82rem;
+    }
+
+    /* =========================================================
+           IDENTIFICADOR
+           ========================================================= */
+
+    .plato-details-code {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        background: #faf8f6;
+        border: 1px solid var(--sc-border);
+        border-radius: 9px;
+        color: #81766e;
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+
+        .plato-details-code svg {
+            width: 15px;
+            height: 15px;
+            color: var(--sc-primary);
+            stroke: currentColor;
+        }
+
+        .plato-details-code strong {
+            color: var(--sc-dark);
+        }
+
+    /* =========================================================
+           CONTENEDOR PRINCIPAL
+           ========================================================= */
+
+    .plato-details-layout {
+        display: grid;
+        grid-template-columns: 1fr 310px;
+        gap: 20px;
+        align-items: start;
+    }
+
+    /* =========================================================
+           TARJETA PRINCIPAL
+           ========================================================= */
+
+    .plato-details-card {
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .plato-details-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 21px;
+        border-bottom: 1px solid var(--sc-border);
+    }
+
+    .plato-details-card-header-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 0.92rem;
+        font-weight: 800;
+    }
+
+    .plato-details-card-header-text {
+        margin: 3px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.71rem;
+    }
+
+    /* =========================================================
+           INFORMACIÓN
+           ========================================================= */
+
+    .plato-details-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        padding: 22px;
+    }
+
+    .plato-details-item {
+        padding: 17px;
+        background: #faf8f6;
+        border: 1px solid #eee7e1;
+        border-radius: 11px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+        .plato-details-item:hover {
+            border-color: #e2d6cc;
+            box-shadow: 0 5px 14px rgba(70, 45, 30, 0.06);
+            transform: translateY(-1px);
+        }
+
+    .plato-details-item-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 11px;
+    }
+
+    .plato-details-item-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4ebe5;
+        border-radius: 8px;
+        color: var(--sc-primary);
+    }
+
+        .plato-details-item-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+    .plato-details-label {
+        margin: 0;
+        color: #857a72;
+        font-size: 0.67rem;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .plato-details-value {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+        .plato-details-value.price {
+            color: var(--sc-primary);
+            font-size: 1.25rem;
+        }
+
+        .plato-details-value.time {
+            color: #665e58;
+        }
+
+    /* =========================================================
+           ESTADO
+           ========================================================= */
+
+    .plato-details-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        background: #edf6f0;
+        border: 1px solid #d5e9dc;
+        border-radius: 7px;
+        color: var(--sc-success);
+        font-size: 0.72rem;
+        font-weight: 800;
+    }
+
+    .plato-details-status-dot {
+        width: 7px;
+        height: 7px;
+        background: currentColor;
+        border-radius: 50%;
+    }
+
+    /* =========================================================
+           ACCIONES
+           ========================================================= */
+
+    .plato-details-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 17px 22px;
+        background: #faf8f6;
+        border-top: 1px solid var(--sc-border);
+    }
+
+    .plato-details-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        height: 39px;
+        padding: 0 15px;
+        border-radius: 9px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+        .plato-details-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+    .plato-details-btn-edit {
+        background: var(--sc-primary);
+        border: 1px solid var(--sc-primary);
+        color: #ffffff;
+    }
+
+        .plato-details-btn-edit:hover {
+            background: var(--sc-primary-dark);
+            border-color: var(--sc-primary-dark);
+            color: #ffffff;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(139, 58, 43, 0.18);
+        }
+
+    .plato-details-btn-back {
+        background: #ffffff;
+        border: 1px solid #ddd5cc;
+        color: #665e58;
+    }
+
+        .plato-details-btn-back:hover {
+            background: #f3efeb;
+            color: var(--sc-dark);
+            transform: translateY(-1px);
+        }
+
+    /* =========================================================
+           TARJETA LATERAL
+           ========================================================= */
+
+    .plato-details-side {
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .plato-details-side-top {
+        padding: 23px 21px;
+        background: linear-gradient( 145deg, #8b3a2b 0%, #68291f 100% );
+        color: #ffffff;
+    }
+
+    .plato-details-side-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 11px;
+    }
+
+        .plato-details-side-icon svg {
+            width: 23px;
+            height: 23px;
+            stroke: currentColor;
+        }
+
+    .plato-details-side-title {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .plato-details-side-text {
+        margin: 7px 0 0;
+        color: rgba(255, 255, 255, 0.72);
+        font-size: 0.72rem;
+        line-height: 1.5;
+    }
+
+    /* =========================================================
+           RESUMEN LATERAL
+           ========================================================= */
+
+    .plato-details-side-body {
+        padding: 19px 21px;
+    }
+
+    .plato-details-summary {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .plato-details-summary-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-bottom: 13px;
+        border-bottom: 1px solid #eee8e2;
+    }
+
+        .plato-details-summary-row:last-child {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+    .plato-details-summary-label {
+        color: #857b74;
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+
+    .plato-details-summary-value {
+        color: var(--sc-dark);
+        font-size: 0.72rem;
+        font-weight: 800;
+        text-align: right;
+    }
+
+        .plato-details-summary-value.price {
+            color: var(--sc-primary);
+            font-size: 0.9rem;
+        }
+
+    /* =========================================================
+           NOTA
+           ========================================================= */
+
+    .plato-details-note {
+        margin-top: 17px;
+        padding: 12px;
+        background: #fdf8ed;
+        border: 1px solid #f0dfbd;
+        border-radius: 9px;
+        color: #816a43;
+        font-size: 0.67rem;
+        line-height: 1.45;
+    }
+
+        .plato-details-note strong {
+            color: #70552d;
+        }
+</style>
 
 
-        <dt class="col-sm-2">
-            Nombre
-        </dt>
-
-        <dd class="col-sm-10">
-            @Model.Nombre
-        </dd>
+<div class="plato-details-page">
 
 
-        <dt class="col-sm-2">
-            Precio
-        </dt>
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
 
-        <dd class="col-sm-10">
-            @Model.Precio
-        </dd>
+    <div class="plato-details-header">
+
+        <div class="plato-details-heading">
+
+            <div class="plato-details-header-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M12 8v4l2.5 2" />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="plato-details-eyebrow">
+                    Gestión del menú
+                </p>
+
+                <h1 class="plato-details-title">
+                    Detalle del plato
+                </h1>
+
+                <p class="plato-details-subtitle">
+                    Consulta toda la información registrada del plato.
+                </p>
+
+            </div>
+
+        </div>
 
 
-        <dt class="col-sm-2">
-            Estado
-        </dt>
+        <div class="plato-details-code">
 
-        <dd class="col-sm-10">
-            @Model.Estado
-        </dd>
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <rect x="3" y="4" width="18" height="16" rx="2" />
+                <path d="M8 8h8" />
+                <path d="M8 12h8" />
+                <path d="M8 16h4" />
+
+            </svg>
+
+            Registro
+            <strong>#@Model.IdPlato</strong>
+
+        </div>
+
+    </div>
 
 
-        <dt class="col-sm-2">
-            Tiempo estimado
-        </dt>
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
 
-        <dd class="col-sm-10">
-            @Model.TiempoEstimado minutos
-        </dd>
+    <div class="plato-details-layout">
 
-    </dl>
+
+        <!-- =================================================
+             INFORMACIÓN PRINCIPAL
+             ================================================= -->
+
+        <div class="plato-details-card">
+
+
+            <div class="plato-details-card-header">
+
+                <div>
+
+                    <h2 class="plato-details-card-header-title">
+                        Información del plato
+                    </h2>
+
+                    <p class="plato-details-card-header-text">
+                        Datos actuales registrados en el sistema.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="plato-details-info">
+
+
+                <!-- ID -->
+
+                <div class="plato-details-item">
+
+                    <div class="plato-details-item-top">
+
+                        <span class="plato-details-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M4 6h16" />
+                                <path d="M4 12h16" />
+                                <path d="M4 18h16" />
+
+                            </svg>
+
+                        </span>
+
+                        <p class="plato-details-label">
+                            Identificador
+                        </p>
+
+                    </div>
+
+                    <p class="plato-details-value">
+                        #@Model.IdPlato
+                    </p>
+
+                </div>
+
+
+                <!-- NOMBRE -->
+
+                <div class="plato-details-item">
+
+                    <div class="plato-details-item-top">
+
+                        <span class="plato-details-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M4 7h16" />
+                                <path d="M6 7v10" />
+                                <path d="M18 7v10" />
+                                <path d="M8 17h8" />
+                                <path d="M9 11h6" />
+
+                            </svg>
+
+                        </span>
+
+                        <p class="plato-details-label">
+                            Nombre
+                        </p>
+
+                    </div>
+
+                    <p class="plato-details-value">
+                        @Model.Nombre
+                    </p>
+
+                </div>
+
+
+                <!-- PRECIO -->
+
+                <div class="plato-details-item">
+
+                    <div class="plato-details-item-top">
+
+                        <span class="plato-details-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M12 3v18" />
+                                <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
+
+                            </svg>
+
+                        </span>
+
+                        <p class="plato-details-label">
+                            Precio
+                        </p>
+
+                    </div>
+
+                    <p class="plato-details-value price">
+                        Bs. @Model.Precio.ToString("0.00")
+                    </p>
+
+                </div>
+
+
+                <!-- ESTADO -->
+
+                <div class="plato-details-item">
+
+                    <div class="plato-details-item-top">
+
+                        <span class="plato-details-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="m8 12 2.5 2.5L16 9" />
+
+                            </svg>
+
+                        </span>
+
+                        <p class="plato-details-label">
+                            Estado
+                        </p>
+
+                    </div>
+
+                    <span class="plato-details-status">
+
+                        <span class="plato-details-status-dot"></span>
+
+                        @Model.Estado
+
+                    </span>
+
+                </div>
+
+
+                <!-- TIEMPO -->
+
+                <div class="plato-details-item">
+
+                    <div class="plato-details-item-top">
+
+                        <span class="plato-details-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <circle cx="12" cy="12" r="9" />
+                                <path d="M12 7v5l3 2" />
+
+                            </svg>
+
+                        </span>
+
+                        <p class="plato-details-label">
+                            Tiempo estimado
+                        </p>
+
+                    </div>
+
+                    <p class="plato-details-value time">
+                        @Model.TiempoEstimado minutos
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACCIONES
+                 ================================================= -->
+
+            <div class="plato-details-actions">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model.IdPlato"
+                   class="plato-details-btn plato-details-btn-edit">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M12 20h9" />
+                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+                        <path d="m15 5 3 3" />
+
+                    </svg>
+
+                    Editar plato
+
+                </a>
+
+
+                <a asp-action="Index"
+                   class="plato-details-btn plato-details-btn-back">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M19 12H5" />
+                        <path d="m12 19-7-7 7-7" />
+
+                    </svg>
+
+                    Volver a platos
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PANEL LATERAL
+             ================================================= -->
+
+        <aside class="plato-details-side">
+
+
+            <div class="plato-details-side-top">
+
+                <div class="plato-details-side-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M6 3v7" />
+                        <path d="M9 3v7" />
+                        <path d="M12 3v7" />
+                        <path d="M9 10v11" />
+                        <path d="M16 3v18" />
+                        <path d="M16 3c3 2 3 5 0 7" />
+
+                    </svg>
+
+                </div>
+
+                <h2 class="plato-details-side-title">
+                    Resumen del plato
+                </h2>
+
+                <p class="plato-details-side-text">
+                    Información rápida para consultar el estado
+                    y características principales.
+                </p>
+
+            </div>
+
+
+            <div class="plato-details-side-body">
+
+                <div class="plato-details-summary">
+
+
+                    <div class="plato-details-summary-row">
+
+                        <span class="plato-details-summary-label">
+                            Plato
+                        </span>
+
+                        <span class="plato-details-summary-value">
+                            @Model.Nombre
+                        </span>
+
+                    </div>
+
+
+                    <div class="plato-details-summary-row">
+
+                        <span class="plato-details-summary-label">
+                            Precio
+                        </span>
+
+                        <span class="plato-details-summary-value price">
+                            Bs. @Model.Precio.ToString("0.00")
+                        </span>
+
+                    </div>
+
+
+                    <div class="plato-details-summary-row">
+
+                        <span class="plato-details-summary-label">
+                            Preparación
+                        </span>
+
+                        <span class="plato-details-summary-value">
+                            @Model.TiempoEstimado min.
+                        </span>
+
+                    </div>
+
+
+                    <div class="plato-details-summary-row">
+
+                        <span class="plato-details-summary-label">
+                            Estado
+                        </span>
+
+                        <span class="plato-details-summary-value">
+                            @Model.Estado
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="plato-details-note">
+
+                    <strong>Nota:</strong>
+                    verifica que la información del plato
+                    esté actualizada antes de realizar cambios
+                    en el menú.
+
+                </div>
+
+            </div>
+
+        </aside>
+
+    </div>
+
 </div>
-
-<a asp-action="Edit"
-       asp-route-id="@Model.IdPlato"
-       class="btn btn-primary">
-    Editar
-</a>
-
-<a asp-action="Index"
-       class="btn btn-secondary">
-    Volver
-</a>
+```

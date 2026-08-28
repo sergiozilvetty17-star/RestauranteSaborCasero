@@ -1,77 +1,287 @@
-﻿@model RestauranteSaborCasero.Models.Usuario
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Usuario
 
 @{
     ViewData["Title"] = "Eliminar usuario";
 }
 
-<div class="container mt-4">
+<style>
+    .eliminar-container {
+        padding: 30px;
+    }
 
-    <div class="mb-4">
-        <h1 class="fw-bold text-danger">Eliminar usuario</h1>
-        <p class="text-muted mb-0">
-            Confirma si deseas eliminar este usuario del sistema.
+    .eliminar-header {
+        margin-bottom: 25px;
+    }
+
+    .eliminar-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #dc3545;
+    }
+
+    .eliminar-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .eliminar-card {
+        width: 600px;
+        background-color: white;
+        border: 1px solid #f1aeb5;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .advertencia {
+        background-color: #fff3cd;
+        border: 1px solid #ffecb5;
+        color: #664d03;
+        border-radius: 7px;
+        padding: 14px 16px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+        .advertencia strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+    .usuario-titulo-card {
+        margin: 0 0 15px;
+        color: #333;
+        font-size: 18px;
+    }
+
+    .informacion {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 14px 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+    .dato-nombre {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .estado-activo {
+        color: #198754;
+    }
+
+    .estado-inactivo {
+        color: #dc3545;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding-top: 20px;
+        margin-top: 25px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-eliminar {
+        border: none;
+        background-color: #dc3545;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-eliminar:hover {
+            background-color: #bb2d3b;
+        }
+
+    .btn-cancelar {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-cancelar:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="eliminar-container">
+
+    <!-- ENCABEZADO -->
+    <div class="eliminar-header">
+
+        <h1 class="eliminar-titulo">
+            Eliminar usuario
+        </h1>
+
+        <p class="eliminar-subtitulo">
+            Revisa los datos antes de confirmar la eliminación.
         </p>
+
     </div>
 
-    <div class="card border-danger shadow-sm">
-        <div class="card-body p-4">
 
-            <div class="alert alert-warning" role="alert">
-                <strong>Atención:</strong> esta acción eliminará el usuario
-                seleccionado y no se puede deshacer.
-            </div>
+    <!-- TARJETA -->
+    <div class="eliminar-card">
 
-            <h5 class="mb-3">Usuario que se eliminará</h5>
+        <!-- ADVERTENCIA -->
+        <div class="advertencia">
 
-            <dl class="row">
+            <strong>
+                Atención
+            </strong>
 
-                <dt class="col-sm-3">ID</dt>
-                <dd class="col-sm-9">@Model.IdUsuario</dd>
-
-                <dt class="col-sm-3">Nombre</dt>
-                <dd class="col-sm-9">@Model.Nombre</dd>
-
-                <dt class="col-sm-3">Correo</dt>
-                <dd class="col-sm-9">@Model.Correo</dd>
-
-                <dt class="col-sm-3">Rol</dt>
-                <dd class="col-sm-9">@Model.Rol</dd>
-
-                <dt class="col-sm-3">Estado</dt>
-                <dd class="col-sm-9">
-                    @(Model.Activo ? "Activo" : "Inactivo")
-                </dd>
-
-            </dl>
-
-            <hr />
-
-            <!-- Envía la confirmación al método DeleteConfirmed del controlador. -->
-            <form asp-action="Delete" method="post">
-
-                <!-- Mantiene el ID del usuario que se debe borrar. -->
-                <input type="hidden" asp-for="IdUsuario" />
-
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-danger">
-                        Sí, eliminar usuario
-                    </button>
-
-                    <a asp-action="Details"
-                       asp-route-id="@Model.IdUsuario"
-                       class="btn btn-outline-info">
-                        Ver detalles
-                    </a>
-
-                    <a asp-action="Index"
-                       class="btn btn-outline-secondary">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
+            El usuario será eliminado permanentemente y esta acción
+            no se puede deshacer.
 
         </div>
+
+
+        <h2 class="usuario-titulo-card">
+            Usuario que se eliminará
+        </h2>
+
+
+        <!-- INFORMACIÓN DEL USUARIO -->
+        <div class="informacion">
+
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    ID
+                </span>
+
+                <span class="dato-valor">
+                    @Model.IdUsuario
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Nombre
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Nombre
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Correo
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Correo
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Rol
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Rol
+                </span>
+
+            </div>
+
+
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Estado
+                </span>
+
+                <span class="dato-valor">
+
+                    @if (Model.Activo)
+                    {
+                        <span class="estado-activo">
+                            Activo
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="estado-inactivo">
+                            Inactivo
+                        </span>
+                    }
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFIRMACIÓN -->
+        <form asp-action="Delete"
+              method="post">
+
+            <input type="hidden"
+                   asp-for="IdUsuario" />
+
+
+            <div class="acciones">
+
+                <button type="submit"
+                        class="btn-eliminar">
+                    Sí, eliminar usuario
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
 
 </div>
+```

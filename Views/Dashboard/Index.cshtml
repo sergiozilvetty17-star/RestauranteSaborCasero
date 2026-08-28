@@ -2,110 +2,999 @@
     ViewData["Title"] = "Panel de Administrador";
 }
 
-<div class="container mt-4">
+<style>
+    /* =========================================================
+           DASHBOARD - SABOR CASERO
+           ========================================================= */
 
-    <h2 class="mb-4">Resumen del Restaurante</h2>
+    .dashboard-page {
+        width: 100%;
+    }
 
-    <div class="row">
+    /* =========================================================
+           HEADER
+           ========================================================= */
 
-        <div class="col-md-3">
-            <div class="card text-white bg-primary mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Pedidos Pendientes</h5>
-                    <h2 class="card-text">@ViewBag.PedidosPendientes</h2>
-                </div>
+    .dashboard-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 28px;
+    }
+
+    .dashboard-header-content {
+        max-width: 750px;
+    }
+
+    .dashboard-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        color: var(--sc-primary);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
+    }
+
+    .dashboard-eyebrow-line {
+        width: 25px;
+        height: 2px;
+        border-radius: 10px;
+        background: var(--sc-secondary);
+    }
+
+    .dashboard-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.8px;
+        line-height: 1.15;
+    }
+
+    .dashboard-description {
+        margin: 8px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.9rem;
+    }
+
+    .dashboard-date {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 10px 14px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 10px;
+        color: var(--sc-gray);
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: var(--sc-shadow-sm);
+    }
+
+        .dashboard-date svg {
+            width: 17px;
+            height: 17px;
+            color: var(--sc-primary);
+        }
+
+    /* =========================================================
+           SECCIÓN
+           ========================================================= */
+
+    .dashboard-section {
+        margin-bottom: 28px;
+    }
+
+    .dashboard-section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+    }
+
+    .dashboard-section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+        .dashboard-section-title::before {
+            content: "";
+            width: 4px;
+            height: 19px;
+            border-radius: 10px;
+            background: var(--sc-primary);
+        }
+
+    .dashboard-section-label {
+        color: var(--sc-gray-light);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           PRINCIPALES INDICADORES
+           ========================================================= */
+
+    .dashboard-primary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
+    .dashboard-stat {
+        position: relative;
+        min-height: 145px;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+        .dashboard-stat:hover {
+            transform: translateY(-3px);
+            border-color: #ddcfc4;
+            box-shadow: var(--sc-shadow-lg);
+        }
+
+        .dashboard-stat::after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            right: -35px;
+            bottom: -45px;
+            border-radius: 50%;
+            background: var(--stat-soft);
+        }
+
+    .dashboard-stat-top {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .dashboard-stat-label {
+        margin: 0;
+        color: var(--sc-gray);
+        font-size: 0.78rem;
+        font-weight: 700;
+        line-height: 1.3;
+    }
+
+    .dashboard-stat-icon {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 11px;
+        background: var(--stat-soft);
+        color: var(--stat-color);
+    }
+
+        .dashboard-stat-icon svg {
+            width: 21px;
+            height: 21px;
+            stroke: currentColor;
+        }
+
+    .dashboard-stat-number {
+        position: relative;
+        z-index: 2;
+        margin: 17px 0 0;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.8px;
+        line-height: 1;
+    }
+
+    .dashboard-stat-status {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 9px;
+        color: var(--stat-color);
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+
+    .dashboard-stat-status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    /* =========================================================
+           COLORES DE INDICADORES
+           ========================================================= */
+
+    .stat-primary {
+        --stat-color: var(--sc-primary);
+        --stat-soft: var(--sc-primary-soft);
+    }
+
+    .stat-success {
+        --stat-color: var(--sc-success);
+        --stat-soft: var(--sc-success-soft);
+    }
+
+    .stat-danger {
+        --stat-color: var(--sc-danger);
+        --stat-soft: var(--sc-danger-soft);
+    }
+
+    .stat-info {
+        --stat-color: var(--sc-info);
+        --stat-soft: var(--sc-info-soft);
+    }
+
+    /* =========================================================
+           RESUMEN GENERAL
+           ========================================================= */
+
+    .dashboard-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+    }
+
+    .dashboard-summary {
+        display: flex;
+        align-items: center;
+        min-height: 91px;
+        padding: 17px 18px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 13px;
+        box-shadow: var(--sc-shadow-sm);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .dashboard-summary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--sc-shadow);
+        }
+
+    .dashboard-summary-icon {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 13px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        background: #f5eee8;
+        color: var(--sc-primary);
+    }
+
+        .dashboard-summary-icon svg {
+            width: 21px;
+            height: 21px;
+            stroke: currentColor;
+        }
+
+    .dashboard-summary-content {
+        min-width: 0;
+    }
+
+    .dashboard-summary-label {
+        margin: 0 0 3px;
+        color: var(--sc-gray);
+        font-size: 0.73rem;
+        font-weight: 600;
+    }
+
+    .dashboard-summary-number {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.45rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    /* =========================================================
+           OPERACIÓN
+           ========================================================= */
+
+    .dashboard-operation-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+    }
+
+    .dashboard-operation-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-height: 120px;
+        padding: 22px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .dashboard-operation-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 17px;
+        flex-shrink: 0;
+        border-radius: 13px;
+        background: var(--sc-primary-soft);
+        color: var(--sc-primary);
+    }
+
+        .dashboard-operation-icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: currentColor;
+        }
+
+    .dashboard-operation-content {
+        flex: 1;
+    }
+
+    .dashboard-operation-label {
+        margin: 0 0 5px;
+        color: var(--sc-gray);
+        font-size: 0.78rem;
+        font-weight: 700;
+    }
+
+    .dashboard-operation-number {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.75rem;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .dashboard-operation-description {
+        margin: 7px 0 0;
+        color: var(--sc-gray-light);
+        font-size: 0.72rem;
+    }
+
+    .dashboard-operation-accent {
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--sc-primary);
+    }
+
+        .dashboard-operation-accent.warning {
+            background: var(--sc-secondary);
+        }
+
+    /* =========================================================
+           QUICK STATUS
+           ========================================================= */
+
+    .dashboard-status {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 8px;
+        padding: 17px 20px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 13px;
+    }
+
+    .dashboard-status-left {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .dashboard-status-indicator {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--sc-success);
+        box-shadow: 0 0 0 4px var(--sc-success-soft);
+    }
+
+    .dashboard-status-text {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 0.82rem;
+        font-weight: 700;
+    }
+
+    .dashboard-status-subtext {
+        margin: 2px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.7rem;
+    }
+
+    .dashboard-status-badge {
+        padding: 6px 10px;
+        background: var(--sc-success-soft);
+        border-radius: 7px;
+        color: var(--sc-success);
+        font-size: 0.7rem;
+        font-weight: 800;
+    }
+</style>
+
+
+<div class="dashboard-page">
+
+    <!-- =====================================================
+         HEADER
+         ===================================================== -->
+
+    <div class="dashboard-header">
+
+        <div class="dashboard-header-content">
+
+            <div class="dashboard-eyebrow">
+
+                <span class="dashboard-eyebrow-line"></span>
+
+                Panel de administración
+
             </div>
+
+            <h1 class="dashboard-title">
+                Resumen del Restaurante
+            </h1>
+
+            <p class="dashboard-description">
+                Consulta rápidamente el estado actual de las operaciones
+                y los principales recursos de Sabor Casero.
+            </p>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-success mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Mesas Disponibles</h5>
-                    <h2 class="card-text">@ViewBag.MesasDisponibles</h2>
-                </div>
-            </div>
-        </div>
 
-        <div class="col-md-3">
-            <div class="card text-white bg-danger mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Alertas Inventario</h5>
-                    <h2 class="card-text">@ViewBag.AlertasInventario</h2>
-                </div>
-            </div>
-        </div>
+        <div class="dashboard-date">
 
-        <div class="col-md-3">
-            <div class="card text-white bg-info mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Empleados Activos</h5>
-                    <h2 class="card-text">@ViewBag.EmpleadosActivos</h2>
-                </div>
-            </div>
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="1.8"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <rect x="3" y="4" width="18" height="17" rx="2" />
+                <path d="M16 2v4" />
+                <path d="M8 2v4" />
+                <path d="M3 10h18" />
+
+            </svg>
+
+            Panel general
+
         </div>
 
     </div>
 
-    <div class="row">
 
-        <div class="col-md-3">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Total Usuarios</h5>
-                    <h3>@ViewBag.TotalUsuarios</h3>
-                </div>
-            </div>
+    <!-- =====================================================
+         INDICADORES PRINCIPALES
+         ===================================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <h2 class="dashboard-section-title">
+                Indicadores principales
+            </h2>
+
+            <span class="dashboard-section-label">
+                Estado actual
+            </span>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Total Mesas</h5>
-                    <h3>@ViewBag.TotalMesas</h3>
+
+        <div class="dashboard-primary-grid">
+
+
+            <!-- PEDIDOS PENDIENTES -->
+
+            <div class="dashboard-stat stat-primary">
+
+                <div class="dashboard-stat-top">
+
+                    <p class="dashboard-stat-label">
+                        Pedidos pendientes
+                    </p>
+
+                    <div class="dashboard-stat-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M6 3h12v18H6z" />
+                            <path d="M9 7h6" />
+                            <path d="M9 11h6" />
+                            <path d="M9 15h4" />
+
+                        </svg>
+
+                    </div>
+
                 </div>
+
+                <p class="dashboard-stat-number">
+                    @ViewBag.PedidosPendientes
+                </p>
+
+                <div class="dashboard-stat-status">
+                    <span class="dashboard-stat-status-dot"></span>
+                    Requieren atención
+                </div>
+
             </div>
+
+
+            <!-- MESAS DISPONIBLES -->
+
+            <div class="dashboard-stat stat-success">
+
+                <div class="dashboard-stat-top">
+
+                    <p class="dashboard-stat-label">
+                        Mesas disponibles
+                    </p>
+
+                    <div class="dashboard-stat-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="4" y="7" width="16" height="8" rx="2" />
+                            <path d="M7 15v5" />
+                            <path d="M17 15v5" />
+                            <path d="M3 7h18" />
+
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <p class="dashboard-stat-number">
+                    @ViewBag.MesasDisponibles
+                </p>
+
+                <div class="dashboard-stat-status">
+                    <span class="dashboard-stat-status-dot"></span>
+                    Disponibilidad actual
+                </div>
+
+            </div>
+
+
+            <!-- ALERTAS -->
+
+            <div class="dashboard-stat stat-danger">
+
+                <div class="dashboard-stat-top">
+
+                    <p class="dashboard-stat-label">
+                        Alertas de inventario
+                    </p>
+
+                    <div class="dashboard-stat-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <path d="M12 3 2.8 19h18.4L12 3Z" />
+                            <path d="M12 9v4" />
+                            <path d="M12 16h.01" />
+
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <p class="dashboard-stat-number">
+                    @ViewBag.AlertasInventario
+                </p>
+
+                <div class="dashboard-stat-status">
+                    <span class="dashboard-stat-status-dot"></span>
+                    Revisar existencias
+                </div>
+
+            </div>
+
+
+            <!-- EMPLEADOS -->
+
+            <div class="dashboard-stat stat-info">
+
+                <div class="dashboard-stat-top">
+
+                    <p class="dashboard-stat-label">
+                        Empleados activos
+                    </p>
+
+                    <div class="dashboard-stat-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <circle cx="12" cy="8" r="3" />
+                            <path d="M5 21c0-3.5 2.8-6 7-6s7 2.5 7 6" />
+
+                        </svg>
+
+                    </div>
+
+                </div>
+
+                <p class="dashboard-stat-number">
+                    @ViewBag.EmpleadosActivos
+                </p>
+
+                <div class="dashboard-stat-status">
+                    <span class="dashboard-stat-status-dot"></span>
+                    Personal activo
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Total Platos</h5>
-                    <h3>@ViewBag.TotalPlatos</h3>
-                </div>
-            </div>
+    </section>
+
+
+    <!-- =====================================================
+         RESUMEN GENERAL
+         ===================================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <h2 class="dashboard-section-title">
+                Resumen general
+            </h2>
+
+            <span class="dashboard-section-label">
+                Recursos registrados
+            </span>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Total Ingredientes</h5>
-                    <h3>@ViewBag.TotalIngredientes</h3>
+
+        <div class="dashboard-summary-grid">
+
+
+            <!-- USUARIOS -->
+
+            <div class="dashboard-summary">
+
+                <div class="dashboard-summary-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="9" cy="8" r="3" />
+                        <path d="M3 21c0-3.5 2.4-6 6-6" />
+                        <path d="M16 11a3 3 0 1 0 0-6" />
+                        <path d="M15 15c3.5 0 6 2.5 6 6" />
+
+                    </svg>
+
                 </div>
+
+                <div class="dashboard-summary-content">
+
+                    <p class="dashboard-summary-label">
+                        Total usuarios
+                    </p>
+
+                    <p class="dashboard-summary-number">
+                        @ViewBag.TotalUsuarios
+                    </p>
+
+                </div>
+
             </div>
+
+
+            <!-- MESAS -->
+
+            <div class="dashboard-summary">
+
+                <div class="dashboard-summary-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <rect x="4" y="7" width="16" height="8" rx="2" />
+                        <path d="M7 15v5" />
+                        <path d="M17 15v5" />
+
+                    </svg>
+
+                </div>
+
+                <div class="dashboard-summary-content">
+
+                    <p class="dashboard-summary-label">
+                        Total mesas
+                    </p>
+
+                    <p class="dashboard-summary-number">
+                        @ViewBag.TotalMesas
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- PLATOS -->
+
+            <div class="dashboard-summary">
+
+                <div class="dashboard-summary-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12" cy="12" r="8" />
+                        <path d="M4 12h16" />
+                        <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+
+                    </svg>
+
+                </div>
+
+                <div class="dashboard-summary-content">
+
+                    <p class="dashboard-summary-label">
+                        Total platos
+                    </p>
+
+                    <p class="dashboard-summary-number">
+                        @ViewBag.TotalPlatos
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- INGREDIENTES -->
+
+            <div class="dashboard-summary">
+
+                <div class="dashboard-summary-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M12 3c-3 3-6 6.5-6 10a6 6 0 0 0 12 0c0-3.5-3-7-6-10Z" />
+                        <path d="M9 15c.5 1.3 1.5 2 3 2" />
+
+                    </svg>
+
+                </div>
+
+                <div class="dashboard-summary-content">
+
+                    <p class="dashboard-summary-label">
+                        Total ingredientes
+                    </p>
+
+                    <p class="dashboard-summary-number">
+                        @ViewBag.TotalIngredientes
+                    </p>
+
+                </div>
+
+            </div>
+
         </div>
 
-    </div>
+    </section>
 
-    <div class="row">
 
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Total Pedidos</h5>
-                    <h3>@ViewBag.TotalPedidos</h3>
-                </div>
-            </div>
+    <!-- =====================================================
+         OPERACIÓN
+         ===================================================== -->
+
+    <section class="dashboard-section">
+
+        <div class="dashboard-section-header">
+
+            <h2 class="dashboard-section-title">
+                Operación de pedidos
+            </h2>
+
+            <span class="dashboard-section-label">
+                Flujo de trabajo
+            </span>
+
         </div>
 
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5>Pedidos en Preparación</h5>
-                    <h3>@ViewBag.PedidosEnPreparacion</h3>
+
+        <div class="dashboard-operation-grid">
+
+
+            <!-- TOTAL PEDIDOS -->
+
+            <div class="dashboard-operation-card">
+
+                <div class="dashboard-operation-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M6 3h12v18H6z" />
+                        <path d="M9 7h6" />
+                        <path d="M9 11h6" />
+                        <path d="M9 15h4" />
+
+                    </svg>
+
                 </div>
+
+                <div class="dashboard-operation-content">
+
+                    <p class="dashboard-operation-label">
+                        Total de pedidos
+                    </p>
+
+                    <p class="dashboard-operation-number">
+                        @ViewBag.TotalPedidos
+                    </p>
+
+                    <p class="dashboard-operation-description">
+                        Pedidos registrados en el sistema.
+                    </p>
+
+                </div>
+
+                <div class="dashboard-operation-accent"></div>
+
             </div>
+
+
+            <!-- EN PREPARACIÓN -->
+
+            <div class="dashboard-operation-card">
+
+                <div class="dashboard-operation-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v5l3 2" />
+
+                    </svg>
+
+                </div>
+
+                <div class="dashboard-operation-content">
+
+                    <p class="dashboard-operation-label">
+                        Pedidos en preparación
+                    </p>
+
+                    <p class="dashboard-operation-number">
+                        @ViewBag.PedidosEnPreparacion
+                    </p>
+
+                    <p class="dashboard-operation-description">
+                        Pedidos actualmente en proceso.
+                    </p>
+
+                </div>
+
+                <div class="dashboard-operation-accent warning"></div>
+
+            </div>
+
         </div>
 
-    </div>
+
+        <!-- ESTADO DEL SISTEMA -->
+
+        <div class="dashboard-status">
+
+            <div class="dashboard-status-left">
+
+                <span class="dashboard-status-indicator"></span>
+
+                <div>
+
+                    <p class="dashboard-status-text">
+                        Sistema operativo
+                    </p>
+
+                    <p class="dashboard-status-subtext">
+                        El panel de administración está funcionando correctamente.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span class="dashboard-status-badge">
+                ACTIVO
+            </span>
+
+        </div>
+
+    </section>
 
 </div>
+```

@@ -1,139 +1,425 @@
-﻿@model RestauranteSaborCasero.Models.Pedido
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Pedido
 
 @{
     ViewData["Title"] = "Detalles del Pedido";
 }
 
-<h1>Detalles del Pedido</h1>
+<style>
+    .detalles-container {
+        padding: 30px;
+    }
 
-<div>
+    .detalles-header {
+        margin-bottom: 25px;
+    }
 
-    <h4>Pedido #@Model.IdPedido</h4>
+    .detalles-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-    <dl>
+    .detalles-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-        <dt>
-            Mesero
-        </dt>
+    .pedido-card {
+        width: 900px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 25px;
+        margin-bottom: 25px;
+    }
 
-        <dd>
-            @Model.Usuario.Nombre
-        </dd>
+    .pedido-card-titulo {
+        margin: 0 0 20px;
+        font-size: 20px;
+        color: #343a40;
+        border-bottom: 1px solid #eeeeee;
+        padding-bottom: 15px;
+    }
+
+    .informacion-pedido {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        column-gap: 40px;
+        row-gap: 18px;
+    }
+
+    .dato {
+        padding: 12px;
+        background-color: #f8f9fa;
+        border-radius: 7px;
+    }
+
+    .dato-titulo {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+        color: #777;
+        margin-bottom: 5px;
+    }
+
+    .dato-valor {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+    }
+
+    .estado {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        background-color: #cfe2ff;
+        color: #084298;
+    }
+
+    .mesa-sin {
+        color: #999;
+        font-style: italic;
+        font-weight: normal;
+    }
+
+    .detalles-platos {
+        width: 900px;
+        background: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .platos-header {
+        padding: 20px 25px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .platos-header h2 {
+            margin: 0;
+            font-size: 20px;
+            color: #343a40;
+        }
+
+        .platos-header p {
+            margin: 5px 0 0;
+            color: #777;
+            font-size: 14px;
+        }
+
+    .tabla-platos {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-platos th {
+            background-color: #343a40;
+            color: white;
+            padding: 13px 20px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .tabla-platos td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+        }
+
+        .tabla-platos tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .nombre-plato {
+        font-weight: 600;
+        color: #333;
+    }
+
+    .cantidad {
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .sin-detalles {
+        padding: 35px;
+        text-align: center;
+        color: #777;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        display: inline-block;
+        text-decoration: none;
+        padding: 11px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
 
 
-        <dt>
-            Mesa
-        </dt>
+<div class="detalles-container">
 
-        <dd>
-            @(Model.Mesa != null
-                ? Model.Mesa.NumeroMesa.ToString()
-                : "Sin mesa")
-        </dd>
+    <!-- ENCABEZADO -->
+    <div class="detalles-header">
 
+        <h1 class="detalles-titulo">
+            Detalles del pedido
+        </h1>
 
-        <dt>
-            Tipo de pedido
-        </dt>
+        <p class="detalles-subtitulo">
+            Información completa del pedido #@Model.IdPedido
+        </p>
 
-        <dd>
-            @Model.TipoPedido
-        </dd>
+    </div>
 
 
-        <dt>
-            Fecha
-        </dt>
+    <!-- INFORMACIÓN DEL PEDIDO -->
+    <div class="pedido-card">
 
-        <dd>
-            @Model.Fecha.ToString("dd/MM/yyyy")
-        </dd>
+        <h2 class="pedido-card-titulo">
+            Información del pedido #@Model.IdPedido
+        </h2>
 
+        <div class="informacion-pedido">
 
-        <dt>
-            Hora de inicio
-        </dt>
+            <!-- MESERO -->
+            <div class="dato">
 
-        <dd>
-            @Model.HoraInicio
-        </dd>
+                <span class="dato-titulo">
+                    Mesero
+                </span>
 
+                <span class="dato-valor">
+                    @(Model.Usuario != null
+                        ? Model.Usuario.Nombre
+                        : "Sin mesero")
+                </span>
 
-        <dt>
-            Hora de finalización
-        </dt>
-
-        <dd>
-            @(Model.HoraFin.HasValue
-                ? Model.HoraFin.Value.ToString()
-                : "No finalizado")
-        </dd>
+            </div>
 
 
-        <dt>
-            Estado
-        </dt>
+            <!-- MESA -->
+            <div class="dato">
 
-        <dd>
-            @Model.Estado
-        </dd>
+                <span class="dato-titulo">
+                    Mesa
+                </span>
 
-    </dl>
+                <span class="dato-valor">
+
+                    @if (Model.Mesa != null)
+                    {
+                        <span>
+                            Mesa @Model.Mesa.NumeroMesa
+                        </span>
+                    }
+                    else
+                    {
+                        <span class="mesa-sin">
+                            Sin mesa
+                        </span>
+                    }
+
+                </span>
+
+            </div>
+
+
+            <!-- TIPO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Tipo de pedido
+                </span>
+
+                <span class="dato-valor">
+                    @Model.TipoPedido
+                </span>
+
+            </div>
+
+
+            <!-- FECHA -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Fecha
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Fecha.ToString("dd/MM/yyyy")
+                </span>
+
+            </div>
+
+
+            <!-- HORA INICIO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Hora de inicio
+                </span>
+
+                <span class="dato-valor">
+                    @Model.HoraInicio
+                </span>
+
+            </div>
+
+
+            <!-- HORA FIN -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Hora de finalización
+                </span>
+
+                <span class="dato-valor">
+
+                    @if (Model.HoraFin.HasValue)
+                    {
+                        @Model.HoraFin.Value.ToString()
+                    }
+                    else
+                    {
+                        <span class="mesa-sin">
+                            No finalizado
+                        </span>
+                    }
+
+                </span>
+
+            </div>
+
+
+            <!-- ESTADO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Estado
+                </span>
+
+                <span class="estado">
+                    @Model.Estado
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PLATOS DEL PEDIDO -->
+    <div class="detalles-platos">
+
+        <div class="platos-header">
+
+            <h2>
+                Platos del pedido
+            </h2>
+
+            <p>
+                Lista de platos y cantidades solicitadas
+            </p>
+
+        </div>
+
+
+        @if (Model.Detalles != null && Model.Detalles.Any())
+        {
+            <table class="tabla-platos">
+
+                <thead>
+                    <tr>
+                        <th>Plato</th>
+                        <th style="width: 150px;">
+                            Cantidad
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var detalle in Model.Detalles)
+                    {
+                        <tr>
+
+                            <td>
+                                <span class="nombre-plato">
+                                    @(detalle.Plato != null
+                                        ? detalle.Plato.Nombre
+                                        : "Plato no disponible")
+                                </span>
+                            </td>
+
+                            <td class="cantidad">
+                                @detalle.Cantidad
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <div class="sin-detalles">
+                Este pedido no tiene platos registrados.
+            </div>
+        }
+
+    </div>
+
+
+    <!-- ACCIONES -->
+    <div class="acciones">
+
+        <a asp-action="Edit"
+           asp-route-id="@Model.IdPedido"
+           class="btn btn-editar">
+            Editar pedido
+        </a>
+
+        <a asp-action="Index"
+           class="btn btn-volver">
+            Volver a pedidos
+        </a>
+
+    </div>
 
 </div>
-
-
-<h4>Detalles del pedido</h4>
-
-@if (Model.Detalles != null && Model.Detalles.Any())
-{
-    <table>
-
-        <thead>
-            <tr>
-                <th>Plato</th>
-                <th>Cantidad</th>
-            </tr>
-        </thead>
-
-        <tbody>
-
-            @foreach (var detalle in Model.Detalles)
-            {
-                <tr>
-
-                    <td>
-                        @detalle.Plato.Nombre
-                    </td>
-
-                    <td>
-                        @detalle.Cantidad
-                    </td>
-
-                </tr>
-            }
-
-        </tbody>
-
-    </table>
-}
-else
-{
-    <p>
-        Este pedido no tiene detalles registrados.
-    </p>
-}
-
-
-<div>
-
-    <a asp-action="Edit"
-       asp-route-id="@Model.IdPedido">
-        Editar
-    </a>
-
-    <a asp-action="Index">
-        Volver
-    </a>
-
-</div>
+```

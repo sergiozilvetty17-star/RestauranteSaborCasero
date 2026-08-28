@@ -1,52 +1,1330 @@
 ﻿@model IEnumerable<RestauranteSaborCasero.Models.Plato>
 
-<h1>Platos</h1>
+@{
+    ViewData["Title"] = "Platos";
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">
-        Nuevo Plato
-    </a>
-</p>
+    var platos = Model?.ToList() ?? new List<RestauranteSaborCasero.Models.Plato>();
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Estado</th>
-            <th>Tiempo estimado</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+    var totalPlatos = platos.Count;
 
-    <tbody>
-        @foreach (var plato in Model)
-        {
-            <tr>
-                <td>@plato.IdPlato</td>
-                <td>@plato.Nombre</td>
-                <td>@plato.Precio</td>
-                <td>@plato.Estado</td>
-                <td>@plato.TiempoEstimado minutos</td>
+    var disponibles = platos.Count(p =>
+        p.Estado.ToString().Trim().Equals("Disponible", StringComparison.OrdinalIgnoreCase));
 
-                <td>
-                    <a asp-action="Details"
-                           asp-route-id="@plato.IdPlato">
-                        Ver
-                    </a>
-                    |
-                    <a asp-action="Edit"
-                           asp-route-id="@plato.IdPlato">
-                        Editar
-                    </a>
-                    |
-                    <a asp-action="Delete"
-                           asp-route-id="@plato.IdPlato">
-                        Eliminar
-                    </a>
-                </td>
-            </tr>
+    var noDisponibles = platos.Count(p =>
+        p.Estado.ToString().Trim().Equals("No Disponible", StringComparison.OrdinalIgnoreCase) ||
+        p.Estado.ToString().Trim().Equals("Inactivo", StringComparison.OrdinalIgnoreCase));
+
+    var precioPromedio = totalPlatos > 0
+        ? platos.Average(p => p.Precio)
+        : 0;
+}
+
+<style>
+
+    /* =========================================================
+           PLATOS - SABOR CASERO
+           ========================================================= */
+
+    .platos-page {
+        width: 100%;
+        padding-top: 14px;
+        padding-bottom: 30px;
+    }
+
+    /* =========================================================
+           VARIABLES LOCALES
+           ========================================================= */
+
+    .platos-page {
+        --platos-primary-soft: #f7eee9;
+        --platos-success-soft: #edf7f1;
+        --platos-danger-soft: #fbeeee;
+        --platos-warning-soft: #fbf4e8;
+        --platos-neutral-soft: #f4f1ee;
+        --platos-border-light: #eee8e2;
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+
+    .platos-header {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin-bottom: 24px;
+    }
+
+    .platos-header-left {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .platos-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: var(--platos-primary-soft);
+        color: var(--sc-primary);
+        border: 1px solid #eedbd3;
+        border-radius: 13px;
+    }
+
+        .platos-header-icon svg {
+            width: 25px;
+            height: 25px;
+            stroke: currentColor;
         }
-    </tbody>
-</table>
+
+    .platos-eyebrow {
+        margin: 1px 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+    }
+
+    .platos-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.9rem;
+        font-weight: 800;
+        letter-spacing: -0.7px;
+        line-height: 1.1;
+    }
+
+    .platos-description {
+        margin: 7px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.8rem;
+    }
+
+    /* =========================================================
+           BOTÓN NUEVO
+           ========================================================= */
+
+    .platos-create-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 40px;
+        padding: 0 16px;
+        background: var(--sc-primary);
+        color: #ffffff !important;
+        border: 1px solid var(--sc-primary);
+        border-radius: 10px;
+        font-size: 0.76rem;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 5px 13px rgba(139, 58, 43, 0.16);
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .platos-create-btn:hover {
+            background: var(--sc-primary-dark);
+            border-color: var(--sc-primary-dark);
+            color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 18px rgba(139, 58, 43, 0.22);
+        }
+
+        .platos-create-btn svg {
+            width: 17px;
+            height: 17px;
+            stroke: currentColor;
+        }
+
+    /* =========================================================
+           ESTADÍSTICAS
+           ========================================================= */
+
+    .platos-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 14px;
+    }
+
+    .platos-stat {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-height: 66px;
+        padding: 11px 14px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 12px;
+        box-shadow: 0 4px 16px rgba(70, 45, 30, 0.045);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .platos-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(70, 45, 30, 0.08);
+        }
+
+    .platos-stat-icon {
+        width: 37px;
+        height: 37px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        border-radius: 9px;
+    }
+
+        .platos-stat-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+        .platos-stat-icon.total {
+            background: var(--platos-primary-soft);
+            color: var(--sc-primary);
+        }
+
+        .platos-stat-icon.available {
+            background: var(--platos-success-soft);
+            color: var(--sc-success);
+        }
+
+        .platos-stat-icon.unavailable {
+            background: var(--platos-danger-soft);
+            color: var(--sc-danger);
+        }
+
+        .platos-stat-icon.average {
+            background: var(--platos-warning-soft);
+            color: #a5742f;
+        }
+
+    .platos-stat-content {
+        min-width: 0;
+    }
+
+    .platos-stat-label {
+        margin: 0 0 2px;
+        color: #8a817a;
+        font-size: 0.61rem;
+        font-weight: 800;
+        letter-spacing: 0.45px;
+        text-transform: uppercase;
+    }
+
+    .platos-stat-value {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.05rem;
+        font-weight: 800;
+        line-height: 1.1;
+    }
+
+        .platos-stat-value.primary {
+            color: var(--sc-primary);
+        }
+
+    /* =========================================================
+           BARRA DE INFORMACIÓN
+           ========================================================= */
+
+    .platos-toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        padding: 8px 15px;
+        margin-bottom: 12px;
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 11px;
+        box-shadow: 0 3px 12px rgba(70, 45, 30, 0.035);
+    }
+
+    .platos-toolbar-info {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--sc-gray);
+        font-size: 0.72rem;
+        font-weight: 600;
+    }
+
+    .platos-toolbar-icon {
+        width: 29px;
+        height: 29px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--platos-primary-soft);
+        border-radius: 7px;
+        color: var(--sc-primary);
+    }
+
+        .platos-toolbar-icon svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+        }
+
+    .platos-count {
+        color: var(--sc-dark);
+        font-weight: 800;
+    }
+
+    .platos-toolbar-label {
+        color: #978d85;
+    }
+
+    .platos-toolbar-right {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .platos-toolbar-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--sc-success);
+        border-radius: 50%;
+    }
+
+    /* =========================================================
+           TABLA
+           ========================================================= */
+
+    .platos-table-card {
+        background: #ffffff;
+        border: 1px solid var(--sc-border);
+        border-radius: 15px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .platos-table {
+        width: 100%;
+        margin: 0;
+        border-collapse: separate;
+        border-spacing: 0;
+        background: #ffffff;
+        vertical-align: middle;
+    }
+
+        /* =========================================================
+           CABECERA
+           ========================================================= */
+
+        .platos-table thead th {
+            height: 48px;
+            padding: 0 18px;
+            background: #f7f1ec;
+            border-bottom: 1px solid var(--sc-border);
+            color: #715b4e;
+            font-size: 0.66rem;
+            font-weight: 800;
+            letter-spacing: 0.65px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            vertical-align: middle;
+        }
+
+            .platos-table thead th:first-child {
+                padding-left: 22px;
+                width: 80px;
+            }
+
+            .platos-table thead th:nth-child(2) {
+                width: 32%;
+            }
+
+            .platos-table thead th:nth-child(3) {
+                width: 15%;
+            }
+
+            .platos-table thead th:nth-child(4) {
+                width: 16%;
+            }
+
+            .platos-table thead th:nth-child(5) {
+                width: 18%;
+            }
+
+            .platos-table thead th:last-child {
+                padding-right: 22px;
+                text-align: right;
+                width: 150px;
+            }
+
+        /* =========================================================
+           FILAS
+           ========================================================= */
+
+        .platos-table tbody tr {
+            height: 70px;
+            transition: background 0.15s ease;
+        }
+
+            .platos-table tbody tr:hover {
+                background: #fdf9f6;
+            }
+
+            .platos-table tbody tr:not(:last-child) td {
+                border-bottom: 1px solid var(--platos-border-light);
+            }
+
+        .platos-table tbody td {
+            padding: 0 18px;
+            color: var(--sc-dark);
+            font-size: 0.78rem;
+            vertical-align: middle;
+        }
+
+            .platos-table tbody td:first-child {
+                padding-left: 22px;
+            }
+
+            .platos-table tbody td:last-child {
+                padding-right: 22px;
+            }
+
+    /* =========================================================
+           ID
+           ========================================================= */
+
+    .plato-id {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 34px;
+        height: 27px;
+        padding: 0 7px;
+        background: #f4f0ec;
+        border: 1px solid #ebe4de;
+        border-radius: 7px;
+        color: #81746b;
+        font-size: 0.66rem;
+        font-weight: 800;
+    }
+
+    /* =========================================================
+           NOMBRE
+           ========================================================= */
+
+    .plato-name {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        min-width: 0;
+    }
+
+    .plato-avatar {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: var(--platos-primary-soft);
+        border: 1px solid #efddd6;
+        border-radius: 10px;
+        color: var(--sc-primary);
+    }
+
+        .plato-avatar svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+    .plato-name-content {
+        min-width: 0;
+    }
+
+    .plato-name-text {
+        display: block;
+        overflow: hidden;
+        color: var(--sc-dark);
+        font-size: 0.8rem;
+        font-weight: 750;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .plato-name-subtitle {
+        display: block;
+        margin-top: 2px;
+        color: #a0968e;
+        font-size: 0.61rem;
+    }
+
+    /* =========================================================
+           PRECIO
+           ========================================================= */
+
+    .plato-price {
+        color: var(--sc-primary);
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
+
+    .plato-currency {
+        margin-right: 3px;
+        color: #8c7d73;
+        font-size: 0.63rem;
+        font-weight: 700;
+    }
+
+    /* =========================================================
+           ESTADO
+           ========================================================= */
+
+    .plato-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 88px;
+        padding: 6px 9px;
+        border-radius: 7px;
+        font-size: 0.65rem;
+        font-weight: 800;
+    }
+
+    .plato-status-dot {
+        width: 6px;
+        height: 6px;
+        flex-shrink: 0;
+        border-radius: 50%;
+    }
+
+    .plato-status.available {
+        background: var(--platos-success-soft);
+        color: var(--sc-success);
+    }
+
+        .plato-status.available .plato-status-dot {
+            background: var(--sc-success);
+            box-shadow: 0 0 0 3px rgba(61, 139, 95, 0.08);
+        }
+
+    .plato-status.unavailable {
+        background: var(--platos-danger-soft);
+        color: var(--sc-danger);
+    }
+
+        .plato-status.unavailable .plato-status-dot {
+            background: var(--sc-danger);
+        }
+
+    .plato-status.other {
+        background: var(--platos-neutral-soft);
+        color: #786e67;
+    }
+
+        .plato-status.other .plato-status-dot {
+            background: #786e67;
+        }
+
+    /* =========================================================
+           TIEMPO
+           ========================================================= */
+
+    .plato-time {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #665c56;
+        font-size: 0.73rem;
+        font-weight: 650;
+    }
+
+    .plato-time-icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #faf5ec;
+        border-radius: 7px;
+        color: var(--sc-secondary);
+    }
+
+        .plato-time-icon svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+        }
+
+    /* =========================================================
+           ACCIONES
+           ========================================================= */
+
+    .plato-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 6px;
+    }
+
+    .plato-action {
+        position: relative;
+        width: 33px;
+        height: 33px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+    }
+
+        .plato-action:hover {
+            transform: translateY(-1px);
+        }
+
+        .plato-action svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        .plato-action.view {
+            background: #f4f1ee;
+            color: #6f665f;
+        }
+
+            .plato-action.view:hover {
+                background: #e9e3dd;
+                border-color: #ddd4cc;
+                color: var(--sc-dark);
+            }
+
+        .plato-action.edit {
+            background: var(--platos-warning-soft);
+            color: var(--sc-secondary-dark);
+        }
+
+            .plato-action.edit:hover {
+                background: #f1dfc2;
+                border-color: #e6ceb0;
+                color: #965f20;
+            }
+
+        .plato-action.delete {
+            background: var(--platos-danger-soft);
+            color: var(--sc-danger);
+        }
+
+            .plato-action.delete:hover {
+                background: #f4dcdc;
+                border-color: #eacaca;
+                color: #a93838;
+            }
+
+        /* =========================================================
+           TOOLTIP
+           ========================================================= */
+
+        .plato-action::after {
+            content: attr(title);
+            position: absolute;
+            left: 50%;
+            bottom: calc(100% + 7px);
+            transform: translateX(-50%) translateY(3px);
+            padding: 5px 8px;
+            background: #302b28;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 0.59rem;
+            font-weight: 700;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .plato-action:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+
+    /* =========================================================
+           ESTADO VACÍO
+           ========================================================= */
+
+    .platos-empty {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding: 70px 20px;
+    }
+
+    .platos-empty-icon {
+        width: 62px;
+        height: 62px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        background: var(--platos-primary-soft);
+        border: 1px solid #eedbd3;
+        border-radius: 15px;
+        color: var(--sc-primary);
+    }
+
+        .platos-empty-icon svg {
+            width: 27px;
+            height: 27px;
+            stroke: currentColor;
+        }
+
+    .platos-empty-title {
+        margin: 0 0 6px;
+        color: var(--sc-dark);
+        font-size: 1rem;
+        font-weight: 800;
+    }
+
+    .platos-empty-text {
+        margin: 0 0 19px;
+        color: var(--sc-gray);
+        font-size: 0.76rem;
+    }
+
+    .platos-empty-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        height: 36px;
+        padding: 0 13px;
+        background: var(--sc-primary);
+        border-radius: 8px;
+        color: #ffffff !important;
+        font-size: 0.7rem;
+        font-weight: 800;
+        text-decoration: none;
+    }
+
+        .platos-empty-btn:hover {
+            background: var(--sc-primary-dark);
+            color: #ffffff !important;
+        }
+
+        .platos-empty-btn svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+        }
+
+</style>
+
+
+<div class="platos-page">
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
+    <div class="platos-header">
+
+        <div class="platos-header-left">
+
+            <div class="platos-header-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12" cy="12" r="8" />
+                    <path d="M4 12h16" />
+                    <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="platos-eyebrow">
+                    Gestión del menú
+                </p>
+
+                <h1 class="platos-title">
+                    Platos
+                </h1>
+
+                <p class="platos-description">
+                    Administra los platos, precios, disponibilidad y tiempos de preparación.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="platos-create-btn">
+
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+
+            </svg>
+
+            Nuevo plato
+
+        </a>
+
+    </div>
+
+
+    <!-- =====================================================
+         ESTADÍSTICAS
+         ===================================================== -->
+
+    <div class="platos-stats">
+
+        <!-- TOTAL -->
+
+        <div class="platos-stat">
+
+            <div class="platos-stat-icon total">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M4 5h16v14H4z" />
+                    <path d="M8 9h8" />
+                    <path d="M8 13h5" />
+
+                </svg>
+
+            </div>
+
+            <div class="platos-stat-content">
+
+                <p class="platos-stat-label">
+                    Total platos
+                </p>
+
+                <p class="platos-stat-value">
+                    @totalPlatos
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- DISPONIBLES -->
+
+        <div class="platos-stat">
+
+            <div class="platos-stat-icon available">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m8 12 2.5 2.5L16 9" />
+
+                </svg>
+
+            </div>
+
+            <div class="platos-stat-content">
+
+                <p class="platos-stat-label">
+                    Disponibles
+                </p>
+
+                <p class="platos-stat-value">
+                    @disponibles
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- NO DISPONIBLES -->
+
+        <div class="platos-stat">
+
+            <div class="platos-stat-icon unavailable">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M8 8l8 8" />
+                    <path d="m16 8-8 8" />
+
+                </svg>
+
+            </div>
+
+            <div class="platos-stat-content">
+
+                <p class="platos-stat-label">
+                    No disponibles
+                </p>
+
+                <p class="platos-stat-value">
+                    @noDisponibles
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- PRECIO PROMEDIO -->
+
+        <div class="platos-stat">
+
+            <div class="platos-stat-icon average">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M12 3v18" />
+                    <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
+
+                </svg>
+
+            </div>
+
+            <div class="platos-stat-content">
+
+                <p class="platos-stat-label">
+                    Precio promedio
+                </p>
+
+                <p class="platos-stat-value primary">
+                    Bs @precioPromedio.ToString("0.00")
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         BARRA DE INFORMACIÓN
+         ===================================================== -->
+
+    <div class="platos-toolbar">
+
+        <div class="platos-toolbar-info">
+
+            <span class="platos-toolbar-icon">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M8 6h13" />
+                    <path d="M8 12h13" />
+                    <path d="M8 18h13" />
+
+                    <path d="M3 6h.01" />
+                    <path d="M3 12h.01" />
+                    <path d="M3 18h.01" />
+
+                </svg>
+
+            </span>
+
+            <span>
+
+                <span class="platos-count">
+                    @totalPlatos
+                </span>
+
+                <span class="platos-toolbar-label">
+                    platos registrados
+                </span>
+
+            </span>
+
+        </div>
+
+
+        <div class="platos-toolbar-right">
+
+            <span class="platos-toolbar-dot"></span>
+
+            <span class="platos-toolbar-label">
+                Catálogo del restaurante
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+
+    <div class="platos-table-card">
+
+        @if (platos.Any())
+        {
+            <table class="platos-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ID
+                        </th>
+
+                        <th>
+                            Plato
+                        </th>
+
+                        <th>
+                            Precio
+                        </th>
+
+                        <th>
+                            Estado
+                        </th>
+
+                        <th>
+                            Tiempo estimado
+                        </th>
+
+                        <th>
+                            Acciones
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @foreach (var plato in platos)
+                    {
+                        /*
+                         * Estado es un enum (EstadoPlato),
+                         * por eso primero lo convertimos a string.
+                         */
+
+                        var estadoTexto = plato.Estado
+                            .ToString()
+                            .Trim();
+
+                        var estado = estadoTexto.ToLowerInvariant();
+
+                        var estadoClase =
+                            estado == "disponible"
+                                ? "available"
+                                : estado == "no disponible" ||
+                                  estado == "inactivo"
+                                    ? "unavailable"
+                                    : "other";
+
+                        <tr>
+
+                            <!-- ID -->
+
+                            <td>
+
+                                <span class="plato-id">
+                                    #@plato.IdPlato
+                                </span>
+
+                            </td>
+
+
+                            <!-- PLATO -->
+
+                            <td>
+
+                                <div class="plato-name">
+
+                                    <span class="plato-avatar">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="12" r="8" />
+                                            <path d="M4 12h16" />
+                                            <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+
+                                        </svg>
+
+                                    </span>
+
+                                    <span class="plato-name-content">
+
+                                        <span class="plato-name-text"
+                                              title="@plato.Nombre">
+
+                                            @plato.Nombre
+
+                                        </span>
+
+                                        <span class="plato-name-subtitle">
+                                            Plato del menú
+                                        </span>
+
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- PRECIO -->
+
+                            <td>
+
+                                <span class="plato-price">
+
+                                    <span class="plato-currency">
+                                        Bs
+                                    </span>
+
+                                    @plato.Precio.ToString("0.00")
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ESTADO -->
+
+                            <td>
+
+                                <span class="plato-status @estadoClase">
+
+                                    <span class="plato-status-dot"></span>
+
+                                    @estadoTexto
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- TIEMPO -->
+
+                            <td>
+
+                                <span class="plato-time">
+
+                                    <span class="plato-time-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="12" r="9" />
+                                            <path d="M12 7v5l3 2" />
+
+                                        </svg>
+
+                                    </span>
+
+                                    @plato.TiempoEstimado min
+
+                                </span>
+
+                            </td>
+
+
+                            <!-- ACCIONES -->
+
+                            <td>
+
+                                <div class="plato-actions">
+
+                                    <!-- VER -->
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@plato.IdPlato"
+                                       class="plato-action view"
+                                       title="Ver detalles"
+                                       aria-label="Ver detalles">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
+
+                                            <circle cx="12" cy="12" r="2.5" />
+
+                                        </svg>
+
+                                    </a>
+
+
+                                    <!-- EDITAR -->
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@plato.IdPlato"
+                                       class="plato-action edit"
+                                       title="Editar plato"
+                                       aria-label="Editar plato">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M12 20h9" />
+                                            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+
+                                        </svg>
+
+                                    </a>
+
+
+                                    <!-- ELIMINAR -->
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@plato.IdPlato"
+                                       class="plato-action delete"
+                                       title="Eliminar plato"
+                                       aria-label="Eliminar plato">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M4 7h16" />
+                                            <path d="M10 11v6" />
+                                            <path d="M14 11v6" />
+                                            <path d="M6 7l1 14h10l1-14" />
+                                            <path d="M9 7V4h6v3" />
+
+                                        </svg>
+
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+        }
+        else
+        {
+            <div class="platos-empty">
+
+                <div class="platos-empty-icon">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.8"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <circle cx="12" cy="12" r="8" />
+                        <path d="M4 12h16" />
+                        <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+
+                    </svg>
+
+                </div>
+
+                <h3 class="platos-empty-title">
+                    No hay platos registrados
+                </h3>
+
+                <p class="platos-empty-text">
+                    Comienza agregando el primer plato al menú del restaurante.
+                </p>
+
+                <a asp-action="Create"
+                   class="platos-empty-btn">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <path d="M12 5v14" />
+                        <path d="M5 12h14" />
+
+                    </svg>
+
+                    Agregar primer plato
+
+                </a>
+
+            </div>
+        }
+
+    </div>
+
+</div>

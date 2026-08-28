@@ -1,61 +1,322 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.Mesa>
+﻿```cshtml
+@model IEnumerable<RestauranteSaborCasero.Models.Mesa>
 
 @{
     ViewData["Title"] = "Mesas";
 }
 
-<h1>Mesas</h1>
+<style>
+    .mesas-container {
+        padding: 30px;
+    }
 
-<p>
-    <a asp-action="Create">Registrar nueva mesa</a>
-</p>
+    .mesas-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
 
-<table>
-    <thead>
-        <tr>
-            <th>
-                Número de mesa
-            </th>
+    .mesas-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-            <th>
-                Estado
-            </th>
+    .mesas-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-            <th>
-                Acciones
-            </th>
-        </tr>
-    </thead>
+    .btn-nueva-mesa {
+        display: inline-block;
+        background-color: #198754;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
 
-    <tbody>
-        @foreach (var mesa in Model)
-        {
-            <tr>
-                <td>
-                    @mesa.NumeroMesa
-                </td>
-
-                <td>
-                    @mesa.Estado
-                </td>
-
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@mesa.IdMesa">
-                        Detalles
-                    </a>
-
-                    <a asp-action="Edit"
-                       asp-route-id="@mesa.IdMesa">
-                        Editar
-                    </a>
-
-                    <a asp-action="Delete"
-                       asp-route-id="@mesa.IdMesa">
-                        Eliminar
-                    </a>
-                </td>
-            </tr>
+        .btn-nueva-mesa:hover {
+            background-color: #157347;
+            color: white;
         }
-    </tbody>
-</table>
+
+    .mesas-card {
+        width: 900px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .tabla-mesas {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-mesas thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .tabla-mesas th {
+            padding: 15px 18px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .tabla-mesas td {
+            padding: 15px 18px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+            vertical-align: middle;
+        }
+
+        .tabla-mesas tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .numero-mesa {
+        font-size: 17px;
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .estado {
+        display: inline-block;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .estado-disponible {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .estado-ocupada {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    .estado-default {
+        background-color: #e2e3e5;
+        color: #41464b;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 7px;
+        white-space: nowrap;
+    }
+
+    .btn-accion {
+        display: inline-block;
+        text-decoration: none;
+        padding: 7px 11px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .btn-detalles {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+        .btn-detalles:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-eliminar {
+        background-color: #dc3545;
+        color: white;
+    }
+
+        .btn-eliminar:hover {
+            background-color: #bb2d3b;
+            color: white;
+        }
+
+    .tabla-vacia {
+        text-align: center;
+        padding: 45px;
+        color: #777;
+        font-size: 16px;
+    }
+</style>
+
+
+<div class="mesas-container">
+
+    <!-- ENCABEZADO -->
+    <div class="mesas-header">
+
+        <div>
+
+            <h1 class="mesas-titulo">
+                Mesas
+            </h1>
+
+            <p class="mesas-subtitulo">
+                Consulta y administra las mesas del restaurante
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="btn-nueva-mesa">
+            + Registrar nueva mesa
+        </a>
+
+    </div>
+
+
+    <!-- TABLA -->
+    <div class="mesas-card">
+
+        <table class="tabla-mesas">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Número de mesa
+                    </th>
+
+                    <th>
+                        Estado
+                    </th>
+
+                    <th>
+                        Acciones
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var mesa in Model)
+                    {
+                        var estado = mesa.Estado.ToString().ToLower();
+
+                        <tr>
+
+                            <!-- NÚMERO -->
+                            <td>
+
+                                <span class="numero-mesa">
+                                    Mesa @mesa.NumeroMesa
+                                </span>
+
+                            </td>
+
+
+                            <!-- ESTADO -->
+                            <td>
+
+                                @if (estado.Contains("dispon"))
+                                {
+                                    <span class="estado estado-disponible">
+                                        @mesa.Estado
+                                    </span>
+                                }
+                                else if (estado.Contains("ocup"))
+                                {
+                                    <span class="estado estado-ocupada">
+                                        @mesa.Estado
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="estado estado-default">
+                                        @mesa.Estado
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ACCIONES -->
+                            <td>
+
+                                <div class="acciones">
+
+                                    <a asp-action="Details"
+                                       asp-route-id="@mesa.IdMesa"
+                                       class="btn-accion btn-detalles">
+                                        Ver
+                                    </a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@mesa.IdMesa"
+                                       class="btn-accion btn-editar">
+                                        Editar
+                                    </a>
+
+                                    <a asp-action="Delete"
+                                       asp-route-id="@mesa.IdMesa"
+                                       class="btn-accion btn-eliminar">
+                                        Eliminar
+                                    </a>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="3"
+                            class="tabla-vacia">
+
+                            No hay mesas registradas.
+
+                            <br />
+
+                            Utiliza el botón
+                            <strong>“Registrar nueva mesa”</strong>
+                            para agregar la primera.
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```

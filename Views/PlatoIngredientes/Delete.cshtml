@@ -1,68 +1,252 @@
-﻿@model RestauranteSaborCasero.Models.PlatoIngrediente
+﻿```cshtml
+@model RestauranteSaborCasero.Models.PlatoIngrediente
 
 @{
-    ViewData["Title"] = "Eliminar ingrediente del plato";
+    ViewData["Title"] = "Eliminar ingrediente";
 }
 
-<div class="container mt-4">
+<style>
+    .eliminar-container {
+        padding: 30px;
+    }
 
-    <div class="mb-4">
-        <h1 class="fw-bold text-danger">Eliminar ingrediente del plato</h1>
-        <p class="text-muted mb-0">
-            Confirma si deseas quitar este ingrediente del plato.
+    .eliminar-header {
+        margin-bottom: 25px;
+    }
+
+    .eliminar-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #dc3545;
+    }
+
+    .eliminar-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .eliminar-card {
+        width: 600px;
+        background-color: white;
+        border: 1px solid #f1aeb5;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .advertencia {
+        background-color: #fff3cd;
+        border: 1px solid #ffecb5;
+        color: #664d03;
+        border-radius: 7px;
+        padding: 14px 16px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+        .advertencia strong {
+            display: block;
+            margin-bottom: 3px;
+        }
+
+    .informacion {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+    .dato-titulo {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .plato {
+        color: #198754;
+        font-size: 16px;
+    }
+
+    .ingrediente {
+        color: #343a40;
+    }
+
+    .cantidad {
+        color: #0d6efd;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding-top: 20px;
+        margin-top: 25px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-eliminar {
+        border: none;
+        background-color: #dc3545;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-eliminar:hover {
+            background-color: #bb2d3b;
+        }
+
+    .btn-cancelar {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-cancelar:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="eliminar-container">
+
+    <!-- ENCABEZADO -->
+    <div class="eliminar-header">
+
+        <h1 class="eliminar-titulo">
+            Eliminar ingrediente
+        </h1>
+
+        <p class="eliminar-subtitulo">
+            Confirma que deseas quitar este ingrediente del plato.
         </p>
+
     </div>
 
-    <div class="card border-danger shadow-sm">
-        <div class="card-body p-4">
 
-            <div class="alert alert-warning" role="alert">
-                <strong>Atención:</strong> el ingrediente dejará de estar
-                asignado a este plato.
-            </div>
+    <!-- TARJETA -->
+    <div class="eliminar-card">
 
-            <dl class="row mb-0">
+        <!-- ADVERTENCIA -->
+        <div class="advertencia">
 
-                <dt class="col-sm-4">Plato</dt>
-                <dd class="col-sm-8">
-                    <strong>@Model.Plato.Nombre</strong>
-                </dd>
+            <strong>
+                Atención
+            </strong>
 
-                <dt class="col-sm-4">Ingrediente</dt>
-                <dd class="col-sm-8">@Model.Ingrediente.Nombre</dd>
-
-                <dt class="col-sm-4">Cantidad necesaria</dt>
-                <dd class="col-sm-8">
-                    @Model.CantidadNecesaria @Model.Ingrediente.UnidadMedida
-                </dd>
-
-            </dl>
-
-            <hr />
-
-            <!-- Envía la confirmación al método DeleteConfirmed del controlador. -->
-            <form asp-action="Delete"
-                  asp-route-idPlato="@Model.IdPlato"
-                  asp-route-idIngrediente="@Model.IdIngrediente"
-                  method="post">
-
-                <!-- Mantienen la clave compuesta al enviar el formulario. -->
-                <input type="hidden" name="idPlato" value="@Model.IdPlato" />
-                <input type="hidden" name="idIngrediente" value="@Model.IdIngrediente" />
-
-                <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-danger">
-                        Sí, quitar ingrediente
-                    </button>
-
-                    <a asp-action="Index" class="btn btn-outline-secondary">
-                        Cancelar
-                    </a>
-                </div>
-
-            </form>
+            Este ingrediente dejará de formar parte de la receta de este plato.
 
         </div>
+
+
+        <!-- INFORMACIÓN -->
+        <div class="informacion">
+
+            <!-- PLATO -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Plato
+                </span>
+
+                <span class="dato-valor plato">
+                    @Model.Plato.Nombre
+                </span>
+
+            </div>
+
+
+            <!-- INGREDIENTE -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Ingrediente
+                </span>
+
+                <span class="dato-valor ingrediente">
+                    @Model.Ingrediente.Nombre
+                </span>
+
+            </div>
+
+
+            <!-- CANTIDAD -->
+            <div class="dato">
+
+                <span class="dato-titulo">
+                    Cantidad necesaria
+                </span>
+
+                <span class="dato-valor cantidad">
+                    @Model.CantidadNecesaria
+                    @Model.Ingrediente.UnidadMedida
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- CONFIRMACIÓN -->
+        <form asp-action="Delete"
+              asp-route-idPlato="@Model.IdPlato"
+              asp-route-idIngrediente="@Model.IdIngrediente"
+              method="post">
+
+            <input type="hidden"
+                   name="idPlato"
+                   value="@Model.IdPlato" />
+
+            <input type="hidden"
+                   name="idIngrediente"
+                   value="@Model.IdIngrediente" />
+
+
+            <div class="acciones">
+
+                <button type="submit"
+                        class="btn-eliminar">
+                    Sí, eliminar ingrediente
+                </button>
+
+                <a asp-action="Index"
+                   class="btn-cancelar">
+                    Cancelar
+                </a>
+
+            </div>
+
+        </form>
+
     </div>
 
 </div>
+```

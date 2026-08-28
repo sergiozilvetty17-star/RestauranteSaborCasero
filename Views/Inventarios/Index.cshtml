@@ -1,65 +1,358 @@
-﻿@model IEnumerable<RestauranteSaborCasero.Models.Inventario>
+﻿```cshtml id="k2r8mq"
+@model IEnumerable<RestauranteSaborCasero.Models.Inventario>
 
 @{
     ViewData["Title"] = "Inventario";
 }
 
-<h1>Inventario</h1>
+<style>
+    .inventario-lista-container {
+        padding: 30px;
+    }
 
-<p>
-    <a asp-action="Create">Registrar movimiento</a>
-</p>
+    .inventario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
 
-<table>
-    <thead>
-        <tr>
-            <th>Ingrediente</th>
-            <th>Tipo de movimiento</th>
-            <th>Cantidad</th>
-            <th>Unidad de medida</th>
-            <th>Fecha</th>
-            <th>Motivo</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
+    .inventario-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
 
-    <tbody>
-        @foreach (var movimiento in Model)
-        {
-            <tr>
-                <td>
-                    @movimiento.Ingrediente.Nombre
-                </td>
+    .inventario-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
 
-                <td>
-                    @movimiento.TipoMovimiento
-                </td>
+    .btn-movimiento {
+        display: inline-block;
+        background-color: #198754;
+        color: white;
+        text-decoration: none;
+        padding: 12px 20px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
 
-                <td>
-                    @movimiento.Cantidad
-                </td>
-
-                <td>
-                    @movimiento.Ingrediente.UnidadMedida
-                </td>
-
-                <td>
-                    @movimiento.Fecha.ToString("dd/MM/yyyy HH:mm")
-                </td>
-
-                <td>
-                    @(string.IsNullOrEmpty(movimiento.Motivo)
-                        ? "Sin motivo"
-                        : movimiento.Motivo)
-                </td>
-
-                <td>
-                    <a asp-action="Details"
-                       asp-route-id="@movimiento.IdInventario">
-                        Detalles
-                    </a>
-                </td>
-            </tr>
+        .btn-movimiento:hover {
+            background-color: #157347;
+            color: white;
         }
-    </tbody>
-</table>
+
+    .inventario-card {
+        width: 1150px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .tabla-inventario {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .tabla-inventario thead {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .tabla-inventario th {
+            padding: 15px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .tabla-inventario td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #eeeeee;
+            color: #444;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        .tabla-inventario tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+    .ingrediente {
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .entrada {
+        display: inline-block;
+        background-color: #d1e7dd;
+        color: #0f5132;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .salida {
+        display: inline-block;
+        background-color: #f8d7da;
+        color: #842029;
+        padding: 6px 11px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .cantidad {
+        font-size: 16px;
+        font-weight: 700;
+        color: #343a40;
+    }
+
+    .unidad {
+        color: #777;
+    }
+
+    .fecha {
+        font-weight: 600;
+        color: #555;
+        white-space: nowrap;
+    }
+
+    .motivo {
+        color: #555;
+        max-width: 250px;
+    }
+
+    .sin-motivo {
+        color: #999;
+        font-style: italic;
+    }
+
+    .btn-detalles {
+        display: inline-block;
+        background-color: #0d6efd;
+        color: white;
+        text-decoration: none;
+        padding: 7px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+        .btn-detalles:hover {
+            background-color: #0b5ed7;
+            color: white;
+        }
+
+    .tabla-vacia {
+        text-align: center;
+        padding: 45px;
+        color: #777;
+        font-size: 15px;
+    }
+</style>
+
+
+<div class="inventario-lista-container">
+
+    <!-- ENCABEZADO -->
+    <div class="inventario-header">
+
+        <div>
+
+            <h1 class="inventario-titulo">
+                Inventario
+            </h1>
+
+            <p class="inventario-subtitulo">
+                Historial de entradas y salidas de ingredientes
+            </p>
+
+        </div>
+
+
+        <a asp-action="Create"
+           class="btn-movimiento">
+            + Registrar movimiento
+        </a>
+
+    </div>
+
+
+    <!-- TABLA -->
+    <div class="inventario-card">
+
+        <table class="tabla-inventario">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Ingrediente
+                    </th>
+
+                    <th>
+                        Movimiento
+                    </th>
+
+                    <th>
+                        Cantidad
+                    </th>
+
+                    <th>
+                        Unidad
+                    </th>
+
+                    <th>
+                        Fecha
+                    </th>
+
+                    <th>
+                        Motivo
+                    </th>
+
+                    <th>
+                        Acción
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var movimiento in Model)
+                    {
+                        <tr>
+
+                            <!-- INGREDIENTE -->
+                            <td>
+
+                                <span class="ingrediente">
+                                    @movimiento.Ingrediente.Nombre
+                                </span>
+
+                            </td>
+
+
+                            <!-- TIPO -->
+                            <td>
+
+                                @if (movimiento.TipoMovimiento.ToString().ToLower().Contains("entrada"))
+                                {
+                                    <span class="entrada">
+                                        @movimiento.TipoMovimiento
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="salida">
+                                        @movimiento.TipoMovimiento
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- CANTIDAD -->
+                            <td>
+
+                                <span class="cantidad">
+                                    @movimiento.Cantidad
+                                </span>
+
+                            </td>
+
+
+                            <!-- UNIDAD -->
+                            <td>
+
+                                <span class="unidad">
+                                    @movimiento.Ingrediente.UnidadMedida
+                                </span>
+
+                            </td>
+
+
+                            <!-- FECHA -->
+                            <td>
+
+                                <span class="fecha">
+                                    @movimiento.Fecha.ToString("dd/MM/yyyy HH:mm")
+                                </span>
+
+                            </td>
+
+
+                            <!-- MOTIVO -->
+                            <td>
+
+                                @if (string.IsNullOrEmpty(movimiento.Motivo))
+                                {
+                                    <span class="sin-motivo">
+                                        Sin motivo
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="motivo">
+                                        @movimiento.Motivo
+                                    </span>
+                                }
+
+                            </td>
+
+
+                            <!-- ACCIÓN -->
+                            <td>
+
+                                <a asp-action="Details"
+                                   asp-route-id="@movimiento.IdInventario"
+                                   class="btn-detalles">
+                                    Ver detalles
+                                </a>
+
+                            </td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+
+                        <td colspan="7"
+                            class="tabla-vacia">
+
+                            No hay movimientos registrados en el inventario.
+
+                            <br />
+
+                            Utiliza
+                            <strong>“Registrar movimiento”</strong>
+                            para agregar el primero.
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+```

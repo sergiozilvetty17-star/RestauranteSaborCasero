@@ -1,83 +1,295 @@
-﻿@model RestauranteSaborCasero.Models.Usuario
+﻿```cshtml id="q7m2ld"
+@model RestauranteSaborCasero.Models.Usuario
 
 @{
     ViewData["Title"] = "Detalles del usuario";
 }
 
-<div class="container mt-4">
+<style>
+    .detalles-container {
+        padding: 30px;
+    }
 
-    <div class="mb-4">
-        <h1 class="fw-bold">Detalles del usuario</h1>
-        <p class="text-muted mb-0">
-            Información registrada del usuario seleccionado.
+    .detalles-header {
+        margin-bottom: 25px;
+    }
+
+    .detalles-titulo {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 700;
+        color: #2c2c2c;
+    }
+
+    .detalles-subtitulo {
+        margin: 6px 0 0;
+        color: #777;
+        font-size: 15px;
+    }
+
+    .detalles-card {
+        width: 600px;
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
+        padding: 30px;
+    }
+
+    .informacion {
+        border: 1px solid #eeeeee;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .dato {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .dato:last-child {
+            border-bottom: none;
+        }
+
+    .dato-nombre {
+        color: #777;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .dato-valor {
+        color: #333;
+        font-size: 14px;
+        font-weight: 600;
+        text-align: right;
+    }
+
+    .rol {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .rol-admin {
+        background-color: #f8d7da;
+        color: #842029;
+    }
+
+    .rol-cocinero {
+        background-color: #fff3cd;
+        color: #664d03;
+    }
+
+    .rol-mesero {
+        background-color: #cfe2ff;
+        color: #084298;
+    }
+
+    .estado {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .estado-activo {
+        background-color: #d1e7dd;
+        color: #0f5132;
+    }
+
+    .estado-inactivo {
+        background-color: #e2e3e5;
+        color: #41464b;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding-top: 20px;
+        margin-top: 25px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .btn-editar {
+        background-color: #ffc107;
+        color: #212529;
+        text-decoration: none;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-editar:hover {
+            background-color: #ffca2c;
+            color: #212529;
+        }
+
+    .btn-volver {
+        background-color: #6c757d;
+        color: white;
+        text-decoration: none;
+        padding: 12px 22px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+        .btn-volver:hover {
+            background-color: #5c636a;
+            color: white;
+        }
+</style>
+
+
+<div class="detalles-container">
+
+    <!-- ENCABEZADO -->
+    <div class="detalles-header">
+
+        <h1 class="detalles-titulo">
+            Detalles del usuario
+        </h1>
+
+        <p class="detalles-subtitulo">
+            Información del usuario seleccionado.
         </p>
+
     </div>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-4">
 
-            <dl class="row mb-0">
+    <!-- INFORMACIÓN -->
+    <div class="detalles-card">
 
-                <dt class="col-sm-3">ID</dt>
-                <dd class="col-sm-9">@Model.IdUsuario</dd>
+        <div class="informacion">
 
-                <dt class="col-sm-3">Nombre</dt>
-                <dd class="col-sm-9">@Model.Nombre</dd>
+            <!-- ID -->
+            <div class="dato">
 
-                <dt class="col-sm-3">Correo</dt>
-                <dd class="col-sm-9">@Model.Correo</dd>
+                <span class="dato-nombre">
+                    ID
+                </span>
 
-                <dt class="col-sm-3">Rol</dt>
-                <dd class="col-sm-9">
+                <span class="dato-valor">
+                    @Model.IdUsuario
+                </span>
+
+            </div>
+
+
+            <!-- NOMBRE -->
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Nombre
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Nombre
+                </span>
+
+            </div>
+
+
+            <!-- CORREO -->
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Correo
+                </span>
+
+                <span class="dato-valor">
+                    @Model.Correo
+                </span>
+
+            </div>
+
+
+            <!-- ROL -->
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Rol
+                </span>
+
+                <span class="dato-valor">
 
                     @if (Model.Rol == RolUsuario.Administrador)
                     {
-                        <span class="badge bg-danger">Administrador</span>
+                        <span class="rol rol-admin">
+                            Administrador
+                        </span>
                     }
                     else if (Model.Rol == RolUsuario.Cocinero)
                     {
-                        <span class="badge bg-warning text-dark">Cocinero</span>
+                        <span class="rol rol-cocinero">
+                            Cocinero
+                        </span>
                     }
                     else
                     {
-                        <span class="badge bg-primary">Mesero</span>
+                        <span class="rol rol-mesero">
+                            Mesero
+                        </span>
                     }
 
-                </dd>
+                </span>
 
-                <dt class="col-sm-3">Estado</dt>
-                <dd class="col-sm-9">
+            </div>
+
+
+            <!-- ESTADO -->
+            <div class="dato">
+
+                <span class="dato-nombre">
+                    Estado
+                </span>
+
+                <span class="dato-valor">
 
                     @if (Model.Activo)
                     {
-                        <span class="badge bg-success">Activo</span>
+                        <span class="estado estado-activo">
+                            Activo
+                        </span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">Inactivo</span>
+                        <span class="estado estado-inactivo">
+                            Inactivo
+                        </span>
                     }
 
-                </dd>
+                </span>
 
-            </dl>
-
-            <hr />
-
-            <div class="d-flex gap-2">
-                <!-- Envía al formulario de edición del usuario actual. -->
-                <a asp-action="Edit"
-                   asp-route-id="@Model.IdUsuario"
-                   class="btn btn-warning">
-                    Editar
-                </a>
-
-                <a asp-action="Index"
-                   class="btn btn-outline-secondary">
-                    Volver a la lista
-                </a>
             </div>
 
         </div>
+
+
+        <!-- BOTONES -->
+        <div class="acciones">
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.IdUsuario"
+               class="btn-editar">
+                Editar usuario
+            </a>
+
+            <a asp-action="Index"
+               class="btn-volver">
+                Volver
+            </a>
+
+        </div>
+
     </div>
 
 </div>
+```
