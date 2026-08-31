@@ -71,7 +71,10 @@ namespace RestauranteSaborCasero.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Usuario usuario)
         {
-            // Verificar si el correo ya existe.
+            // ==========================================
+            // VERIFICAR CORREO DUPLICADO
+            // ==========================================
+
             bool correoExiste = await _context.Usuarios
                 .AnyAsync(u => u.Correo == usuario.Correo);
 
@@ -83,13 +86,34 @@ namespace RestauranteSaborCasero.Controllers
                 );
             }
 
+
+            // ==========================================
+            // VALIDAR MODELO
+            // ==========================================
+
             if (ModelState.IsValid)
             {
-                _context.Add(usuario);
+                // ==========================================
+                // ENCRIPTAR CONTRASEÑA CON BCRYPT
+                // ==========================================
+
+                usuario.ContrasenaHash =
+                    BCrypt.Net.BCrypt.HashPassword(
+                        usuario.ContrasenaHash
+                    );
+
+
+                // ==========================================
+                // GUARDAR USUARIO
+                // ==========================================
+
+                _context.Usuarios.Add(usuario);
+
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
+
 
             return View(usuario);
         }
@@ -133,7 +157,25 @@ namespace RestauranteSaborCasero.Controllers
                 return NotFound();
             }
 
-            // Verificar correo duplicado.
+
+            // ==========================================
+            // BUSCAR USUARIO ORIGINAL
+            // ==========================================
+
+            var usuarioOriginal = await _context.Usuarios
+                .FirstOrDefaultAsync(u =>
+                    u.IdUsuario == id);
+
+            if (usuarioOriginal == null)
+            {
+                return NotFound();
+            }
+
+
+            // ==========================================
+            // VERIFICAR CORREO DUPLICADO
+            // ==========================================
+
             bool correoExiste = await _context.Usuarios
                 .AnyAsync(u =>
                     u.Correo == usuario.Correo &&
@@ -148,11 +190,42 @@ namespace RestauranteSaborCasero.Controllers
                 );
             }
 
+
+            // ==========================================
+            // CONSERVAR CONTRASEÑA ORIGINAL
+            // ==========================================
+
+            usuario.ContrasenaHash =
+                usuarioOriginal.ContrasenaHash;
+
+            // Quitamos la validación de contraseña porque
+            // no estamos cambiándola desde Edit.
+
+            ModelState.Remove(nameof(Usuario.ContrasenaHash));
+
+
+            // ==========================================
+            // VALIDAR MODELO
+            // ==========================================
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(usuario);
+                    // ==========================================
+                    // ACTUALIZAR DATOS
+                    // ==========================================
+
+                    usuarioOriginal.Nombre = usuario.Nombre;
+                    usuarioOriginal.Correo = usuario.Correo;
+                    usuarioOriginal.Rol = usuario.Rol;
+                    usuarioOriginal.Activo = usuario.Activo;
+
+
+                    // ==========================================
+                    // GUARDAR CAMBIOS
+                    // ==========================================
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -167,6 +240,7 @@ namespace RestauranteSaborCasero.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
 
             return View(usuario);
         }
@@ -209,6 +283,7 @@ namespace RestauranteSaborCasero.Controllers
             if (usuario != null)
             {
                 _context.Usuarios.Remove(usuario);
+
                 await _context.SaveChangesAsync();
             }
 
