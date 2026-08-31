@@ -10,9 +10,8 @@
     var disponibles = platos.Count(p =>
         p.Estado.ToString().Trim().Equals("Disponible", StringComparison.OrdinalIgnoreCase));
 
-    var noDisponibles = platos.Count(p =>
-        p.Estado.ToString().Trim().Equals("No Disponible", StringComparison.OrdinalIgnoreCase) ||
-        p.Estado.ToString().Trim().Equals("Inactivo", StringComparison.OrdinalIgnoreCase));
+    var agotados = platos.Count(p =>
+        p.Estado.ToString().Trim().Equals("Agotado", StringComparison.OrdinalIgnoreCase));
 
     var precioPromedio = totalPlatos > 0
         ? platos.Average(p => p.Precio)
@@ -900,7 +899,7 @@
                 </p>
 
                 <p class="platos-stat-value">
-                    @noDisponibles
+                    @agotados
                 </p>
 
             </div>

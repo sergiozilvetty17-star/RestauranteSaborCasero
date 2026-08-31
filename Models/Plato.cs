@@ -7,7 +7,7 @@ namespace RestauranteSaborCasero.Models
     public enum EstadoPlato
     {
         Disponible,
-        NoDisponible
+        Agotado
     }
 
     public class Plato

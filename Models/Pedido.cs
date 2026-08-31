@@ -1,4 +1,5 @@
-﻿using RestauranteSaborCasero.Models;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace RestauranteSaborCasero.Models
@@ -38,27 +39,21 @@ namespace RestauranteSaborCasero.Models
         // HORAS DEL PEDIDO
         // ==========================================
 
-        // Hora en que se creó el pedido
         [Required]
         public TimeSpan HoraInicio { get; set; }
 
-        // Hora en que terminó el pedido
         public TimeSpan? HoraFin { get; set; }
 
-        // Hora en que pasó a EnPreparacion
         public TimeSpan? HoraEnPreparacion { get; set; }
 
-        // Hora en que pasó a Listo
         public TimeSpan? HoraListo { get; set; }
 
-        // Hora en que pasó a Entregado
         public TimeSpan? HoraEntregado { get; set; }
 
-        // Hora en que fue Cancelado
         public TimeSpan? HoraCancelado { get; set; }
 
         // ==========================================
-        // ESTADO DEL PEDIDO
+        // ESTADO
         // ==========================================
 
         [Required]
@@ -69,10 +64,13 @@ namespace RestauranteSaborCasero.Models
         // RELACIONES
         // ==========================================
 
+        [ValidateNever]
         public Usuario Usuario { get; set; } = null!;
 
+        [ValidateNever]
         public Mesa? Mesa { get; set; }
 
+        [ValidateNever]
         public ICollection<DetallePedido> Detalles { get; set; }
             = new List<DetallePedido>();
     }

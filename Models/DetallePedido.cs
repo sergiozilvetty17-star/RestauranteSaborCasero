@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace RestauranteSaborCasero.Models
 {
@@ -20,9 +22,14 @@ namespace RestauranteSaborCasero.Models
         [StringLength(255)]
         public string? IndicacionesExtra { get; set; }
 
-        // Relaciones
+        // ==========================================
+        // RELACIONES
+        // ==========================================
+
+        [ValidateNever]
         public Pedido Pedido { get; set; } = null!;
 
+        [ValidateNever]
         public Plato Plato { get; set; } = null!;
     }
 }

@@ -40,7 +40,7 @@ namespace proyecto_final.Migrations
 
                     b.HasIndex("IdUsuario");
 
-                    b.ToTable("Compras");
+                    b.ToTable("Compras", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.DetalleCompra", b =>
@@ -64,7 +64,7 @@ namespace proyecto_final.Migrations
 
                     b.HasIndex("IdIngrediente");
 
-                    b.ToTable("DetalleCompras");
+                    b.ToTable("DetalleCompras", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.DetallePedido", b =>
@@ -92,7 +92,7 @@ namespace proyecto_final.Migrations
 
                     b.HasIndex("IdPlato");
 
-                    b.ToTable("DetallePedidos");
+                    b.ToTable("DetallePedidos", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Ingrediente", b =>
@@ -122,7 +122,7 @@ namespace proyecto_final.Migrations
 
                     b.HasKey("IdIngrediente");
 
-                    b.ToTable("Ingredientes");
+                    b.ToTable("Ingredientes", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Inventario", b =>
@@ -151,7 +151,7 @@ namespace proyecto_final.Migrations
 
                     b.HasIndex("IdIngrediente");
 
-                    b.ToTable("Inventarios");
+                    b.ToTable("Inventarios", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Mesa", b =>
@@ -171,7 +171,7 @@ namespace proyecto_final.Migrations
                     b.HasIndex("NumeroMesa")
                         .IsUnique();
 
-                    b.ToTable("Mesas");
+                    b.ToTable("Mesas", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Pedido", b =>
@@ -207,7 +207,7 @@ namespace proyecto_final.Migrations
 
                     b.HasIndex("IdMesero");
 
-                    b.ToTable("Pedidos");
+                    b.ToTable("Pedidos", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Plato", b =>
@@ -232,7 +232,7 @@ namespace proyecto_final.Migrations
 
                     b.HasKey("IdPlato");
 
-                    b.ToTable("Platos");
+                    b.ToTable("Platos", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.PlatoIngrediente", b =>
@@ -250,7 +250,7 @@ namespace proyecto_final.Migrations
 
                     b.HasIndex("IdIngrediente");
 
-                    b.ToTable("PlatoIngredientes");
+                    b.ToTable("PlatoIngredientes", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Usuario", b =>
@@ -285,7 +285,7 @@ namespace proyecto_final.Migrations
                     b.HasIndex("Correo")
                         .IsUnique();
 
-                    b.ToTable("Usuarios");
+                    b.ToTable("Usuarios", (string)null);
                 });
 
             modelBuilder.Entity("RestauranteSaborCasero.Models.Compra", b =>

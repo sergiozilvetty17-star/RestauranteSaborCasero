@@ -4,8 +4,19 @@ using RestauranteSaborCasero.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration
-    .GetConnectionString("DefaultConnection");
+// ======================================================
+// CONEXIÓN A BASE DE DATOS
+// ======================================================
+
+string connectionString = builder.Configuration
+    .GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException(
+        "No se encontró la cadena de conexión 'DefaultConnection'."
+    );
+
+// ======================================================
+// ENTITY FRAMEWORK CORE
+// ======================================================
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseMySql(
@@ -14,6 +25,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
+// ======================================================
+// AUTENTICACIÓN
+// ======================================================
+
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme
 )
@@ -21,23 +36,80 @@ builder.Services.AddAuthentication(
 {
     options.LoginPath = "/Login";
     options.AccessDeniedPath = "/Login/AccessDenied";
+
     options.ExpireTimeSpan = TimeSpan.FromHours(8);
+
     options.SlidingExpiration = true;
 });
 
 builder.Services.AddAuthorization();
 
+// ======================================================
+// MVC
+// ======================================================
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// ======================================================
+// BASE DE DATOS
+// ======================================================
 
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider
         .GetRequiredService<ApplicationDbContext>();
 
-    await DbSeeder.SeedAsync(context);
+    try
+    {
+        Console.WriteLine("Verificando base de datos...");
+
+        // Aplicar migraciones pendientes
+        await context.Database.MigrateAsync();
+
+        Console.WriteLine(
+            "Base de datos actualizada correctamente."
+        );
+
+        // Cargar datos iniciales
+        await DbSeeder.SeedAsync(context);
+
+        Console.WriteLine(
+            "Datos iniciales cargados correctamente."
+        );
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(
+            "========================================"
+        );
+
+        Console.WriteLine(
+            "ERROR AL INICIALIZAR LA BASE DE DATOS"
+        );
+
+        Console.WriteLine(
+            "========================================"
+        );
+
+        Console.WriteLine(ex.Message);
+
+        if (ex.InnerException != null)
+        {
+            Console.WriteLine("DETALLE:");
+            Console.WriteLine(
+                ex.InnerException.Message
+            );
+        }
+
+        throw;
+    }
 }
+
+// ======================================================
+// PIPELINE
+// ======================================================
 
 if (!app.Environment.IsDevelopment())
 {
@@ -54,6 +126,10 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// ======================================================
+// RUTA PRINCIPAL
+// ======================================================
 
 app.MapControllerRoute(
     name: "default",

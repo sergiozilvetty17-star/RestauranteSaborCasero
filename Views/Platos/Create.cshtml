@@ -1,4 +1,5 @@
 ﻿@model RestauranteSaborCasero.Models.Plato
+@using RestauranteSaborCasero.Models
 
 @{
     ViewData["Title"] = "Nuevo Plato";
@@ -6,8 +7,8 @@
 
 <style>
     /* =========================================================
-           CREAR PLATO - SABOR CASERO
-           ========================================================= */
+               CREAR PLATO - SABOR CASERO
+               ========================================================= */
 
     .plato-create-page {
         width: 100%;
@@ -15,8 +16,8 @@
     }
 
     /* =========================================================
-           ENCABEZADO
-           ========================================================= */
+               ENCABEZADO
+               ========================================================= */
 
     .plato-create-header {
         display: flex;
@@ -67,8 +68,8 @@
     }
 
     /* =========================================================
-           CONTENEDOR PRINCIPAL
-           ========================================================= */
+               CONTENEDOR PRINCIPAL
+               ========================================================= */
 
     .plato-create-layout {
         display: grid;
@@ -78,8 +79,8 @@
     }
 
     /* =========================================================
-           FORMULARIO
-           ========================================================= */
+               FORMULARIO
+               ========================================================= */
 
     .plato-form-card {
         background: #ffffff;
@@ -127,8 +128,8 @@
     }
 
     /* =========================================================
-           CAMPOS
-           ========================================================= */
+               CAMPOS
+               ========================================================= */
 
     .plato-form-group {
         margin-bottom: 20px;
@@ -162,6 +163,7 @@
         color: #9a8d84;
         transform: translateY(-50%);
         pointer-events: none;
+        z-index: 2;
     }
 
         .plato-form-input-icon svg {
@@ -181,6 +183,7 @@
         font-size: 0.8rem;
         outline: none;
         transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        box-sizing: border-box;
     }
 
         .plato-form-input:hover {
@@ -197,15 +200,47 @@
             color: #aaa19a;
         }
 
-        /* El campo de número no debe mostrar demasiada decoración */
-
         .plato-form-input[type="number"] {
             padding-right: 14px;
         }
 
     /* =========================================================
-           CAMPOS EN DOS COLUMNAS
-           ========================================================= */
+               SELECT ESTADO
+               ========================================================= */
+
+    .plato-form-select {
+        width: 100%;
+        height: 45px;
+        padding: 0 38px 0 40px;
+        background: #ffffff;
+        border: 1px solid #ddd5cc;
+        border-radius: 9px;
+        color: var(--sc-dark);
+        font-size: 0.8rem;
+        outline: none;
+        cursor: pointer;
+        appearance: auto;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        box-sizing: border-box;
+    }
+
+        .plato-form-select:hover {
+            border-color: #cfc2b8;
+        }
+
+        .plato-form-select:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.09);
+        }
+
+        .plato-form-select option {
+            color: var(--sc-dark);
+            background: #ffffff;
+        }
+
+    /* =========================================================
+               CAMPOS EN DOS COLUMNAS
+               ========================================================= */
 
     .plato-form-row {
         display: grid;
@@ -214,8 +249,8 @@
     }
 
     /* =========================================================
-           AYUDA
-           ========================================================= */
+               AYUDA
+               ========================================================= */
 
     .plato-form-help {
         margin: 6px 0 0;
@@ -225,8 +260,8 @@
     }
 
     /* =========================================================
-           VALIDACIÓN
-           ========================================================= */
+               VALIDACIÓN
+               ========================================================= */
 
     .plato-validation {
         display: block;
@@ -237,8 +272,8 @@
     }
 
     /* =========================================================
-           BOTONES
-           ========================================================= */
+               BOTONES
+               ========================================================= */
 
     .plato-form-actions {
         display: flex;
@@ -298,8 +333,8 @@
         }
 
     /* =========================================================
-           TARJETA LATERAL
-           ========================================================= */
+               TARJETA LATERAL
+               ========================================================= */
 
     .plato-info-card {
         background: #ffffff;
@@ -311,7 +346,7 @@
 
     .plato-info-top {
         padding: 23px 21px;
-        background: linear-gradient( 145deg, #8b3a2b 0%, #68291f 100% );
+        background: linear-gradient(145deg, #8b3a2b 0%, #68291f 100%);
         color: #ffffff;
     }
 
@@ -399,8 +434,8 @@
     }
 
     /* =========================================================
-           LÍNEA INFERIOR
-           ========================================================= */
+               LÍNEA INFERIOR
+               ========================================================= */
 
     .plato-info-footer {
         padding: 13px 21px;
@@ -410,14 +445,45 @@
         font-size: 0.65rem;
         line-height: 1.4;
     }
-</style>
 
+    /* =========================================================
+               RESPONSIVE
+               ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .plato-create-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .plato-info-card {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 600px) {
+
+        .plato-form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .plato-form-body {
+            padding: 18px;
+        }
+
+        .plato-create-title {
+            font-size: 1.6rem;
+        }
+    }
+</style>
 
 <div class="plato-create-page">
 
+    ```
     <!-- =====================================================
-         ENCABEZADO
-         ===================================================== -->
+     ENCABEZADO
+     ===================================================== -->
 
     <div class="plato-create-header">
 
@@ -458,15 +524,15 @@
 
 
     <!-- =====================================================
-         CONTENIDO
-         ===================================================== -->
+     CONTENIDO
+     ===================================================== -->
 
     <div class="plato-create-layout">
 
 
         <!-- =================================================
-             FORMULARIO
-             ================================================= -->
+         FORMULARIO
+         ================================================= -->
 
         <div class="plato-form-card">
 
@@ -688,14 +754,23 @@
 
                             </span>
 
-                            <input asp-for="Estado"
-                                   class="plato-form-input"
-                                   placeholder="Ej. Disponible" />
+                            <select asp-for="Estado"
+                                    class="plato-form-select">
+
+                                <option value="@EstadoPlato.Disponible">
+                                    Disponible
+                                </option>
+
+                                <option value="@EstadoPlato.Agotado">
+                                    Agotado
+                                </option>
+
+                            </select>
 
                         </div>
 
                         <p class="plato-form-help">
-                            Indica si el plato está disponible para los clientes.
+                            Selecciona si el plato está disponible o agotado.
                         </p>
 
                         <span asp-validation-for="Estado"
@@ -759,8 +834,8 @@
 
 
         <!-- =================================================
-             INFORMACIÓN LATERAL
-             ================================================= -->
+         INFORMACIÓN LATERAL
+         ================================================= -->
 
         <aside class="plato-info-card">
 
@@ -911,13 +986,12 @@
         </aside>
 
     </div>
+    ```
 
 </div>
-
 
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-```

@@ -1,4 +1,5 @@
-﻿@model RestauranteSaborCasero.Models.Ingrediente
+﻿```cshtml
+@model RestauranteSaborCasero.Models.Ingrediente
 
 @{
     ViewData["Title"] = "Crear Ingrediente";
@@ -28,6 +29,8 @@
 
     .ingrediente-card {
         width: 600px;
+        max-width: 100%;
+        box-sizing: border-box;
         background-color: white;
         border: 1px solid #e5e5e5;
         border-radius: 10px;
@@ -55,7 +58,8 @@
             color: #333;
         }
 
-        .campo input {
+        .campo input,
+        .campo select {
             width: 100%;
             box-sizing: border-box;
             padding: 12px;
@@ -66,17 +70,30 @@
             font-size: 15px;
         }
 
-            .campo input:focus {
+            .campo input:focus,
+            .campo select:focus {
                 outline: none;
                 border-color: #198754;
                 box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
             }
+
+        .campo select {
+            cursor: pointer;
+        }
 
     .ayuda {
         display: block;
         margin-top: 6px;
         color: #888;
         font-size: 12px;
+    }
+
+    .validacion {
+        display: block;
+        margin-top: 5px;
+        color: #dc3545;
+        font-size: 12px;
+        font-weight: 600;
     }
 
     .acciones {
@@ -117,12 +134,31 @@
             background-color: #5c636a;
             color: white;
         }
+
+        .ingrediente-card {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .acciones {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .btn-guardar,
+        .btn-volver {
+            text-align: center;
+        }
+    }
 </style>
 
 
 <div class="ingrediente-container">
 
-    <!-- ENCABEZADO -->
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
     <div class="ingrediente-header">
 
         <h1 class="ingrediente-titulo">
@@ -136,7 +172,10 @@
     </div>
 
 
-    <!-- FORMULARIO -->
+    <!-- =====================================================
+         FORMULARIO
+         ===================================================== -->
+
     <div class="ingrediente-card">
 
         <h2 class="seccion-titulo">
@@ -147,8 +186,13 @@
         <form asp-action="Create"
               method="post">
 
+            @Html.AntiForgeryToken()
 
-            <!-- NOMBRE -->
+
+            <!-- =================================================
+                 NOMBRE
+                 ================================================= -->
+
             <div class="campo">
 
                 <label asp-for="Nombre">
@@ -159,10 +203,17 @@
                        type="text"
                        placeholder="Ejemplo: Tomate" />
 
+                <span asp-validation-for="Nombre"
+                      class="validacion">
+                </span>
+
             </div>
 
 
-            <!-- CANTIDAD DISPONIBLE -->
+            <!-- =================================================
+                 CANTIDAD DISPONIBLE
+                 ================================================= -->
+
             <div class="campo">
 
                 <label asp-for="CantidadDisponible">
@@ -179,10 +230,17 @@
                     Cantidad que actualmente tienes en inventario.
                 </span>
 
+                <span asp-validation-for="CantidadDisponible"
+                      class="validacion">
+                </span>
+
             </div>
 
 
-            <!-- CANTIDAD MÍNIMA -->
+            <!-- =================================================
+                 CANTIDAD MÍNIMA
+                 ================================================= -->
+
             <div class="campo">
 
                 <label asp-for="CantidadMinima">
@@ -199,10 +257,17 @@
                     Cuando el inventario llegue a este nivel se considera bajo.
                 </span>
 
+                <span asp-validation-for="CantidadMinima"
+                      class="validacion">
+                </span>
+
             </div>
 
 
-            <!-- UNIDAD -->
+            <!-- =================================================
+                 UNIDAD DE MEDIDA
+                 ================================================= -->
+
             <div class="campo">
 
                 <label asp-for="UnidadMedida">
@@ -217,29 +282,51 @@
                     Indica cómo se mide el ingrediente.
                 </span>
 
+                <span asp-validation-for="UnidadMedida"
+                      class="validacion">
+                </span>
+
             </div>
 
 
-            <!-- ESTADO -->
+            <!-- =================================================
+                 ESTADO
+                 ================================================= -->
+
             <div class="campo">
 
                 <label asp-for="Estado">
                     Estado
                 </label>
 
-                <input asp-for="Estado"
-                       type="text"
-                       value="Disponible"
-                       placeholder="Disponible" />
+                <select asp-for="Estado"
+                        class="form-select">
+
+                    <option value="@EstadoIngrediente.Disponible">
+                        Disponible
+                    </option>
+
+                    <option value="@EstadoIngrediente.Agotado">
+                        Agotado
+                    </option>
+
+                </select>
 
                 <span class="ayuda">
-                    Estado actual del ingrediente.
+                    Selecciona el estado actual del ingrediente.
+                </span>
+
+                <span asp-validation-for="Estado"
+                      class="validacion">
                 </span>
 
             </div>
 
 
-            <!-- BOTONES -->
+            <!-- =================================================
+                 BOTONES
+                 ================================================= -->
+
             <div class="acciones">
 
                 <button type="submit"
@@ -260,3 +347,10 @@
 
 </div>
 
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+```
