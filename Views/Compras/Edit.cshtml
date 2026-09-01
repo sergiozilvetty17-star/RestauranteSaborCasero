@@ -140,6 +140,84 @@
             background-color: #5c636a;
             color: white;
         }
+
+    .ingredientes-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        margin-top: 30px;
+        border-top: 1px solid #eeeeee;
+        padding-top: 20px;
+    }
+
+    .btn-agregar-ingrediente {
+        background-color: #0d6efd;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 7px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+        .btn-agregar-ingrediente:hover {
+            background-color: #0b5ed7;
+        }
+
+    .ingredientes-container {
+        margin-bottom: 25px;
+    }
+
+    .ingrediente-row {
+        display: flex;
+        gap: 15px;
+        align-items: flex-end;
+        margin-bottom: 15px;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+
+    .ingrediente-campo {
+        flex: 1;
+    }
+
+        .ingrediente-campo label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .ingrediente-campo select, .ingrediente-campo input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+    .btn-eliminar-ingrediente {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: bold;
+        cursor: pointer;
+        height: fit-content;
+    }
+
+    .sin-ingredientes {
+        text-align: center;
+        color: #777;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px dashed #ced4da;
+    }
 </style>
 
 
@@ -249,7 +327,52 @@
                 </span>
 
             </div>
+            <div class="ingredientes-header">
+                <h2 class="seccion-titulo" style="border: none; padding: 0; margin: 0;">Ingredientes de la compra</h2>
+                <button type="button" class="btn-agregar-ingrediente" onclick="agregarIngrediente()">+ Agregar ingrediente</button>
+            </div>
 
+            <div id="ingredientes-container" class="ingredientes-container">
+                @if (Model?.Detalles != null && Model.Detalles.Count > 0)
+                {
+                    var indice = 0;
+                    foreach (var detalle in Model.Detalles)
+                    {
+                        <div class="ingrediente-row">
+                            <div class="ingrediente-campo">
+                                <label>Ingrediente</label>
+                                <select name="Detalles[@indice].IdIngrediente" required>
+                                    <option value="">Seleccione...</option>
+                                    @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
+                                    {
+                                        if (ing.IdIngrediente == detalle.IdIngrediente)
+                                        {
+                                            <option value="@ing.IdIngrediente" selected>@ing.Nombre (@ing.UnidadMedida)</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="ingrediente-campo">
+                                <label>Cantidad</label>
+                                <input type="number" name="Detalles[@indice].Cantidad" value="@detalle.Cantidad" step="0.01" min="0.01" required />
+                            </div>
+                            <button type="button" class="btn-eliminar-ingrediente" onclick="eliminarIngrediente(this)">X</button>
+                        </div>
+                        indice++;
+                    }
+                }
+                else
+                {
+                    <div class="sin-ingredientes" id="mensaje-sin-ingredientes">
+                        No has agregado ningún ingrediente.<br />
+                        Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
+                    </div>
+                }
+            </div>
 
             <!-- ACCIONES -->
             <div class="acciones">
@@ -275,5 +398,50 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        let indiceIngrediente = @(Model?.Detalles?.Count ?? 0);
+
+        function agregarIngrediente() {
+            const container = document.getElementById("ingredientes-container");
+            const mensaje = document.getElementById("mensaje-sin-ingredientes");
+            if (mensaje) mensaje.remove();
+
+            const fila = document.createElement("div");
+            fila.className = "ingrediente-row";
+            fila.innerHTML = `
+                        <div class="ingrediente-campo">
+                            <label>Ingrediente</label>
+                            <select name="Detalles[${indiceIngrediente}].IdIngrediente" required>
+                                <option value="">Seleccione...</option>
+                                @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
+                                {
+                                        <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="ingrediente-campo">
+                            <label>Cantidad</label>
+                            <input type="number" name="Detalles[${indiceIngrediente}].Cantidad" value="1" step="0.01" min="0.01" required />
+                        </div>
+                        <button type="button" class="btn-eliminar-ingrediente" onclick="eliminarIngrediente(this)">X</button>
+                    `;
+            container.appendChild(fila);
+            indiceIngrediente++;
+        }
+
+        function eliminarIngrediente(boton) {
+            const fila = boton.closest(".ingrediente-row");
+            if (fila) fila.remove();
+
+            const filas = document.querySelectorAll(".ingrediente-row");
+            if (filas.length === 0) {
+                const container = document.getElementById("ingredientes-container");
+                container.innerHTML = `
+                            <div class="sin-ingredientes" id="mensaje-sin-ingredientes">
+                                No has agregado ningún ingrediente.<br />
+                                Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
+                            </div>`;
+            }
+        }
+    </script>
 }
-```
