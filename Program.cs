@@ -50,6 +50,14 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddControllersWithViews();
 
+// ======================================================
+// RED LOCAL
+// ======================================================
+
+// Permite acceder al sistema desde otros dispositivos
+// conectados a la misma red.
+builder.WebHost.UseUrls("http://0.0.0.0:5133");
+
 var app = builder.Build();
 
 // ======================================================
@@ -117,7 +125,9 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// IMPORTANTE:
+// No usamos UseHttpsRedirection() mientras probamos
+// el acceso HTTP dentro de la red local.
 
 app.UseStaticFiles();
 

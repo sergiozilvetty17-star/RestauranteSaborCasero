@@ -1,5 +1,4 @@
-﻿
-@model IEnumerable<RestauranteSaborCasero.Models.Pedido>
+﻿@model IEnumerable<RestauranteSaborCasero.Models.Pedido>
 
 @{
     ViewData["Title"] = "Pedidos";
@@ -34,10 +33,10 @@
         background-color: #198754;
         color: white;
         text-decoration: none;
-        padding: 12px 20px;
+        padding: 14px 22px;
         border-radius: 8px;
-        font-weight: 600;
-        display: inline-block;
+        font-weight: 700;
+        font-size: 16px;
     }
 
         .btn-nuevo:hover {
@@ -45,49 +44,62 @@
             color: white;
         }
 
-    .tabla-contenedor {
+    /* ==========================================
+           TARJETAS DE PEDIDOS
+           ========================================== */
+
+    .pedidos-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
+        gap: 20px;
+    }
+
+    .pedido-card {
         background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        border: 1px solid #e5e5e5;
+        border: 1px solid #e1e1e1;
+        border-radius: 12px;
+        padding: 22px;
     }
 
-    .tabla-pedidos {
-        width: 100%;
-        border-collapse: collapse;
+        .pedido-card:hover {
+            border-color: #c8c8c8;
+        }
+
+    /* ==========================================
+           CABECERA DEL PEDIDO
+           ========================================== */
+
+    .pedido-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 18px;
     }
 
-        .tabla-pedidos thead {
-            background-color: #343a40;
-            color: white;
-        }
-
-        .tabla-pedidos th {
-            padding: 15px;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .tabla-pedidos td {
-            padding: 14px 15px;
-            border-bottom: 1px solid #eeeeee;
-            color: #444;
-            vertical-align: middle;
-        }
-
-        .tabla-pedidos tbody tr:hover {
-            background-color: #f8f9fa;
-        }
-
-    .pedido-id {
-        font-weight: 700;
+    .pedido-numero {
+        font-size: 24px;
+        font-weight: 800;
         color: #343a40;
     }
 
-    .sin-mesa {
-        color: #999;
-        font-style: italic;
+    /* ==========================================
+           INFORMACIÓN
+           ========================================== */
+
+    .pedido-info {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+    }
+
+    .info-item {
+        background-color: #f1f3f5;
+        padding: 9px 13px;
+        border-radius: 7px;
+        font-size: 14px;
+        color: #444;
+        font-weight: 600;
     }
 
     /* ==========================================
@@ -96,11 +108,10 @@
 
     .estado {
         display: inline-block;
-        padding: 6px 10px;
+        padding: 9px 14px;
         border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 700;
     }
 
     .estado-pendiente {
@@ -129,172 +140,176 @@
     }
 
     /* ==========================================
-           HORAS
+           PLATOS
            ========================================== */
 
-    .horas {
-        font-size: 12px;
-        line-height: 1.7;
-        color: #666;
-        min-width: 150px;
+    .platos-titulo {
+        font-size: 16px;
+        font-weight: 700;
+        color: #343a40;
+        margin-bottom: 10px;
     }
 
-        .horas strong {
-            color: #444;
+    .plato {
+        padding: 12px 0;
+        border-bottom: 1px solid #eeeeee;
+    }
+
+        .plato:last-child {
+            border-bottom: none;
         }
 
-    .hora-activa {
+    .plato-nombre {
+        font-size: 16px;
+        font-weight: 700;
+        color: #333;
+    }
+
+    .plato-cantidad {
         color: #198754;
-        font-weight: 600;
+        font-weight: 800;
+        margin-right: 6px;
     }
 
     /* ==========================================
-           ACCIONES
+           INDICACIONES
+           ========================================== */
+
+    .indicacion {
+        margin-top: 6px;
+        padding: 8px 10px;
+        background-color: #fff8e1;
+        border-left: 4px solid #ffc107;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #5f5100;
+    }
+
+        .indicacion strong {
+            color: #443b00;
+        }
+
+    /* ==========================================
+           ACCIONES GRANDES
            ========================================== */
 
     .acciones {
-        display: flex;
-        flex-direction: column;
-        gap: 7px;
-        white-space: nowrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 22px;
     }
 
-    .acciones-principales {
-        display: flex;
-        gap: 8px;
-    }
-
-    .btn-accion {
-        padding: 7px 12px;
-        border-radius: 6px;
-        text-decoration: none;
+    .btn-estado-grande,
+    .btn-cancelar-grande {
+        min-height: 65px;
         border: none;
-        font-size: 13px;
-        font-weight: 600;
+        border-radius: 10px;
+        font-size: 17px;
+        font-weight: 800;
         cursor: pointer;
-        display: inline-block;
+        padding: 12px;
     }
 
-    .btn-detalles {
-        background-color: #0d6efd;
-        color: white;
-    }
-
-        .btn-detalles:hover {
-            background-color: #0b5ed7;
-            color: white;
-        }
-
-    .btn-editar {
-        background-color: #ffc107;
-        color: #212529;
-    }
-
-        .btn-editar:hover {
-            background-color: #ffca2c;
-            color: #212529;
-        }
-
-    /* ==========================================
-           BOTONES DE ESTADO
-           ========================================== */
-
-    .cambio-estado {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-
-    .btn-estado {
-        padding: 6px 9px;
-        border: none;
-        border-radius: 5px;
-        font-size: 11px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-    .btn-preparacion {
-        background-color: #0d6efd;
-        color: white;
-    }
-
-        .btn-preparacion:hover {
-            background-color: #0b5ed7;
-        }
-
-    .btn-listo {
-        background-color: #0dcaf0;
-        color: #055160;
-    }
-
-        .btn-listo:hover {
-            background-color: #31d2f2;
-        }
-
-    .btn-entregado {
+    .btn-estado-grande {
         background-color: #198754;
         color: white;
     }
 
-        .btn-entregado:hover {
+        .btn-estado-grande:hover {
             background-color: #157347;
         }
 
-    .btn-cancelar {
+    .btn-cancelar-grande {
         background-color: #dc3545;
         color: white;
     }
 
-        .btn-cancelar:hover {
+        .btn-cancelar-grande:hover {
             background-color: #bb2d3b;
         }
 
-    .estado-final {
-        color: #777;
-        font-size: 12px;
-        font-style: italic;
+    /* ==========================================
+           PEDIDO FINALIZADO
+           ========================================== */
+
+    .pedido-finalizado {
+        margin-top: 20px;
+        padding: 14px;
+        text-align: center;
+        border-radius: 8px;
+        background-color: #f1f3f5;
+        color: #666;
+        font-weight: 600;
     }
 
+    /* ==========================================
+           SIN PEDIDOS
+           ========================================== */
+
     .tabla-vacia {
+        background-color: white;
+        border: 1px solid #e5e5e5;
+        border-radius: 10px;
         text-align: center;
-        padding: 45px;
+        padding: 50px;
         color: #777;
-        font-size: 16px;
+        font-size: 17px;
     }
 
     /* ==========================================
            RESPONSIVE
            ========================================== */
 
-    @@media (max-width: 1200px) {
-        .tabla-contenedor {
-            overflow-x: auto;
+    @@media (max-width: 700px) {
+
+        .pedidos-container {
+            padding: 15px;
         }
 
-        .tabla-pedidos {
-            min-width: 1100px;
+        .pedidos-header {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+
+        .btn-nuevo {
+            text-align: center;
+        }
+
+        .pedidos-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .acciones {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-estado-grande,
+        .btn-cancelar-grande {
+            min-height: 70px;
         }
     }
 </style>
 
-
 <div class="pedidos-container">
 
     <!-- ==========================================
-         ENCABEZADO
-         ========================================== -->
+     ENCABEZADO
+     ========================================== -->
 
     <div class="pedidos-header">
 
         <div>
+
             <h1 class="pedidos-titulo">
                 Pedidos
             </h1>
 
             <p class="pedidos-subtitulo">
-                Consulta y administra los pedidos del restaurante
+                Gestiona los pedidos del restaurante
             </p>
+
         </div>
 
         <a asp-action="Create" class="btn-nuevo">
@@ -305,430 +320,330 @@
 
 
     <!-- ==========================================
-         TABLA
-         ========================================== -->
+     PEDIDOS
+     ========================================== -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="pedidos-grid">
 
-    <div class="tabla-contenedor">
+            @foreach (var pedido in Model)
+            {
+                <div class="pedido-card">
 
-        <table class="tabla-pedidos">
+                    <!-- CABECERA -->
 
-            <thead>
-                <tr>
-                    <th>Pedido</th>
-                    <th>Mesero</th>
-                    <th>Mesa</th>
-                    <th>Tipo</th>
-                    <th>Fecha</th>
-                    <th>Hora inicio</th>
-                    <th>Estado</th>
-                    <th>Horas</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
+                    <div class="pedido-header">
+
+                        <span class="pedido-numero">
+                            Pedido #@pedido.IdPedido
+                        </span>
 
 
-            <tbody>
+                        @switch (pedido.Estado)
+                        {
+                            case EstadoPedido.Pendiente:
 
-                @if (Model != null && Model.Any())
-                {
-                    @foreach (var pedido in Model)
-                    {
-                        <tr>
-
-                            <!-- ==================================
-                                 PEDIDO
-                                 ================================== -->
-
-                            <td>
-                                <span class="pedido-id">
-                                    #@pedido.IdPedido
+                                <span class="estado estado-pendiente">
+                                    Pendiente
                                 </span>
-                            </td>
+
+                                break;
+
+                            case EstadoPedido.EnPreparacion:
+
+                                <span class="estado estado-proceso">
+                                    En preparación
+                                </span>
+
+                                break;
+
+                            case EstadoPedido.Listo:
+
+                                <span class="estado estado-listo">
+                                    Listo
+                                </span>
+
+                                break;
+
+                            case EstadoPedido.Entregado:
+
+                                <span class="estado estado-entregado">
+                                    Entregado
+                                </span>
+
+                                break;
+
+                            case EstadoPedido.Cancelado:
+
+                                <span class="estado estado-cancelado">
+                                    Cancelado
+                                </span>
+
+                                break;
+                        }
+
+                    </div>
 
 
-                            <!-- ==================================
-                                 MESERO
-                                 ================================== -->
+                    <!-- INFORMACIÓN -->
 
-                            <td>
-                                @(pedido.Usuario != null
-                                    ? pedido.Usuario.Nombre
-                                    : "Sin mesero")
-                            </td>
+                    <div class="pedido-info">
+
+                        @if (pedido.Mesa != null)
+                        {
+                            <div class="info-item">
+                                Mesa @pedido.Mesa.NumeroMesa
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="info-item">
+                                Para llevar
+                            </div>
+                        }
 
 
-                            <!-- ==================================
-                                 MESA
-                                 ================================== -->
+                        <div class="info-item">
+                            Mesero: @(pedido.Usuario?.Nombre ?? "Sin asignar")
+                        </div>
 
-                            <td>
+                    </div>
 
-                                @if (pedido.Mesa != null)
-                                {
-                                    <strong>
-                                        Mesa @pedido.Mesa.NumeroMesa
-                                    </strong>
-                                }
-                                else
-                                {
-                                    <span class="sin-mesa">
-                                        Sin mesa
+
+                    <!-- PLATOS -->
+
+                    <div class="platos-titulo">
+                        Platos
+                    </div>
+
+                    @if (pedido.Detalles != null && pedido.Detalles.Any())
+                    {
+                        foreach (var detalle in pedido.Detalles)
+                        {
+                            <div class="plato">
+
+                                <div class="plato-nombre">
+
+                                    <span class="plato-cantidad">
+                                        @detalle.Cantidad x
                                     </span>
-                                }
 
-                            </td>
+                                    @(detalle.Plato?.Nombre ?? "Plato no disponible")
 
-
-                            <!-- ==================================
-                                 TIPO
-                                 ================================== -->
-
-                            <td>
-                                @pedido.TipoPedido
-                            </td>
+                                </div>
 
 
-                            <!-- ==================================
-                                 FECHA
-                                 ================================== -->
-
-                            <td>
-                                @pedido.Fecha.ToString("dd/MM/yyyy")
-                            </td>
-
-
-                            <!-- ==================================
-                                 HORA INICIO
-                                 ================================== -->
-
-                            <td>
-                                @pedido.HoraInicio.ToString(@"hh\:mm\:ss")
-                            </td>
-
-
-                            <!-- ==================================
-                                 ESTADO
-                                 ================================== -->
-
-                            <td>
-
-                                @switch (pedido.Estado)
+                                @if (!string.IsNullOrWhiteSpace(detalle.IndicacionesExtra))
                                 {
-                                    case EstadoPedido.Pendiente:
+                                    <div class="indicacion">
 
-                                        <span class="estado estado-pendiente">
-                                            Pendiente
-                                        </span>
+                                        <strong>
+                                            Indicaciones:
+                                        </strong>
 
-                                        break;
+                                        @detalle.IndicacionesExtra
 
-
-                                    case EstadoPedido.EnPreparacion:
-
-                                        <span class="estado estado-proceso">
-                                            En preparación
-                                        </span>
-
-                                        break;
-
-
-                                    case EstadoPedido.Listo:
-
-                                        <span class="estado estado-listo">
-                                            Listo
-                                        </span>
-
-                                        break;
-
-
-                                    case EstadoPedido.Entregado:
-
-                                        <span class="estado estado-entregado">
-                                            Entregado
-                                        </span>
-
-                                        break;
-
-
-                                    case EstadoPedido.Cancelado:
-
-                                        <span class="estado estado-cancelado">
-                                            Cancelado
-                                        </span>
-
-                                        break;
+                                    </div>
                                 }
 
-                            </td>
-
-
-                            <!-- ==================================
-                                 HORAS DE CAMBIO DE ESTADO
-                                 ================================== -->
-
-                            <td>
-
-                                <div class="horas">
-
-                                    <div>
-                                        <strong>Inicio:</strong>
-                                        @pedido.HoraInicio.ToString(@"hh\:mm")
-                                    </div>
-
-
-                                    @if (pedido.HoraEnPreparacion.HasValue)
-                                    {
-                                        <div>
-                                            <strong>Preparación:</strong>
-                                            <span class="hora-activa">
-                                                @pedido.HoraEnPreparacion.Value.ToString(@"hh\:mm")
-                                            </span>
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.HoraListo.HasValue)
-                                    {
-                                        <div>
-                                            <strong>Listo:</strong>
-                                            <span class="hora-activa">
-                                                @pedido.HoraListo.Value.ToString(@"hh\:mm")
-                                            </span>
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.HoraEntregado.HasValue)
-                                    {
-                                        <div>
-                                            <strong>Entregado:</strong>
-                                            <span class="hora-activa">
-                                                @pedido.HoraEntregado.Value.ToString(@"hh\:mm")
-                                            </span>
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.HoraCancelado.HasValue)
-                                    {
-                                        <div>
-                                            <strong>Cancelado:</strong>
-                                            <span class="hora-activa">
-                                                @pedido.HoraCancelado.Value.ToString(@"hh\:mm")
-                                            </span>
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.HoraFin.HasValue)
-                                    {
-                                        <div>
-                                            <strong>Fin:</strong>
-                                            <span class="hora-activa">
-                                                @pedido.HoraFin.Value.ToString(@"hh\:mm")
-                                            </span>
-                                        </div>
-                                    }
-
-                                </div>
-
-                            </td>
-
-
-                            <!-- ==================================
-                                 ACCIONES
-                                 ================================== -->
-
-                            <td>
-
-                                <div class="acciones">
-
-                                    <!-- Acciones principales -->
-
-                                    <div class="acciones-principales">
-
-                                        <a asp-action="Details"
-                                           asp-route-id="@pedido.IdPedido"
-                                           class="btn-accion btn-detalles">
-                                            Ver detalles
-                                        </a>
-
-                                        <a asp-action="Edit"
-                                           asp-route-id="@pedido.IdPedido"
-                                           class="btn-accion btn-editar">
-                                            Editar
-                                        </a>
-
-                                    </div>
-
-
-                                    <!-- ==================================
-                                         CAMBIO DE ESTADO
-                                         ================================== -->
-                                    @if (pedido.Estado == EstadoPedido.Pendiente)
-                                    {
-                                        <div class="cambio-estado">
-
-                                            <form asp-action="CambiarEstado"
-                                                  method="post">
-
-                                                @Html.AntiForgeryToken()
-
-                                                <input type="hidden"
-                                                       name="id"
-                                                       value="@pedido.IdPedido" />
-
-                                                <input type="hidden"
-                                                       name="nuevoEstado"
-                                                       value="EnPreparacion" />
-
-                                                <button type="submit"
-                                                        class="btn-estado btn-preparacion">
-                                                    ▶ Preparar
-                                                </button>
-
-                                            </form>
-
-
-                                            <form asp-action="CambiarEstado"
-                                                  method="post">
-
-                                                @Html.AntiForgeryToken()
-
-                                                <input type="hidden"
-                                                       name="id"
-                                                       value="@pedido.IdPedido" />
-
-                                                <input type="hidden"
-                                                       name="nuevoEstado"
-                                                       value="Cancelado" />
-
-                                                <button type="submit"
-                                                        class="btn-estado btn-cancelar">
-                                                    ✕ Cancelar
-                                                </button>
-
-                                            </form>
-
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.Estado == EstadoPedido.EnPreparacion)
-                                    {
-                                        <div class="cambio-estado">
-
-                                            <form asp-action="CambiarEstado"
-                                                  method="post">
-
-                                                @Html.AntiForgeryToken()
-
-                                                <input type="hidden"
-                                                       name="id"
-                                                       value="@pedido.IdPedido" />
-
-                                                <input type="hidden"
-                                                       name="nuevoEstado"
-                                                       value="Listo" />
-
-                                                <button type="submit"
-                                                        class="btn-estado btn-listo">
-                                                    ✓ Marcar listo
-                                                </button>
-
-                                            </form>
-
-
-                                            <form asp-action="CambiarEstado"
-                                                  method="post">
-
-                                                @Html.AntiForgeryToken()
-
-                                                <input type="hidden"
-                                                       name="id"
-                                                       value="@pedido.IdPedido" />
-
-                                                <input type="hidden"
-                                                       name="nuevoEstado"
-                                                       value="Cancelado" />
-
-                                                <button type="submit"
-                                                        class="btn-estado btn-cancelar">
-                                                    ✕ Cancelar
-                                                </button>
-
-                                            </form>
-
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.Estado == EstadoPedido.Listo)
-                                    {
-                                        <div class="cambio-estado">
-
-                                            <form asp-action="CambiarEstado"
-                                                  method="post">
-
-                                                @Html.AntiForgeryToken()
-
-                                                <input type="hidden"
-                                                       name="id"
-                                                       value="@pedido.IdPedido" />
-
-                                                <input type="hidden"
-                                                       name="nuevoEstado"
-                                                       value="Entregado" />
-
-                                                <button type="submit"
-                                                        class="btn-estado btn-entregado">
-                                                    ✓ Entregar
-                                                </button>
-
-                                            </form>
-
-                                        </div>
-                                    }
-
-
-                                    @if (pedido.Estado == EstadoPedido.Entregado)
-                                    {
-                                        <span class="estado-final">
-                                            Pedido finalizado
-                                        </span>
-                                    }
-
-
-                                    @if (pedido.Estado == EstadoPedido.Cancelado)
-                                    {
-                                        <span class="estado-final">
-                                            Pedido cancelado
-                                        </span>
-                                    }
-
-                                </div>
-
-                            </td>
-
-                        </tr>
+                            </div>
+                        }
                     }
-                }
-                else
-                {
-                    <tr>
+                    else
+                    {
+                        <div class="plato">
+                            No hay platos registrados.
+                        </div>
+                    }
 
-                        <td colspan="9" class="tabla-vacia">
-                            No hay pedidos registrados.
-                        </td>
 
-                    </tr>
-                }
+                    <!-- ==================================
+                     ACCIONES
+                     ================================== -->
+                    @if (pedido.Estado == EstadoPedido.Pendiente)
+                    {
+                        <div class="acciones">
 
-            </tbody>
+                            <form asp-action="CambiarEstado"
+                                  method="post">
 
-        </table>
+                                @Html.AntiForgeryToken()
 
-    </div>
+                                <input type="hidden"
+                                       name="id"
+                                       value="@pedido.IdPedido" />
+
+                                <input type="hidden"
+                                       name="nuevoEstado"
+                                       value="EnPreparacion" />
+
+                                <button type="submit"
+                                        class="btn-estado-grande">
+
+                                    ▶ Iniciar preparación
+
+                                </button>
+
+                            </form>
+
+
+                            <form asp-action="CambiarEstado"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@pedido.IdPedido" />
+
+                                <input type="hidden"
+                                       name="nuevoEstado"
+                                       value="Cancelado" />
+
+                                <button type="submit"
+                                        class="btn-cancelar-grande">
+
+                                    ✕ Cancelar pedido
+
+                                </button>
+
+                            </form>
+
+                        </div>
+                    }
+
+
+                    @if (pedido.Estado == EstadoPedido.EnPreparacion)
+                    {
+                        <div class="acciones">
+
+                            <form asp-action="CambiarEstado"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@pedido.IdPedido" />
+
+                                <input type="hidden"
+                                       name="nuevoEstado"
+                                       value="Listo" />
+
+                                <button type="submit"
+                                        class="btn-estado-grande">
+
+                                    ✓ Marcar como listo
+
+                                </button>
+
+                            </form>
+
+
+                            <form asp-action="CambiarEstado"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@pedido.IdPedido" />
+
+                                <input type="hidden"
+                                       name="nuevoEstado"
+                                       value="Cancelado" />
+
+                                <button type="submit"
+                                        class="btn-cancelar-grande">
+
+                                    ✕ Cancelar pedido
+
+                                </button>
+
+                            </form>
+
+                        </div>
+                    }
+
+
+                    @if (pedido.Estado == EstadoPedido.Listo)
+                    {
+                        <div class="acciones">
+
+                            <form asp-action="CambiarEstado"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@pedido.IdPedido" />
+
+                                <input type="hidden"
+                                       name="nuevoEstado"
+                                       value="Entregado" />
+
+                                <button type="submit"
+                                        class="btn-estado-grande">
+
+                                    ✓ Entregar pedido
+
+                                </button>
+
+                            </form>
+
+
+                            <form asp-action="CambiarEstado"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@pedido.IdPedido" />
+
+                                <input type="hidden"
+                                       name="nuevoEstado"
+                                       value="Cancelado" />
+
+                                <button type="submit"
+                                        class="btn-cancelar-grande">
+
+                                    ✕ Cancelar pedido
+
+                                </button>
+
+                            </form>
+
+                        </div>
+                    }
+
+
+                    @if (pedido.Estado == EstadoPedido.Entregado)
+                    {
+                        <div class="pedido-finalizado">
+                            ✓ Pedido entregado
+                        </div>
+                    }
+
+
+                    @if (pedido.Estado == EstadoPedido.Cancelado)
+                    {
+                        <div class="pedido-finalizado">
+                            ✕ Pedido cancelado
+                        </div>
+                    }
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="tabla-vacia">
+            No hay pedidos registrados.
+        </div>
+    }
 
 </div>
-
