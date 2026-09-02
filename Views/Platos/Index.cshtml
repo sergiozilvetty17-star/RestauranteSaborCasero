@@ -19,266 +19,372 @@
 }
 
 <style>
-
     /* =========================================================
-           PLATOS - SABOR CASERO
-           ========================================================= */
+       PLATOS - SABOR CASERO
+       TEMA OSCURO / DARK RED
+       ========================================================= */
 
     .platos-page {
         width: 100%;
-        padding-top: 14px;
-        padding-bottom: 30px;
+        padding: 18px 0 35px;
+
+        --platos-bg: #171312;
+        --platos-card: #211a18;
+        --platos-card-light: #29201d;
+        --platos-card-hover: #302420;
+
+        --platos-border: #3a2b27;
+        --platos-border-soft: #332622;
+
+        --platos-text: #f5eee9;
+        --platos-text-soft: #c6b8b0;
+        --platos-text-muted: #8f8078;
+
+        --platos-red: #8f2f25;
+        --platos-red-hover: #a63a2e;
+        --platos-red-dark: #68221c;
+
+        --platos-gold: #c59b58;
+        --platos-gold-soft: #3a2e20;
+
+        --platos-success: #63b582;
+        --platos-success-bg: #1d3328;
+
+        --platos-danger: #dc7373;
+        --platos-danger-bg: #382122;
+
+        --platos-info: #72a9d1;
+        --platos-info-bg: #202f3c;
+
+        --platos-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     }
 
     /* =========================================================
-           VARIABLES LOCALES
-           ========================================================= */
-
-    .platos-page {
-        --platos-primary-soft: #f7eee9;
-        --platos-success-soft: #edf7f1;
-        --platos-danger-soft: #fbeeee;
-        --platos-warning-soft: #fbf4e8;
-        --platos-neutral-soft: #f4f1ee;
-        --platos-border-light: #eee8e2;
-    }
-
-    /* =========================================================
-           ENCABEZADO
-           ========================================================= */
+       ENCABEZADO
+       ========================================================= */
 
     .platos-header {
         display: flex;
-        align-items: flex-end;
+        align-items: center;
         justify-content: space-between;
+        gap: 20px;
         margin-bottom: 24px;
     }
 
     .platos-header-left {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 14px;
+        min-width: 0;
     }
 
     .platos-header-icon {
-        width: 50px;
-        height: 50px;
+        width: 54px;
+        height: 54px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        background: var(--platos-primary-soft);
-        color: var(--sc-primary);
-        border: 1px solid #eedbd3;
-        border-radius: 13px;
+
+        background: linear-gradient(
+            145deg,
+            #321d19,
+            #251916
+        );
+
+        color: #c85a49;
+        border: 1px solid #5a3029;
+        border-radius: 14px;
+
+        box-shadow:
+            inset 0 1px 0 rgba(255,255,255,0.03),
+            0 6px 18px rgba(0,0,0,0.2);
     }
 
-        .platos-header-icon svg {
-            width: 25px;
-            height: 25px;
-            stroke: currentColor;
-        }
+    .platos-header-icon svg {
+        width: 27px;
+        height: 27px;
+        stroke: currentColor;
+    }
 
     .platos-eyebrow {
-        margin: 1px 0 4px;
-        color: var(--sc-primary);
-        font-size: 0.68rem;
-        font-weight: 800;
-        letter-spacing: 1.3px;
+        margin: 0 0 5px;
+
+        color: #b34a3a;
+
+        font-size: 0.67rem;
+        font-weight: 850;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
     }
 
     .platos-title {
         margin: 0;
-        color: var(--sc-dark);
-        font-size: 1.9rem;
-        font-weight: 800;
+
+        color: var(--platos-text);
+
+        font-size: 1.95rem;
+        font-weight: 850;
         letter-spacing: -0.7px;
         line-height: 1.1;
     }
 
     .platos-description {
         margin: 7px 0 0;
-        color: var(--sc-gray);
-        font-size: 0.8rem;
+
+        color: var(--platos-text-muted);
+
+        font-size: 0.79rem;
+        font-weight: 500;
     }
 
     /* =========================================================
-           BOTÓN NUEVO
-           ========================================================= */
+       BOTÓN NUEVO PLATO
+       ========================================================= */
 
     .platos-create-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
         gap: 8px;
-        height: 40px;
-        padding: 0 16px;
-        background: var(--sc-primary);
+
+        min-height: 44px;
+        padding: 0 18px;
+
+        flex-shrink: 0;
+
+        background: var(--platos-red);
         color: #ffffff !important;
-        border: 1px solid var(--sc-primary);
+
+        border: 1px solid #a33b30;
         border-radius: 10px;
+
         font-size: 0.76rem;
-        font-weight: 800;
+        font-weight: 850;
+
         text-decoration: none;
-        box-shadow: 0 5px 13px rgba(139, 58, 43, 0.16);
-        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+
+        box-shadow:
+            0 7px 18px rgba(0,0,0,0.25),
+            0 3px 10px rgba(104,34,28,0.2);
+
+        transition:
+            background 0.2s ease,
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
-        .platos-create-btn:hover {
-            background: var(--sc-primary-dark);
-            border-color: var(--sc-primary-dark);
-            color: #ffffff !important;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 18px rgba(139, 58, 43, 0.22);
-        }
+    .platos-create-btn:hover {
+        background: var(--platos-red-hover);
+        border-color: #bd493b;
 
-        .platos-create-btn svg {
-            width: 17px;
-            height: 17px;
-            stroke: currentColor;
-        }
+        color: #ffffff !important;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 10px 22px rgba(0,0,0,0.32),
+            0 4px 14px rgba(143,47,37,0.25);
+    }
+
+    .platos-create-btn svg {
+        width: 17px;
+        height: 17px;
+        stroke: currentColor;
+    }
 
     /* =========================================================
-           ESTADÍSTICAS
-           ========================================================= */
+       ESTADÍSTICAS
+       ========================================================= */
 
     .platos-stats {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 12px;
+
         margin-bottom: 14px;
     }
 
     .platos-stat {
+        position: relative;
+
         display: flex;
         align-items: center;
-        gap: 11px;
-        min-height: 66px;
-        padding: 11px 14px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 12px;
-        box-shadow: 0 4px 16px rgba(70, 45, 30, 0.045);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        gap: 12px;
+
+        min-height: 76px;
+        padding: 13px 16px;
+
+        background: var(--platos-card);
+
+        border: 1px solid var(--platos-border);
+        border-radius: 13px;
+
+        box-shadow: var(--platos-shadow);
+
+        overflow: hidden;
+
+        transition:
+            transform 0.2s ease,
+            border-color 0.2s ease,
+            background 0.2s ease;
     }
 
-        .platos-stat:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(70, 45, 30, 0.08);
-        }
+    .platos-stat::after {
+        content: "";
+
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+
+        width: 3px;
+
+        background: var(--platos-red);
+        opacity: 0.8;
+    }
+
+    .platos-stat:hover {
+        transform: translateY(-2px);
+
+        background: var(--platos-card-light);
+
+        border-color: #4b332e;
+    }
 
     .platos-stat-icon {
-        width: 37px;
-        height: 37px;
+        width: 41px;
+        height: 41px;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         flex-shrink: 0;
-        border-radius: 9px;
+
+        border-radius: 10px;
     }
 
-        .platos-stat-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-        }
+    .platos-stat-icon svg {
+        width: 19px;
+        height: 19px;
+        stroke: currentColor;
+    }
 
-        .platos-stat-icon.total {
-            background: var(--platos-primary-soft);
-            color: var(--sc-primary);
-        }
+    .platos-stat-icon.total {
+        background: #34201d;
+        color: #c85a49;
+    }
 
-        .platos-stat-icon.available {
-            background: var(--platos-success-soft);
-            color: var(--sc-success);
-        }
+    .platos-stat-icon.available {
+        background: var(--platos-success-bg);
+        color: var(--platos-success);
+    }
 
-        .platos-stat-icon.unavailable {
-            background: var(--platos-danger-soft);
-            color: var(--sc-danger);
-        }
+    .platos-stat-icon.unavailable {
+        background: var(--platos-danger-bg);
+        color: var(--platos-danger);
+    }
 
-        .platos-stat-icon.average {
-            background: var(--platos-warning-soft);
-            color: #a5742f;
-        }
+    .platos-stat-icon.average {
+        background: var(--platos-gold-soft);
+        color: var(--platos-gold);
+    }
 
     .platos-stat-content {
         min-width: 0;
     }
 
     .platos-stat-label {
-        margin: 0 0 2px;
-        color: #8a817a;
+        margin: 0 0 4px;
+
+        color: var(--platos-text-muted);
+
         font-size: 0.61rem;
-        font-weight: 800;
-        letter-spacing: 0.45px;
+        font-weight: 850;
+
+        letter-spacing: 0.55px;
         text-transform: uppercase;
     }
 
     .platos-stat-value {
         margin: 0;
-        color: var(--sc-dark);
-        font-size: 1.05rem;
-        font-weight: 800;
+
+        color: var(--platos-text);
+
+        font-size: 1.12rem;
+        font-weight: 850;
+
         line-height: 1.1;
     }
 
-        .platos-stat-value.primary {
-            color: var(--sc-primary);
-        }
+    .platos-stat-value.primary {
+        color: #c85a49;
+    }
 
     /* =========================================================
-           BARRA DE INFORMACIÓN
-           ========================================================= */
+       BARRA DE INFORMACIÓN
+       ========================================================= */
 
     .platos-toolbar {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        min-height: 48px;
+
+        min-height: 50px;
+
         padding: 8px 15px;
         margin-bottom: 12px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
+
+        background: #1d1715;
+
+        border: 1px solid var(--platos-border);
         border-radius: 11px;
-        box-shadow: 0 3px 12px rgba(70, 45, 30, 0.035);
+
+        box-shadow:
+            0 5px 18px rgba(0,0,0,0.18);
     }
 
     .platos-toolbar-info {
         display: flex;
         align-items: center;
         gap: 9px;
-        color: var(--sc-gray);
+
+        color: var(--platos-text-soft);
+
         font-size: 0.72rem;
-        font-weight: 600;
+        font-weight: 650;
     }
 
     .platos-toolbar-icon {
-        width: 29px;
-        height: 29px;
+        width: 30px;
+        height: 30px;
+
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--platos-primary-soft);
+
+        background: #30201d;
+
+        border: 1px solid #49302a;
         border-radius: 7px;
-        color: var(--sc-primary);
+
+        color: #b84b3b;
     }
 
-        .platos-toolbar-icon svg {
-            width: 15px;
-            height: 15px;
-            stroke: currentColor;
-        }
+    .platos-toolbar-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+    }
 
     .platos-count {
-        color: var(--sc-dark);
-        font-weight: 800;
+        color: var(--platos-text);
+        font-weight: 850;
     }
 
     .platos-toolbar-label {
-        color: #978d85;
+        color: var(--platos-text-muted);
     }
 
     .platos-toolbar-right {
@@ -288,158 +394,202 @@
     }
 
     .platos-toolbar-dot {
-        width: 6px;
-        height: 6px;
-        background: var(--sc-success);
+        width: 7px;
+        height: 7px;
+
+        background: var(--platos-success);
+
         border-radius: 50%;
+
+        box-shadow:
+            0 0 0 3px rgba(99,181,130,0.08),
+            0 0 8px rgba(99,181,130,0.25);
     }
 
     /* =========================================================
-           TABLA
-           ========================================================= */
+       TABLA
+       ========================================================= */
 
     .platos-table-card {
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
+        background: var(--platos-card);
+
+        border: 1px solid var(--platos-border);
         border-radius: 15px;
-        box-shadow: var(--sc-shadow);
+
+        box-shadow: var(--platos-shadow);
+
         overflow: hidden;
     }
 
     .platos-table {
         width: 100%;
         margin: 0;
+
         border-collapse: separate;
         border-spacing: 0;
-        background: #ffffff;
+
+        background: var(--platos-card);
+
         vertical-align: middle;
     }
 
-        /* =========================================================
-           CABECERA
-           ========================================================= */
-
-        .platos-table thead th {
-            height: 48px;
-            padding: 0 18px;
-            background: #f7f1ec;
-            border-bottom: 1px solid var(--sc-border);
-            color: #715b4e;
-            font-size: 0.66rem;
-            font-weight: 800;
-            letter-spacing: 0.65px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            vertical-align: middle;
-        }
-
-            .platos-table thead th:first-child {
-                padding-left: 22px;
-                width: 80px;
-            }
-
-            .platos-table thead th:nth-child(2) {
-                width: 32%;
-            }
-
-            .platos-table thead th:nth-child(3) {
-                width: 15%;
-            }
-
-            .platos-table thead th:nth-child(4) {
-                width: 16%;
-            }
-
-            .platos-table thead th:nth-child(5) {
-                width: 18%;
-            }
-
-            .platos-table thead th:last-child {
-                padding-right: 22px;
-                text-align: right;
-                width: 150px;
-            }
-
-        /* =========================================================
-           FILAS
-           ========================================================= */
-
-        .platos-table tbody tr {
-            height: 70px;
-            transition: background 0.15s ease;
-        }
-
-            .platos-table tbody tr:hover {
-                background: #fdf9f6;
-            }
-
-            .platos-table tbody tr:not(:last-child) td {
-                border-bottom: 1px solid var(--platos-border-light);
-            }
-
-        .platos-table tbody td {
-            padding: 0 18px;
-            color: var(--sc-dark);
-            font-size: 0.78rem;
-            vertical-align: middle;
-        }
-
-            .platos-table tbody td:first-child {
-                padding-left: 22px;
-            }
-
-            .platos-table tbody td:last-child {
-                padding-right: 22px;
-            }
-
     /* =========================================================
-           ID
-           ========================================================= */
+       CABECERA
+       ========================================================= */
 
-    .plato-id {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        min-width: 34px;
-        height: 27px;
-        padding: 0 7px;
-        background: #f4f0ec;
-        border: 1px solid #ebe4de;
-        border-radius: 7px;
-        color: #81746b;
-        font-size: 0.66rem;
-        font-weight: 800;
+    .platos-table thead th {
+        height: 50px;
+
+        padding: 0 18px;
+
+        background: #181311;
+
+        border-bottom: 1px solid #44312c;
+
+        color: #a9968c;
+
+        font-size: 0.65rem;
+        font-weight: 850;
+
+        letter-spacing: 0.75px;
+
+        text-transform: uppercase;
+
+        white-space: nowrap;
+
+        vertical-align: middle;
+    }
+
+    .platos-table thead th:first-child {
+        width: 75px;
+        padding-left: 22px;
+    }
+
+    .platos-table thead th:nth-child(2) {
+        width: 32%;
+    }
+
+    .platos-table thead th:nth-child(3) {
+        width: 15%;
+    }
+
+    .platos-table thead th:nth-child(4) {
+        width: 16%;
+    }
+
+    .platos-table thead th:nth-child(5) {
+        width: 18%;
+    }
+
+    .platos-table thead th:last-child {
+        width: 150px;
+
+        padding-right: 22px;
+
+        text-align: right;
     }
 
     /* =========================================================
-           NOMBRE
-           ========================================================= */
+       FILAS
+       ========================================================= */
+
+    .platos-table tbody tr {
+        height: 74px;
+
+        background: var(--platos-card);
+
+        transition:
+            background 0.16s ease;
+    }
+
+    .platos-table tbody tr:hover {
+        background: #2a201d;
+    }
+
+    .platos-table tbody tr:not(:last-child) td {
+        border-bottom: 1px solid var(--platos-border-soft);
+    }
+
+    .platos-table tbody td {
+        padding: 0 18px;
+
+        color: var(--platos-text);
+
+        font-size: 0.78rem;
+
+        vertical-align: middle;
+    }
+
+    .platos-table tbody td:first-child {
+        padding-left: 22px;
+    }
+
+    .platos-table tbody td:last-child {
+        padding-right: 22px;
+    }
+
+    /* =========================================================
+       ID
+       ========================================================= */
+
+    .plato-id {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        min-width: 37px;
+        height: 28px;
+
+        padding: 0 8px;
+
+        background: #302622;
+
+        border: 1px solid #49352f;
+        border-radius: 7px;
+
+        color: #a9978d;
+
+        font-size: 0.65rem;
+        font-weight: 850;
+    }
+
+    /* =========================================================
+       NOMBRE DEL PLATO
+       ========================================================= */
 
     .plato-name {
         display: flex;
         align-items: center;
+
         gap: 11px;
+
         min-width: 0;
     }
 
     .plato-avatar {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         flex-shrink: 0;
-        background: var(--platos-primary-soft);
-        border: 1px solid #efddd6;
+
+        background: #34201d;
+
+        border: 1px solid #54312a;
         border-radius: 10px;
-        color: var(--sc-primary);
+
+        color: #c85a49;
     }
 
-        .plato-avatar svg {
-            width: 18px;
-            height: 18px;
-            stroke: currentColor;
-        }
+    .plato-avatar svg {
+        width: 19px;
+        height: 19px;
+        stroke: currentColor;
+    }
 
     .plato-name-content {
         min-width: 0;
@@ -447,282 +597,397 @@
 
     .plato-name-text {
         display: block;
+
         overflow: hidden;
-        color: var(--sc-dark);
-        font-size: 0.8rem;
-        font-weight: 750;
+
+        color: #f2e9e4;
+
+        font-size: 0.82rem;
+        font-weight: 800;
+
         text-overflow: ellipsis;
         white-space: nowrap;
     }
 
     .plato-name-subtitle {
         display: block;
-        margin-top: 2px;
-        color: #a0968e;
+
+        margin-top: 3px;
+
+        color: #81736c;
+
         font-size: 0.61rem;
+        font-weight: 550;
     }
 
     /* =========================================================
-           PRECIO
-           ========================================================= */
+       PRECIO
+       ========================================================= */
 
     .plato-price {
-        color: var(--sc-primary);
-        font-size: 0.85rem;
-        font-weight: 800;
+        color: #d05a48;
+
+        font-size: 0.88rem;
+        font-weight: 850;
     }
 
     .plato-currency {
         margin-right: 3px;
-        color: #8c7d73;
-        font-size: 0.63rem;
-        font-weight: 700;
+
+        color: #8d7d74;
+
+        font-size: 0.62rem;
+        font-weight: 750;
     }
 
     /* =========================================================
-           ESTADO
-           ========================================================= */
+       ESTADO
+       ========================================================= */
 
     .plato-status {
         display: inline-flex;
+
         align-items: center;
-        gap: 6px;
-        min-width: 88px;
-        padding: 6px 9px;
+        gap: 7px;
+
+        min-width: 96px;
+
+        padding: 7px 10px;
+
         border-radius: 7px;
+
         font-size: 0.65rem;
-        font-weight: 800;
+        font-weight: 850;
     }
 
     .plato-status-dot {
         width: 6px;
         height: 6px;
+
         flex-shrink: 0;
+
         border-radius: 50%;
     }
 
     .plato-status.available {
-        background: var(--platos-success-soft);
-        color: var(--sc-success);
+        background: var(--platos-success-bg);
+        color: var(--platos-success);
     }
 
-        .plato-status.available .plato-status-dot {
-            background: var(--sc-success);
-            box-shadow: 0 0 0 3px rgba(61, 139, 95, 0.08);
-        }
+    .plato-status.available .plato-status-dot {
+        background: var(--platos-success);
+
+        box-shadow:
+            0 0 0 3px rgba(99,181,130,0.08),
+            0 0 8px rgba(99,181,130,0.2);
+    }
 
     .plato-status.unavailable {
-        background: var(--platos-danger-soft);
-        color: var(--sc-danger);
+        background: var(--platos-danger-bg);
+        color: var(--platos-danger);
     }
 
-        .plato-status.unavailable .plato-status-dot {
-            background: var(--sc-danger);
-        }
+    .plato-status.unavailable .plato-status-dot {
+        background: var(--platos-danger);
+
+        box-shadow:
+            0 0 0 3px rgba(220,115,115,0.08);
+    }
 
     .plato-status.other {
-        background: var(--platos-neutral-soft);
-        color: #786e67;
+        background: #302a27;
+        color: #9b8d85;
     }
 
-        .plato-status.other .plato-status-dot {
-            background: #786e67;
-        }
+    .plato-status.other .plato-status-dot {
+        background: #8b7c74;
+    }
 
     /* =========================================================
-           TIEMPO
-           ========================================================= */
+       TIEMPO
+       ========================================================= */
 
     .plato-time {
         display: inline-flex;
+
         align-items: center;
         gap: 7px;
-        color: #665c56;
+
+        color: #b5a69e;
+
         font-size: 0.73rem;
-        font-weight: 650;
+        font-weight: 700;
+
+        white-space: nowrap;
     }
 
     .plato-time-icon {
-        width: 28px;
-        height: 28px;
+        width: 29px;
+        height: 29px;
+
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #faf5ec;
+
+        background: #30271f;
+
+        border: 1px solid #46372b;
         border-radius: 7px;
-        color: var(--sc-secondary);
+
+        color: var(--platos-gold);
     }
 
-        .plato-time-icon svg {
-            width: 15px;
-            height: 15px;
-            stroke: currentColor;
-        }
+    .plato-time-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+    }
 
     /* =========================================================
-           ACCIONES
-           ========================================================= */
+       ACCIONES
+       ========================================================= */
 
     .plato-actions {
         display: flex;
+
         align-items: center;
         justify-content: flex-end;
-        gap: 6px;
+
+        gap: 7px;
     }
 
     .plato-action {
         position: relative;
-        width: 33px;
-        height: 33px;
+
+        width: 35px;
+        height: 35px;
+
         display: inline-flex;
+
         align-items: center;
         justify-content: center;
+
         border: 1px solid transparent;
         border-radius: 8px;
+
         text-decoration: none;
-        transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+
+        transition:
+            background 0.18s ease,
+            border-color 0.18s ease,
+            color 0.18s ease,
+            transform 0.18s ease;
     }
 
-        .plato-action:hover {
-            transform: translateY(-1px);
-        }
+    .plato-action:hover {
+        transform: translateY(-1px);
+    }
 
-        .plato-action svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-        }
+    .plato-action svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+    }
 
-        .plato-action.view {
-            background: #f4f1ee;
-            color: #6f665f;
-        }
+    /* VER */
 
-            .plato-action.view:hover {
-                background: #e9e3dd;
-                border-color: #ddd4cc;
-                color: var(--sc-dark);
-            }
+    .plato-action.view {
+        background: #2d2825;
+        border-color: #443b36;
 
-        .plato-action.edit {
-            background: var(--platos-warning-soft);
-            color: var(--sc-secondary-dark);
-        }
+        color: #aaa099;
+    }
 
-            .plato-action.edit:hover {
-                background: #f1dfc2;
-                border-color: #e6ceb0;
-                color: #965f20;
-            }
+    .plato-action.view:hover {
+        background: #3a332f;
+        border-color: #5a4d45;
 
-        .plato-action.delete {
-            background: var(--platos-danger-soft);
-            color: var(--sc-danger);
-        }
+        color: #f0e8e3;
+    }
 
-            .plato-action.delete:hover {
-                background: #f4dcdc;
-                border-color: #eacaca;
-                color: #a93838;
-            }
+    /* EDITAR */
 
-        /* =========================================================
-           TOOLTIP
-           ========================================================= */
+    .plato-action.edit {
+        background: #352b20;
+        border-color: #4a3b29;
 
-        .plato-action::after {
-            content: attr(title);
-            position: absolute;
-            left: 50%;
-            bottom: calc(100% + 7px);
-            transform: translateX(-50%) translateY(3px);
-            padding: 5px 8px;
-            background: #302b28;
-            color: #ffffff;
-            border-radius: 6px;
-            font-size: 0.59rem;
-            font-weight: 700;
-            white-space: nowrap;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 0.15s ease, transform 0.15s ease;
-        }
+        color: #c7a05e;
+    }
 
-        .plato-action:hover::after {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
+    .plato-action.edit:hover {
+        background: #463720;
+        border-color: #66502e;
+
+        color: #e0ba70;
+    }
+
+    /* ELIMINAR */
+
+    .plato-action.delete {
+        background: #382122;
+        border-color: #513033;
+
+        color: #d77474;
+    }
+
+    .plato-action.delete:hover {
+        background: #4a292a;
+        border-color: #6a393b;
+
+        color: #ed8989;
+    }
 
     /* =========================================================
-           ESTADO VACÍO
-           ========================================================= */
+       TOOLTIP
+       ========================================================= */
+
+    .plato-action::after {
+        content: attr(title);
+
+        position: absolute;
+
+        left: 50%;
+        bottom: calc(100% + 7px);
+
+        z-index: 20;
+
+        transform: translateX(-50%) translateY(3px);
+
+        padding: 5px 8px;
+
+        background: #100e0d;
+
+        color: #ffffff;
+
+        border: 1px solid #41332e;
+        border-radius: 6px;
+
+        font-size: 0.59rem;
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        opacity: 0;
+        visibility: hidden;
+
+        pointer-events: none;
+
+        transition:
+            opacity 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .plato-action:hover::after {
+        opacity: 1;
+        visibility: visible;
+
+        transform: translateX(-50%) translateY(0);
+    }
+
+    /* =========================================================
+       ESTADO VACÍO
+       ========================================================= */
 
     .platos-empty {
         display: flex;
+
         align-items: center;
         flex-direction: column;
-        padding: 70px 20px;
+
+        padding: 75px 20px;
+
+        background: var(--platos-card);
     }
 
     .platos-empty-icon {
-        width: 62px;
-        height: 62px;
+        width: 66px;
+        height: 66px;
+
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 15px;
-        background: var(--platos-primary-soft);
-        border: 1px solid #eedbd3;
+
+        margin-bottom: 16px;
+
+        background: #34201d;
+
+        border: 1px solid #54312a;
         border-radius: 15px;
-        color: var(--sc-primary);
+
+        color: #c85a49;
+
+        box-shadow:
+            0 8px 20px rgba(0,0,0,0.22);
     }
 
-        .platos-empty-icon svg {
-            width: 27px;
-            height: 27px;
-            stroke: currentColor;
-        }
+    .platos-empty-icon svg {
+        width: 29px;
+        height: 29px;
+        stroke: currentColor;
+    }
 
     .platos-empty-title {
-        margin: 0 0 6px;
-        color: var(--sc-dark);
+        margin: 0 0 7px;
+
+        color: #f1e8e3;
+
         font-size: 1rem;
-        font-weight: 800;
+        font-weight: 850;
     }
 
     .platos-empty-text {
-        margin: 0 0 19px;
-        color: var(--sc-gray);
+        margin: 0 0 20px;
+
+        color: #8f8179;
+
         font-size: 0.76rem;
+        font-weight: 550;
+
+        text-align: center;
     }
 
     .platos-empty-btn {
         display: inline-flex;
+
         align-items: center;
+        justify-content: center;
+
         gap: 7px;
-        height: 36px;
-        padding: 0 13px;
-        background: var(--sc-primary);
+
+        min-height: 39px;
+
+        padding: 0 15px;
+
+        background: var(--platos-red);
+
+        border: 1px solid #a33b30;
         border-radius: 8px;
+
         color: #ffffff !important;
+
         font-size: 0.7rem;
-        font-weight: 800;
+        font-weight: 850;
+
         text-decoration: none;
+
+        transition:
+            background 0.18s ease,
+            transform 0.18s ease;
     }
 
-        .platos-empty-btn:hover {
-            background: var(--sc-primary-dark);
-            color: #ffffff !important;
-        }
+    .platos-empty-btn:hover {
+        background: var(--platos-red-hover);
 
-        .platos-empty-btn svg {
-            width: 15px;
-            height: 15px;
-            stroke: currentColor;
-        }
+        color: #ffffff !important;
 
+        transform: translateY(-1px);
+    }
+
+    .platos-empty-btn svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+    }
 </style>
 
 
@@ -871,7 +1136,7 @@
         </div>
 
 
-        <!-- NO DISPONIBLES -->
+        <!-- AGOTADOS -->
 
         <div class="platos-stat">
 
@@ -964,7 +1229,6 @@
                     <path d="M8 6h13" />
                     <path d="M8 12h13" />
                     <path d="M8 18h13" />
-
                     <path d="M3 6h.01" />
                     <path d="M3 12h.01" />
                     <path d="M3 18h.01" />
@@ -1048,11 +1312,6 @@
 
                     @foreach (var plato in platos)
                     {
-                        /*
-                         * Estado es un enum (EstadoPlato),
-                         * por eso primero lo convertimos a string.
-                         */
-
                         var estadoTexto = plato.Estado
                             .ToString()
                             .Trim();
@@ -1062,7 +1321,8 @@
                         var estadoClase =
                             estado == "disponible"
                                 ? "available"
-                                : estado == "no disponible" ||
+                                : estado == "agotado" ||
+                                  estado == "no disponible" ||
                                   estado == "inactivo"
                                     ? "unavailable"
                                     : "other";
@@ -1206,7 +1466,6 @@
                                              stroke-linejoin="round">
 
                                             <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" />
-
                                             <circle cx="12" cy="12" r="2.5" />
 
                                         </svg>

@@ -7,159 +7,188 @@
 <style>
     .compra-container {
         padding: 30px;
+        color: #f6eee8;
     }
 
+    /* =========================
+       ENCABEZADO
+       ========================= */
+
     .compra-header {
-        margin-bottom: 25px;
+        margin-bottom: 28px;
+    }
+
+    .compra-eyebrow {
+        display: inline-block;
+        margin-bottom: 8px;
+        color: #c99b58;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
     }
 
     .compra-titulo {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        font-size: 32px;
+        font-weight: 800;
+        color: #f6eee8;
+        letter-spacing: -0.5px;
     }
 
     .compra-subtitulo {
-        margin: 6px 0 0;
-        color: #777;
+        margin: 7px 0 0;
+        color: #9f9087;
         font-size: 15px;
+        font-weight: 500;
     }
 
+    /* =========================
+       TARJETA PRINCIPAL
+       ========================= */
+
     .compra-card {
-        width: 600px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
+        width: 650px;
+        background: #211917;
+        border: 1px solid #392824;
+        border-radius: 14px;
         padding: 30px;
+        box-sizing: border-box;
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.22);
     }
 
     .seccion-titulo {
         margin: 0 0 25px;
-        padding-bottom: 12px;
-        border-bottom: 1px solid #eeeeee;
-        font-size: 18px;
-        font-weight: 700;
-        color: #343a40;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #392824;
+        font-size: 19px;
+        font-weight: 800;
+        color: #f6eee8;
     }
+
+    /* =========================
+       CAMPOS
+       ========================= */
 
     .campo {
-        margin-bottom: 20px;
+        margin-bottom: 22px;
     }
 
-        .campo label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-        }
+    .campo label {
+        display: block;
+        margin-bottom: 8px;
+        color: #eee4dd;
+        font-size: 14px;
+        font-weight: 700;
+    }
 
-        .campo input,
-        .campo select {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 7px;
-            background-color: white;
-            color: #333;
-            font-size: 15px;
-        }
+    .campo input,
+    .campo select {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 13px 14px;
+        border: 1px solid #44302a;
+        border-radius: 8px;
+        background: #120f0e;
+        color: #f6eee8;
+        font-size: 15px;
+        font-weight: 500;
+        transition: 0.2s ease;
+    }
 
-            .campo input:focus,
-            .campo select:focus {
-                outline: none;
-                border-color: #198754;
-                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
-            }
+    .campo input::placeholder {
+        color: #81736c;
+    }
+
+    .campo input:focus,
+    .campo select:focus {
+        outline: none;
+        border-color: #842f25;
+        box-shadow: 0 0 0 3px rgba(132, 47, 37, 0.18);
+        background: #171211;
+    }
+
+    .campo select option {
+        background: #211917;
+        color: #f6eee8;
+    }
 
     .ayuda {
         display: block;
-        margin-top: 6px;
-        color: #888;
+        margin-top: 7px;
+        color: #81736c;
         font-size: 12px;
+        line-height: 1.4;
     }
 
     .validation {
         display: block;
-        margin-top: 5px;
-        color: #dc3545;
+        margin-top: 6px;
+        color: #d97970;
         font-size: 13px;
+        font-weight: 600;
     }
+
+    /* =========================
+       RESUMEN DE VALIDACIÓN
+       ========================= */
 
     .validation-summary {
-        background-color: #f8d7da;
-        border: 1px solid #f1aeb5;
-        color: #842029;
-        border-radius: 7px;
-        padding: 12px 15px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-
-    .acciones {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid #eeeeee;
-    }
-
-    .btn-guardar {
-        border: none;
-        background-color: #198754;
-        color: white;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
-    }
-
-        .btn-guardar:hover {
-            background-color: #157347;
-        }
-
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
+        background: #3b211f;
+        border: 1px solid #71332c;
+        color: #f0b4ad;
+        border-radius: 8px;
+        padding: 13px 15px;
+        margin-bottom: 22px;
         font-size: 14px;
         font-weight: 600;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
-        }
+    .validation-summary ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    /* =========================
+       INGREDIENTES
+       ========================= */
 
     .ingredientes-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
         margin-top: 30px;
-        border-top: 1px solid #eeeeee;
-        padding-top: 20px;
+        margin-bottom: 16px;
+        padding-top: 24px;
+        border-top: 1px solid #392824;
+    }
+
+    .ingredientes-titulo {
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        color: #f6eee8;
+        font-size: 18px;
+        font-weight: 800;
     }
 
     .btn-agregar-ingrediente {
-        background-color: #0d6efd;
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 7px;
-        font-weight: 600;
+        border: 1px solid #9b392d;
+        background: #842f25;
+        color: #fff5f1;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 800;
         cursor: pointer;
+        transition: 0.2s ease;
     }
 
-        .btn-agregar-ingrediente:hover {
-            background-color: #0b5ed7;
-        }
+    .btn-agregar-ingrediente:hover {
+        background: #9b392d;
+        border-color: #b4483a;
+        transform: translateY(-1px);
+    }
 
     .ingredientes-container {
         margin-bottom: 25px;
@@ -169,69 +198,155 @@
         display: flex;
         gap: 15px;
         align-items: flex-end;
-        margin-bottom: 15px;
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid #e9ecef;
+        margin-bottom: 14px;
+        padding: 17px;
+        background: #181311;
+        border: 1px solid #392824;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.14);
     }
 
     .ingrediente-campo {
         flex: 1;
     }
 
-        .ingrediente-campo label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #555;
-        }
+    .ingrediente-campo label {
+        display: block;
+        margin-bottom: 7px;
+        color: #bcaea6;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .ingrediente-campo select, .ingrediente-campo input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-        }
+    .ingrediente-campo select,
+    .ingrediente-campo input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 11px 12px;
+        border: 1px solid #44302a;
+        border-radius: 7px;
+        background: #211917;
+        color: #f6eee8;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s ease;
+    }
+
+    .ingrediente-campo select:focus,
+    .ingrediente-campo input:focus {
+        outline: none;
+        border-color: #c99b58;
+        box-shadow: 0 0 0 3px rgba(201, 155, 88, 0.12);
+    }
+
+    .ingrediente-campo select option {
+        background: #211917;
+        color: #f6eee8;
+    }
 
     .btn-eliminar-ingrediente {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        font-weight: bold;
+        min-width: 42px;
+        height: 42px;
+        border: 1px solid #71332c;
+        border-radius: 7px;
+        background: #421f1d;
+        color: #d97970;
+        font-size: 16px;
+        font-weight: 900;
         cursor: pointer;
-        height: fit-content;
+        transition: 0.2s ease;
+    }
+
+    .btn-eliminar-ingrediente:hover {
+        background: #71332c;
+        color: #fff;
+        border-color: #9b392d;
     }
 
     .sin-ingredientes {
+        padding: 25px 20px;
+        background: #181311;
+        border: 1px dashed #44302a;
+        border-radius: 9px;
+        color: #81736c;
         text-align: center;
-        color: #777;
-        padding: 20px;
-        background: #f8f9fa;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .sin-ingredientes strong {
+        color: #c99b58;
+    }
+
+    /* =========================
+       ACCIONES
+       ========================= */
+
+    .acciones {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-top: 28px;
+        padding-top: 22px;
+        border-top: 1px solid #392824;
+    }
+
+    .btn-guardar {
+        border: 1px solid #9b392d;
+        background: #842f25;
+        color: #fff5f1;
+        padding: 13px 23px;
         border-radius: 8px;
-        border: 1px dashed #ced4da;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.2s ease;
+        box-shadow: 0 5px 14px rgba(132, 47, 37, 0.2);
+    }
+
+    .btn-guardar:hover {
+        background: #9b392d;
+        border-color: #b4483a;
+        transform: translateY(-1px);
+        box-shadow: 0 7px 18px rgba(132, 47, 37, 0.28);
+    }
+
+    .btn-volver {
+        display: inline-block;
+        background: #28211f;
+        border: 1px solid #44302a;
+        color: #cfc1b9;
+        text-decoration: none;
+        padding: 13px 22px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 700;
+        transition: 0.2s ease;
+    }
+
+    .btn-volver:hover {
+        background: #342925;
+        border-color: #594038;
+        color: #f6eee8;
     }
 </style>
-
 
 <div class="compra-container">
 
     <!-- ENCABEZADO -->
     <div class="compra-header">
+        <span class="compra-eyebrow">Gestión de compras</span>
 
         <h1 class="compra-titulo">
             Crear compra
         </h1>
 
         <p class="compra-subtitulo">
-            Registra una nueva compra de ingredientes
+            Registra una nueva compra de ingredientes para el restaurante.
         </p>
-
     </div>
-
 
     <!-- FORMULARIO -->
     <div class="compra-card">
@@ -240,15 +355,14 @@
             Información de la compra
         </h2>
 
+        <form asp-action="Create" method="post">
 
-        <form asp-action="Create"
-              method="post">
+            @Html.AntiForgeryToken()
 
             <!-- VALIDACIONES -->
             <div asp-validation-summary="ModelOnly"
                  class="validation-summary">
             </div>
-
 
             <!-- USUARIO -->
             <div class="campo">
@@ -276,7 +390,6 @@
 
             </div>
 
-
             <!-- FECHA -->
             <div class="campo">
 
@@ -292,7 +405,6 @@
                 </span>
 
             </div>
-
 
             <!-- PROVEEDOR -->
             <div class="campo">
@@ -314,51 +426,113 @@
                 </span>
 
             </div>
+
+            <!-- INGREDIENTES -->
             <div class="ingredientes-header">
-                <h2 class="seccion-titulo" style="border: none; padding: 0; margin: 0;">Ingredientes de la compra</h2>
-                <button type="button" class="btn-agregar-ingrediente" onclick="agregarIngrediente()">+ Agregar ingrediente</button>
+
+                <h2 class="seccion-titulo ingredientes-titulo">
+                    Ingredientes de la compra
+                </h2>
+
+                <button type="button"
+                        class="btn-agregar-ingrediente"
+                        onclick="agregarIngrediente()">
+
+                    + Agregar ingrediente
+
+                </button>
+
             </div>
 
-            <div id="ingredientes-container" class="ingredientes-container">
+            <div id="ingredientes-container"
+                 class="ingredientes-container">
+
                 @if (Model?.Detalles != null && Model.Detalles.Count > 0)
                 {
                     var indice = 0;
+
                     foreach (var detalle in Model.Detalles)
                     {
                         <div class="ingrediente-row">
+
                             <div class="ingrediente-campo">
-                                <label>Ingrediente</label>
-                                <select name="Detalles[@indice].IdIngrediente" required>
-                                    <option value="">Seleccione...</option>
+
+                                <label>
+                                    Ingrediente
+                                </label>
+
+                                <select name="Detalles[@indice].IdIngrediente"
+                                        required>
+
+                                    <option value="">
+                                        Seleccione...
+                                    </option>
+
                                     @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
                                     {
                                         if (ing.IdIngrediente == detalle.IdIngrediente)
                                         {
-                                            <option value="@ing.IdIngrediente" selected>@ing.Nombre (@ing.UnidadMedida)</option>
+                                            <option value="@ing.IdIngrediente"
+                                                    selected>
+                                                @ing.Nombre (@ing.UnidadMedida)
+                                            </option>
                                         }
                                         else
                                         {
-                                            <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
+                                            <option value="@ing.IdIngrediente">
+                                                @ing.Nombre (@ing.UnidadMedida)
+                                            </option>
                                         }
                                     }
+
                                 </select>
+
                             </div>
+
                             <div class="ingrediente-campo">
-                                <label>Cantidad</label>
-                                <input type="number" name="Detalles[@indice].Cantidad" value="@detalle.Cantidad" step="0.01" min="0.01" required />
+
+                                <label>
+                                    Cantidad
+                                </label>
+
+                                <input type="number"
+                                       name="Detalles[@indice].Cantidad"
+                                       value="@detalle.Cantidad"
+                                       step="0.01"
+                                       min="0.01"
+                                       required />
+
                             </div>
-                            <button type="button" class="btn-eliminar-ingrediente" onclick="eliminarIngrediente(this)">X</button>
+
+                            <button type="button"
+                                    class="btn-eliminar-ingrediente"
+                                    onclick="eliminarIngrediente(this)"
+                                    title="Eliminar ingrediente">
+
+                                ×
+
+                            </button>
+
                         </div>
+
                         indice++;
                     }
                 }
                 else
                 {
-                    <div class="sin-ingredientes" id="mensaje-sin-ingredientes">
-                        No has agregado ningún ingrediente.<br />
-                        Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
+                    <div class="sin-ingredientes"
+                         id="mensaje-sin-ingredientes">
+
+                        No has agregado ningún ingrediente.
+                        <br />
+
+                        Presiona
+                        <strong>+ Agregar ingrediente</strong>
+                        para comenzar.
+
                     </div>
                 }
+
             </div>
 
             <!-- ACCIONES -->
@@ -366,16 +540,19 @@
 
                 <button type="submit"
                         class="btn-guardar">
+
                     Guardar compra
+
                 </button>
 
                 <a asp-action="Index"
                    class="btn-volver">
+
                     Volver a compras
+
                 </a>
 
             </div>
-         
 
         </form>
 
@@ -383,53 +560,118 @@
 
 </div>
 
-
 @section Scripts {
+
     <partial name="_ValidationScriptsPartial" />
+
     <script>
+
         let indiceIngrediente = @(Model?.Detalles?.Count ?? 0);
 
         function agregarIngrediente() {
-            const container = document.getElementById("ingredientes-container");
-            const mensaje = document.getElementById("mensaje-sin-ingredientes");
-            if (mensaje) mensaje.remove();
 
-            const fila = document.createElement("div");
+            const container =
+                document.getElementById("ingredientes-container");
+
+            const mensaje =
+                document.getElementById("mensaje-sin-ingredientes");
+
+            if (mensaje) {
+                mensaje.remove();
+            }
+
+            const fila =
+                document.createElement("div");
+
             fila.className = "ingrediente-row";
+
             fila.innerHTML = `
-                        <div class="ingrediente-campo">
-                            <label>Ingrediente</label>
-                            <select name="Detalles[${indiceIngrediente}].IdIngrediente" required>
-                                <option value="">Seleccione...</option>
-                                @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
-                                {
-                                        <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="ingrediente-campo">
-                            <label>Cantidad</label>
-                            <input type="number" name="Detalles[${indiceIngrediente}].Cantidad" value="1" step="0.01" min="0.01" required />
-                        </div>
-                        <button type="button" class="btn-eliminar-ingrediente" onclick="eliminarIngrediente(this)">X</button>
-                    `;
+                <div class="ingrediente-campo">
+
+                    <label>
+                        Ingrediente
+                    </label>
+
+                    <select name="Detalles[${indiceIngrediente}].IdIngrediente"
+                            required>
+
+                        <option value="">
+                            Seleccione...
+                        </option>
+
+                        @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
+                        {
+                            <option value="@ing.IdIngrediente">
+                                @ing.Nombre (@ing.UnidadMedida)
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="ingrediente-campo">
+
+                    <label>
+                        Cantidad
+                    </label>
+
+                    <input type="number"
+                           name="Detalles[${indiceIngrediente}].Cantidad"
+                           value="1"
+                           step="0.01"
+                           min="0.01"
+                           required />
+
+                </div>
+
+                <button type="button"
+                        class="btn-eliminar-ingrediente"
+                        onclick="eliminarIngrediente(this)"
+                        title="Eliminar ingrediente">
+
+                    ×
+
+                </button>
+            `;
+
             container.appendChild(fila);
+
             indiceIngrediente++;
         }
 
         function eliminarIngrediente(boton) {
-            const fila = boton.closest(".ingrediente-row");
-            if (fila) fila.remove();
 
-            const filas = document.querySelectorAll(".ingrediente-row");
+            const fila =
+                boton.closest(".ingrediente-row");
+
+            if (fila) {
+                fila.remove();
+            }
+
+            const filas =
+                document.querySelectorAll(".ingrediente-row");
+
             if (filas.length === 0) {
-                const container = document.getElementById("ingredientes-container");
+
+                const container =
+                    document.getElementById("ingredientes-container");
+
                 container.innerHTML = `
-                            <div class="sin-ingredientes" id="mensaje-sin-ingredientes">
-                                No has agregado ningún ingrediente.<br />
-                                Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
-                            </div>`;
+                    <div class="sin-ingredientes"
+                         id="mensaje-sin-ingredientes">
+
+                        No has agregado ningún ingrediente.
+                        <br />
+
+                        Presiona
+                        <strong>+ Agregar ingrediente</strong>
+                        para comenzar.
+
+                    </div>
+                `;
             }
         }
+
     </script>
 }

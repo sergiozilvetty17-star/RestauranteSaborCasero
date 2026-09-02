@@ -1,4 +1,5 @@
 ﻿@model RestauranteSaborCasero.Models.Plato
+
 @using RestauranteSaborCasero.Models
 
 @{
@@ -7,86 +8,91 @@
 
 <style>
     /* =========================================================
-                   CREAR PLATO - SABOR CASERO
-                   ========================================================= */
+       CREAR PLATO - SABOR CASERO
+       ESTILO OSCURO / DARK RED
+       ========================================================= */
 
     .plato-create-page {
         width: 100%;
         padding-top: 12px;
+        color: #f1e9e3;
     }
 
     /* =========================================================
-                   ENCABEZADO
-                   ========================================================= */
+       ENCABEZADO
+       ========================================================= */
 
     .plato-create-header {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 15px;
         margin-bottom: 25px;
     }
 
     .plato-create-header-icon {
-        width: 48px;
-        height: 48px;
+        width: 52px;
+        height: 52px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: var(--sc-primary-soft);
+        background: #321b18;
+        border: 1px solid #623027;
         border-radius: 12px;
-        color: var(--sc-primary);
+        color: #c99b58;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
     }
 
-        .plato-create-header-icon svg {
-            width: 25px;
-            height: 25px;
-            stroke: currentColor;
-        }
+    .plato-create-header-icon svg {
+        width: 27px;
+        height: 27px;
+        stroke: currentColor;
+    }
 
     .plato-create-eyebrow {
         margin: 0 0 4px;
-        color: var(--sc-primary);
+        color: #c99b58;
         font-size: 0.7rem;
-        font-weight: 800;
-        letter-spacing: 1.2px;
+        font-weight: 900;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
     }
 
     .plato-create-title {
         margin: 0;
-        color: var(--sc-dark);
-        font-size: 1.9rem;
-        font-weight: 800;
-        letter-spacing: -0.7px;
+        color: #f6eee8;
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.8px;
         line-height: 1.1;
     }
 
     .plato-create-description {
-        margin: 6px 0 0;
-        color: var(--sc-gray);
+        margin: 7px 0 0;
+        color: #9f9087;
         font-size: 0.82rem;
+        font-weight: 500;
     }
 
     /* =========================================================
-                   CONTENEDOR PRINCIPAL
-                   ========================================================= */
+       CONTENEDOR PRINCIPAL
+       ========================================================= */
 
     .plato-create-layout {
         display: grid;
-        grid-template-columns: 1fr 310px;
+        grid-template-columns: minmax(0, 1fr) 310px;
         gap: 20px;
         align-items: start;
     }
 
     /* =========================================================
-                   FORMULARIO
-                   ========================================================= */
+       FORMULARIO
+       ========================================================= */
 
     .plato-form-card {
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
+        background: #211917;
+        border: 1px solid #392824;
         border-radius: 15px;
-        box-shadow: var(--sc-shadow);
+        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
         overflow: hidden;
     }
 
@@ -94,42 +100,43 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 17px 21px;
-        background: #ffffff;
-        border-bottom: 1px solid var(--sc-border);
+        padding: 18px 22px;
+        background: #271c1a;
+        border-bottom: 1px solid #3b2925;
     }
 
     .plato-form-card-title {
         margin: 0;
-        color: var(--sc-dark);
-        font-size: 0.92rem;
-        font-weight: 800;
+        color: #f2e9e3;
+        font-size: 0.98rem;
+        font-weight: 900;
     }
 
     .plato-form-card-subtitle {
-        margin: 3px 0 0;
-        color: var(--sc-gray);
+        margin: 4px 0 0;
+        color: #95867e;
         font-size: 0.72rem;
     }
 
     .plato-form-badge {
-        padding: 6px 9px;
-        background: var(--sc-primary-soft);
+        padding: 7px 11px;
+        background: #381e1b;
+        border: 1px solid #663127;
         border-radius: 7px;
-        color: var(--sc-primary);
+        color: #d0a15b;
         font-size: 0.65rem;
-        font-weight: 800;
+        font-weight: 900;
         text-transform: uppercase;
-        letter-spacing: 0.4px;
+        letter-spacing: 0.5px;
     }
 
     .plato-form-body {
-        padding: 24px;
+        padding: 25px;
     }
 
     /* =========================================================
-                   CAMPOS
-                   ========================================================= */
+       CAMPOS
+       ========================================================= */
 
     .plato-form-group {
         margin-bottom: 20px;
@@ -139,14 +146,14 @@
         display: flex;
         align-items: center;
         gap: 6px;
-        margin-bottom: 7px;
-        color: var(--sc-dark);
-        font-size: 0.76rem;
-        font-weight: 800;
+        margin-bottom: 8px;
+        color: #eee4dd;
+        font-size: 0.77rem;
+        font-weight: 900;
     }
 
     .plato-form-required {
-        color: var(--sc-danger);
+        color: #d35d55;
         font-size: 0.72rem;
     }
 
@@ -156,91 +163,99 @@
 
     .plato-form-input-icon {
         position: absolute;
-        left: 13px;
+        left: 14px;
         top: 50%;
         width: 17px;
         height: 17px;
-        color: #9a8d84;
+        color: #8f7168;
         transform: translateY(-50%);
         pointer-events: none;
         z-index: 2;
     }
 
-        .plato-form-input-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: currentColor;
-        }
+    .plato-form-input-icon svg {
+        width: 100%;
+        height: 100%;
+        stroke: currentColor;
+    }
 
     .plato-form-input {
         width: 100%;
-        height: 45px;
-        padding: 0 13px 0 40px;
-        background: #ffffff;
-        border: 1px solid #ddd5cc;
+        height: 46px;
+        padding: 0 14px 0 42px;
+        background: #171211;
+        border: 1px solid #44312b;
         border-radius: 9px;
-        color: var(--sc-dark);
-        font-size: 0.8rem;
+        color: #f2e9e3;
+        font-size: 0.81rem;
+        font-weight: 600;
         outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        transition: border-color 0.2s ease,
+                    box-shadow 0.2s ease,
+                    background 0.2s ease;
         box-sizing: border-box;
     }
 
-        .plato-form-input:hover {
-            border-color: #cfc2b8;
-        }
+    .plato-form-input:hover {
+        background: #1b1513;
+        border-color: #614139;
+    }
 
-        .plato-form-input:focus {
-            background: #ffffff;
-            border-color: var(--sc-primary);
-            box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.09);
-        }
+    .plato-form-input:focus {
+        background: #1b1513;
+        border-color: #96382c;
+        box-shadow: 0 0 0 3px rgba(150, 56, 44, 0.14);
+    }
 
-        .plato-form-input::placeholder {
-            color: #aaa19a;
-        }
+    .plato-form-input::placeholder {
+        color: #756861;
+    }
 
-        .plato-form-input[type="number"] {
-            padding-right: 14px;
-        }
+    .plato-form-input[type="number"] {
+        padding-right: 14px;
+    }
 
     /* =========================================================
-                   SELECT ESTADO
-                   ========================================================= */
+       SELECT
+       ========================================================= */
 
     .plato-form-select {
         width: 100%;
-        height: 45px;
-        padding: 0 38px 0 40px;
-        background: #ffffff;
-        border: 1px solid #ddd5cc;
+        height: 46px;
+        padding: 0 38px 0 42px;
+        background: #171211;
+        border: 1px solid #44312b;
         border-radius: 9px;
-        color: var(--sc-dark);
-        font-size: 0.8rem;
+        color: #f2e9e3;
+        font-size: 0.81rem;
+        font-weight: 600;
         outline: none;
         cursor: pointer;
         appearance: auto;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        transition: border-color 0.2s ease,
+                    box-shadow 0.2s ease,
+                    background 0.2s ease;
         box-sizing: border-box;
     }
 
-        .plato-form-select:hover {
-            border-color: #cfc2b8;
-        }
+    .plato-form-select:hover {
+        background: #1b1513;
+        border-color: #614139;
+    }
 
-        .plato-form-select:focus {
-            border-color: var(--sc-primary);
-            box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.09);
-        }
+    .plato-form-select:focus {
+        border-color: #96382c;
+        box-shadow: 0 0 0 3px rgba(150, 56, 44, 0.14);
+    }
 
-        .plato-form-select option {
-            color: var(--sc-dark);
-            background: #ffffff;
-        }
+    .plato-form-select option {
+        color: #f2e9e3;
+        background: #211917;
+    }
 
     /* =========================================================
-                   CAMPOS EN DOS COLUMNAS
-                   ========================================================= */
+       DOS COLUMNAS
+       ========================================================= */
 
     .plato-form-row {
         display: grid;
@@ -249,39 +264,210 @@
     }
 
     /* =========================================================
-                   AYUDA
-                   ========================================================= */
+       AYUDA
+       ========================================================= */
 
     .plato-form-help {
         margin: 6px 0 0;
-        color: #918780;
+        color: #81736c;
         font-size: 0.67rem;
-        line-height: 1.4;
+        line-height: 1.45;
     }
 
     /* =========================================================
-                   VALIDACIÓN
-                   ========================================================= */
+       VALIDACIÓN
+       ========================================================= */
 
     .plato-validation {
         display: block;
         margin-top: 6px;
-        color: var(--sc-danger);
+        color: #d7655d;
         font-size: 0.7rem;
-        font-weight: 600;
+        font-weight: 700;
     }
 
     /* =========================================================
-                   BOTONES
-                   ========================================================= */
+       SECCIÓN RECETA
+       ========================================================= */
+
+    .plato-receta-section {
+        margin-top: 30px;
+        padding-top: 23px;
+        border-top: 1px solid #3b2925;
+    }
+
+    .plato-receta-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 8px;
+    }
+
+    .plato-receta-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0;
+        color: #eee4dd;
+        font-size: 1rem;
+        font-weight: 900;
+    }
+
+    .plato-receta-title-icon {
+        width: 31px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #321b18;
+        border: 1px solid #5e3028;
+        border-radius: 8px;
+        color: #c99b58;
+        flex-shrink: 0;
+    }
+
+    .plato-receta-title-icon svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+    }
+
+    .plato-add-ingredient-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        height: 37px;
+        padding: 0 13px;
+        background: #7f2d24;
+        border: 1px solid #9a3b30;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 0.72rem;
+        font-weight: 900;
+        cursor: pointer;
+        box-shadow: 0 6px 14px rgba(95, 29, 22, 0.25);
+        transition: background 0.2s ease,
+                    border-color 0.2s ease,
+                    transform 0.2s ease,
+                    box-shadow 0.2s ease;
+    }
+
+    .plato-add-ingredient-btn:hover {
+        background: #98362a;
+        border-color: #b5483a;
+        transform: translateY(-1px);
+        box-shadow: 0 8px 18px rgba(110, 31, 24, 0.32);
+    }
+
+    .plato-add-ingredient-btn svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+    }
+
+    .plato-receta-description {
+        margin: 0 0 15px;
+        color: #82746d;
+        font-size: 0.68rem;
+        line-height: 1.5;
+    }
+
+    .plato-ingredientes-container {
+        padding: 13px;
+        background: #181311;
+        border: 1px solid #352621;
+        border-radius: 10px;
+        min-height: 20px;
+    }
+
+    /* =========================================================
+       FILAS DE INGREDIENTES CREADAS POR JAVASCRIPT
+       ========================================================= */
+
+    .plato-ingrediente-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .plato-ingrediente-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .plato-ingrediente-row .plato-form-select {
+        flex: 2;
+        padding-left: 14px;
+    }
+
+    .plato-ingrediente-row .plato-form-input {
+        flex: 1;
+        padding-left: 14px;
+    }
+
+    .plato-remove-ingredient-btn {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #421e1d;
+        border: 1px solid #71302d;
+        border-radius: 8px;
+        color: #e28b85;
+        cursor: pointer;
+        font-size: 0;
+        transition: background 0.2s ease,
+                    border-color 0.2s ease,
+                    color 0.2s ease,
+                    transform 0.2s ease;
+    }
+
+    .plato-remove-ingredient-btn:hover {
+        background: #632322;
+        border-color: #963832;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    .plato-remove-ingredient-btn svg {
+        width: 17px;
+        height: 17px;
+        stroke: currentColor;
+    }
+
+    .plato-receta-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        min-height: 58px;
+        color: #70625c;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .plato-receta-empty svg {
+        width: 17px;
+        height: 17px;
+        stroke: currentColor;
+    }
+
+    /* =========================================================
+       BOTONES
+       ========================================================= */
 
     .plato-form-actions {
         display: flex;
         align-items: center;
-        gap: 9px;
-        margin-top: 7px;
-        padding-top: 20px;
-        border-top: 1px solid var(--sc-border);
+        gap: 10px;
+        margin-top: 8px;
+        padding-top: 21px;
+        border-top: 1px solid #3b2925;
     }
 
     .plato-save-btn,
@@ -289,107 +475,116 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 7px;
-        height: 40px;
-        padding: 0 16px;
+        gap: 8px;
+        height: 43px;
+        padding: 0 18px;
         border-radius: 9px;
-        font-size: 0.76rem;
-        font-weight: 800;
+        font-size: 0.77rem;
+        font-weight: 900;
         text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        cursor: pointer;
+        transition: transform 0.2s ease,
+                    box-shadow 0.2s ease,
+                    background 0.2s ease,
+                    border-color 0.2s ease;
     }
 
     .plato-save-btn {
-        background: var(--sc-primary);
-        border: 1px solid var(--sc-primary);
+        background: #842f25;
+        border: 1px solid #9c3b30;
         color: #ffffff;
+        box-shadow: 0 7px 17px rgba(90, 27, 20, 0.25);
     }
 
-        .plato-save-btn:hover {
-            background: var(--sc-primary-dark);
-            border-color: var(--sc-primary-dark);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(139, 58, 43, 0.18);
-        }
+    .plato-save-btn:hover {
+        background: #9b392d;
+        border-color: #b24739;
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 9px 20px rgba(105, 30, 22, 0.34);
+    }
 
     .plato-cancel-btn {
-        background: #f3f0ed;
-        border: 1px solid #e5ddd6;
-        color: #665d57;
+        background: #29201d;
+        border: 1px solid #46342e;
+        color: #b9aaa1;
     }
 
-        .plato-cancel-btn:hover {
-            background: #e9e3de;
-            color: var(--sc-dark);
-            transform: translateY(-1px);
-        }
+    .plato-cancel-btn:hover {
+        background: #342724;
+        border-color: #5b4038;
+        color: #f0e7e1;
+        transform: translateY(-1px);
+    }
 
-        .plato-save-btn svg,
-        .plato-cancel-btn svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-        }
+    .plato-save-btn svg,
+    .plato-cancel-btn svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+    }
 
     /* =========================================================
-                   TARJETA LATERAL
-                   ========================================================= */
+       TARJETA LATERAL
+       ========================================================= */
 
     .plato-info-card {
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
+        background: #211917;
+        border: 1px solid #392824;
         border-radius: 15px;
-        box-shadow: var(--sc-shadow);
+        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
         overflow: hidden;
     }
 
     .plato-info-top {
         padding: 23px 21px;
-        background: linear-gradient(145deg, #8b3a2b 0%, #68291f 100%);
+        background: linear-gradient(145deg, #67271f 0%, #3a1b18 100%);
+        border-bottom: 1px solid #5a2922;
         color: #ffffff;
     }
 
     .plato-info-icon {
-        width: 44px;
-        height: 44px;
+        width: 46px;
+        height: 46px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 16px;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(0, 0, 0, 0.18);
+        border: 1px solid rgba(255, 255, 255, 0.13);
         border-radius: 11px;
+        color: #e0b66d;
     }
 
-        .plato-info-icon svg {
-            width: 23px;
-            height: 23px;
-            stroke: currentColor;
-        }
+    .plato-info-icon svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+    }
 
     .plato-info-title {
         margin: 0;
         color: #ffffff;
         font-size: 1rem;
-        font-weight: 800;
+        font-weight: 900;
     }
 
     .plato-info-text {
         margin: 7px 0 0;
-        color: rgba(255, 255, 255, 0.72);
+        color: rgba(255, 255, 255, 0.68);
         font-size: 0.72rem;
-        line-height: 1.5;
+        line-height: 1.55;
     }
 
     .plato-info-body {
-        padding: 19px 21px;
+        padding: 20px 21px;
+        background: #211917;
     }
 
     .plato-info-list {
         display: flex;
         flex-direction: column;
-        gap: 15px;
+        gap: 16px;
         margin: 0;
         padding: 0;
         list-style: none;
@@ -402,92 +597,65 @@
     }
 
     .plato-info-item-icon {
-        width: 29px;
-        height: 29px;
+        width: 31px;
+        height: 31px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        background: #f7f1ec;
+        background: #2c201d;
+        border: 1px solid #47312b;
         border-radius: 8px;
-        color: var(--sc-primary);
+        color: #c99b58;
     }
 
-        .plato-info-item-icon svg {
-            width: 15px;
-            height: 15px;
-            stroke: currentColor;
-        }
+    .plato-info-item-icon svg {
+        width: 15px;
+        height: 15px;
+        stroke: currentColor;
+    }
 
     .plato-info-item-title {
-        margin: 1px 0 2px;
-        color: var(--sc-dark);
-        font-size: 0.72rem;
-        font-weight: 800;
+        margin: 1px 0 3px;
+        color: #e9dfd8;
+        font-size: 0.73rem;
+        font-weight: 900;
     }
 
     .plato-info-item-text {
         margin: 0;
-        color: var(--sc-gray);
+        color: #8b7c74;
         font-size: 0.67rem;
-        line-height: 1.4;
+        line-height: 1.45;
     }
 
     /* =========================================================
-                   LÍNEA INFERIOR
-                   ========================================================= */
+       FOOTER LATERAL
+       ========================================================= */
 
     .plato-info-footer {
-        padding: 13px 21px;
-        background: #faf8f6;
-        border-top: 1px solid var(--sc-border);
-        color: #8c827a;
+        padding: 14px 21px;
+        background: #191412;
+        border-top: 1px solid #372621;
+        color: #796b64;
         font-size: 0.65rem;
-        line-height: 1.4;
+        line-height: 1.45;
     }
 
-    /* =========================================================
-                   RESPONSIVE
-                   ========================================================= */
-
-    @@media (max-width: 900px) {
-
-        .plato-create-layout {
-            grid-template-columns: 1fr;
-        }
-
-        .plato-info-card {
-            display: none;
-        }
-    }
-
-    @@media (max-width: 600px) {
-
-        .plato-form-row {
-            grid-template-columns: 1fr;
-            gap: 0;
-        }
-
-        .plato-form-body {
-            padding: 18px;
-        }
-
-        .plato-create-title {
-            font-size: 1.6rem;
-        }
+    .plato-info-footer strong {
+        color: #c55b51;
     }
 </style>
 
 <div class="plato-create-page">
 
     <!-- =====================================================
-     ENCABEZADO
-     ===================================================== -->
+         ENCABEZADO
+         ===================================================== -->
 
     <div class="plato-create-header">
 
         <div class="plato-create-header-icon">
-
             <svg viewBox="0 0 24 24"
                  fill="none"
                  stroke="currentColor"
@@ -500,7 +668,6 @@
                 <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
 
             </svg>
-
         </div>
 
         <div>
@@ -521,15 +688,16 @@
 
     </div>
 
+
     <!-- =====================================================
-     CONTENIDO
-     ===================================================== -->
+         CONTENIDO
+         ===================================================== -->
 
     <div class="plato-create-layout">
 
         <!-- =================================================
-         FORMULARIO
-         ================================================= -->
+             FORMULARIO
+             ================================================= -->
 
         <div class="plato-form-card">
 
@@ -553,12 +721,14 @@
 
             </div>
 
+
             <div class="plato-form-body">
 
-                <form asp-action="Create"
-                      method="post">
+                <form asp-action="Create" method="post">
 
-                    <!-- NOMBRE -->
+                    <!-- =================================================
+                         NOMBRE
+                         ================================================= -->
 
                     <div class="plato-form-group">
 
@@ -603,7 +773,10 @@
 
                     </div>
 
-                    <!-- PRECIO + TIEMPO -->
+
+                    <!-- =================================================
+                         PRECIO + TIEMPO
+                         ================================================= -->
 
                     <div class="plato-form-row">
 
@@ -659,6 +832,7 @@
 
                         </div>
 
+
                         <!-- TIEMPO -->
 
                         <div class="plato-form-group">
@@ -712,7 +886,10 @@
 
                     </div>
 
-                    <!-- ESTADO -->
+
+                    <!-- =================================================
+                         ESTADO
+                         ================================================= -->
 
                     <div class="plato-form-group">
 
@@ -770,31 +947,101 @@
 
                     </div>
 
-                    <!-- ========================================== -->
-                    <!-- RECETA DEL PLATO (INGREDIENTES)            -->
-                    <!-- ========================================== -->
-                    <div class="plato-form-group" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
 
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                            <label class="plato-form-label" style="font-size: 1rem; margin-bottom: 0;">
-                                Receta (Ingredientes requeridos)
-                            </label>
-                            <button type="button" id="btnAgregarIngrediente" style="background: #198754; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
-                                + Agregar ingrediente
+                    <!-- =================================================
+                         RECETA
+                         ================================================= -->
+
+                    <div class="plato-receta-section">
+
+                        <div class="plato-receta-header">
+
+                            <h3 class="plato-receta-title">
+
+                                <span class="plato-receta-title-icon">
+
+                                    <svg viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round">
+
+                                        <path d="M4 7h16" />
+                                        <path d="M4 12h16" />
+                                        <path d="M4 17h10" />
+                                        <path d="M17 15v5" />
+                                        <path d="M14.5 17.5h5" />
+
+                                    </svg>
+
+                                </span>
+
+                                Receta e ingredientes
+
+                            </h3>
+
+
+                            <button type="button"
+                                    id="btnAgregarIngrediente"
+                                    class="plato-add-ingredient-btn">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="2"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <path d="M12 5v14" />
+                                    <path d="M5 12h14" />
+
+                                </svg>
+
+                                Agregar ingrediente
+
                             </button>
+
                         </div>
 
-                        <p class="plato-form-help" style="margin-bottom: 15px;">
-                            Agrega los ingredientes y la cantidad exacta que se consumirá del inventario por cada plato vendido.
+
+                        <p class="plato-receta-description">
+                            Define los ingredientes y la cantidad exacta que se
+                            descontará del inventario por cada plato vendido.
                         </p>
 
-                        <div id="contenedorIngredientes">
-                            <!-- Aquí se agregarán las filas de ingredientes dinámicamente con JS -->
+
+                        <div id="contenedorIngredientes"
+                             class="plato-ingredientes-container">
+
+                            <div id="recetaVacia"
+                                 class="plato-receta-empty">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.7"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 8v4" />
+                                    <path d="M12 16h.01" />
+
+                                </svg>
+
+                                Agrega los ingredientes necesarios para preparar este plato.
+
+                            </div>
+
                         </div>
+
                     </div>
 
 
-                    <!-- BOTONES -->
+                    <!-- =================================================
+                         BOTONES
+                         ================================================= -->
 
                     <div class="plato-form-actions">
 
@@ -817,6 +1064,7 @@
                             Guardar plato
 
                         </button>
+
 
                         <a asp-action="Index"
                            class="plato-cancel-btn">
@@ -845,9 +1093,10 @@
 
         </div>
 
+
         <!-- =================================================
-         INFORMACIÓN LATERAL
-         ================================================= -->
+             INFORMACIÓN LATERAL
+             ================================================= -->
 
         <aside class="plato-info-card">
 
@@ -875,15 +1124,18 @@
                 </h2>
 
                 <p class="plato-info-text">
-                    Los datos registrados aquí se utilizarán
-                    para administrar el menú del restaurante.
+                    Los datos registrados aquí se utilizarán para administrar
+                    el menú y controlar la preparación de los platos.
                 </p>
 
             </div>
 
+
             <div class="plato-info-body">
 
                 <ul class="plato-info-list">
+
+                    <!-- PRECIO -->
 
                     <li class="plato-info-item">
 
@@ -906,16 +1158,20 @@
                         <div>
 
                             <p class="plato-info-item-title">
-                                Precio
+                                Precio de venta
                             </p>
 
                             <p class="plato-info-item-text">
-                                Define el precio de venta del plato.
+                                Define cuánto pagará el cliente por cada unidad
+                                del plato.
                             </p>
 
                         </div>
 
                     </li>
+
+
+                    <!-- PREPARACIÓN -->
 
                     <li class="plato-info-item">
 
@@ -938,16 +1194,20 @@
                         <div>
 
                             <p class="plato-info-item-title">
-                                Preparación
+                                Tiempo de preparación
                             </p>
 
                             <p class="plato-info-item-text">
-                                Establece el tiempo aproximado que requiere.
+                                Indica cuánto tiempo aproximadamente necesita
+                                cocina para preparar el pedido.
                             </p>
 
                         </div>
 
                     </li>
+
+
+                    <!-- DISPONIBILIDAD -->
 
                     <li class="plato-info-item">
 
@@ -974,7 +1234,46 @@
                             </p>
 
                             <p class="plato-info-item-text">
-                                Controla si el plato puede ofrecerse actualmente.
+                                Controla si el plato puede ofrecerse actualmente
+                                a los clientes.
+                            </p>
+
+                        </div>
+
+                    </li>
+
+
+                    <!-- INVENTARIO -->
+
+                    <li class="plato-info-item">
+
+                        <span class="plato-info-item-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M4 7h16" />
+                                <path d="M5 7v12h14V7" />
+                                <path d="M8 7V4h8v3" />
+                                <path d="M9 11h6" />
+
+                            </svg>
+
+                        </span>
+
+                        <div>
+
+                            <p class="plato-info-item-title">
+                                Inventario
+                            </p>
+
+                            <p class="plato-info-item-text">
+                                La receta permitirá controlar el consumo de
+                                ingredientes automáticamente.
                             </p>
 
                         </div>
@@ -985,8 +1284,13 @@
 
             </div>
 
+
             <div class="plato-info-footer">
-                Los campos marcados con <strong>*</strong> son obligatorios.
+
+                Los campos marcados con
+                <strong>*</strong>
+                son obligatorios.
+
             </div>
 
         </aside>
@@ -995,44 +1299,96 @@
 
 </div>
 
-<!-- SCRIPT PARA AGREGAR FILAS DINÁMICAS -->
+
+<!-- =========================================================
+     SCRIPT PARA AGREGAR INGREDIENTES
+     ========================================================= -->
+
 <script>
-    document.getElementById('btnAgregarIngrediente').addEventListener('click', function() {
+
+    document.getElementById('btnAgregarIngrediente').addEventListener('click', function () {
+
         var container = document.getElementById('contenedorIngredientes');
 
+        var recetaVacia = document.getElementById('recetaVacia');
+
+        if (recetaVacia) {
+            recetaVacia.remove();
+        }
+
         var fila = document.createElement('div');
-        fila.style.display = 'flex';
-        fila.style.gap = '10px';
-        fila.style.marginBottom = '10px';
+
+        fila.className = 'plato-ingrediente-row';
 
         var htmlSelect = `
-                <select name="IdsIngredientes" class="plato-form-select" style="flex: 2; padding-left: 15px;" required>
-                    <option value="">Seleccione un ingrediente...</option>
-                    @if (ViewBag.Ingredientes != null)
+            <select name="IdsIngredientes"
+                    class="plato-form-select"
+                    required>
+
+                <option value="">
+                    Seleccione un ingrediente...
+                </option>
+
+                @if (ViewBag.Ingredientes != null)
+                {
+                    foreach (var ing in ViewBag.Ingredientes)
                     {
-                            foreach (var ing in ViewBag.Ingredientes)
-                            {
-                                    <option value="@ing.Value">@ing.Text</option>
-                            }
+                        <option value="@ing.Value">
+                            @ing.Text
+                        </option>
                     }
-                </select>
-            `;
+                }
+
+            </select>
+        `;
 
         var htmlCantidad = `
-                <input type="number" name="CantidadesNecesarias" class="plato-form-input" style="flex: 1; padding-left: 15px;" step="0.01" min="0.01" placeholder="Cantidad (Ej: 0.2)" required />
-            `;
+            <input type="number"
+                   name="CantidadesNecesarias"
+                   class="plato-form-input"
+                   step="0.01"
+                   min="0.01"
+                   placeholder="Cantidad (Ej: 0.2)"
+                   required />
+        `;
 
         var btnEliminar = `
-                <button type="button" onclick="this.parentElement.remove()" style="background: #dc3545; color: white; border: none; border-radius: 6px; width: 45px; cursor: pointer; font-weight: bold;">X</button>
-            `;
+            <button type="button"
+                    class="plato-remove-ingredient-btn"
+                    title="Eliminar ingrediente"
+                    onclick="this.parentElement.remove();">
 
-        fila.innerHTML = htmlSelect + htmlCantidad + btnEliminar;
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M6 6l12 12" />
+                    <path d="M18 6L6 18" />
+
+                </svg>
+
+            </button>
+        `;
+
+        fila.innerHTML =
+            htmlSelect +
+            htmlCantidad +
+            btnEliminar;
+
         container.appendChild(fila);
+
     });
+
 </script>
 
+
 @section Scripts {
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+
 }

@@ -2,211 +2,721 @@
 
 @{
     ViewData["Title"] = "Ingredientes";
+
+    var ingredientes = Model?.ToList()
+        ?? new List<RestauranteSaborCasero.Models.Ingrediente>();
+
+    var totalIngredientes = ingredientes.Count;
+    var stockBajoTotal = ingredientes.Count(i => i.CantidadDisponible <= i.CantidadMinima);
+    var stockNormalTotal = totalIngredientes - stockBajoTotal;
 }
 
 <style>
-    .ingredientes-container {
-        padding: 30px;
+    /* =========================================================
+       INGREDIENTES - SABOR CASERO
+       ESTILO OSCURO / DARK RED
+       ========================================================= */
+
+    .ingredientes-page {
+        width: 100%;
+        padding-top: 12px;
+        color: #f1e9e3;
     }
+
+    /* =========================================================
+       ENCABEZADO
+       ========================================================= */
 
     .ingredientes-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
+        margin-bottom: 23px;
+        gap: 20px;
+    }
+
+    .ingredientes-header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .ingredientes-header-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #321b18;
+        border: 1px solid #623027;
+        border-radius: 12px;
+        color: #c99b58;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        flex-shrink: 0;
+    }
+
+    .ingredientes-header-icon svg {
+        width: 27px;
+        height: 27px;
+        stroke: currentColor;
+    }
+
+    .ingredientes-eyebrow {
+        margin: 0 0 4px;
+        color: #c99b58;
+        font-size: 0.7rem;
+        font-weight: 900;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
     }
 
     .ingredientes-titulo {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        color: #f6eee8;
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.8px;
+        line-height: 1.1;
     }
 
     .ingredientes-subtitulo {
-        margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
+        margin: 7px 0 0;
+        color: #9f9087;
+        font-size: 0.82rem;
+        font-weight: 500;
     }
+
+    /* =========================================================
+       BOTÓN NUEVO
+       ========================================================= */
 
     .btn-nuevo {
-        display: inline-block;
-        background-color: #198754;
-        color: white;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 43px;
+        padding: 0 17px;
+        background: #842f25;
+        border: 1px solid #9c3b30;
+        border-radius: 9px;
+        color: #ffffff;
         text-decoration: none;
-        padding: 12px 20px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+        font-size: 0.77rem;
+        font-weight: 900;
+        box-shadow: 0 7px 17px rgba(90, 27, 20, 0.25);
+        transition: background 0.2s ease,
+                    border-color 0.2s ease,
+                    transform 0.2s ease,
+                    box-shadow 0.2s ease;
     }
 
-        .btn-nuevo:hover {
-            background-color: #157347;
-            color: white;
-        }
+    .btn-nuevo:hover {
+        background: #9b392d;
+        border-color: #b24739;
+        color: #ffffff;
+        transform: translateY(-1px);
+        box-shadow: 0 9px 20px rgba(105, 30, 22, 0.34);
+    }
+
+    .btn-nuevo svg {
+        width: 17px;
+        height: 17px;
+        stroke: currentColor;
+    }
+
+    /* =========================================================
+       RESUMEN
+       ========================================================= */
+
+    .ingredientes-resumen {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin-bottom: 18px;
+    }
+
+    .ingrediente-stat {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 16px 18px;
+        background: #211917;
+        border: 1px solid #392824;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.20);
+    }
+
+    .ingrediente-stat-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 9px;
+        flex-shrink: 0;
+    }
+
+    .ingrediente-stat-icon svg {
+        width: 20px;
+        height: 20px;
+        stroke: currentColor;
+    }
+
+    .ingrediente-stat-icon.total {
+        background: #321b18;
+        border: 1px solid #593027;
+        color: #c99b58;
+    }
+
+    .ingrediente-stat-icon.normal {
+        background: #183126;
+        border: 1px solid #28543f;
+        color: #69b58d;
+    }
+
+    .ingrediente-stat-icon.alerta {
+        background: #3b211f;
+        border: 1px solid #68302b;
+        color: #d67970;
+    }
+
+    .ingrediente-stat-label {
+        margin: 0 0 3px;
+        color: #81736c;
+        font-size: 0.65rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .ingrediente-stat-value {
+        margin: 0;
+        color: #f0e7e1;
+        font-size: 1.25rem;
+        font-weight: 900;
+    }
+
+    /* =========================================================
+       CARD TABLA
+       ========================================================= */
 
     .ingredientes-card {
-        width: 1100px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
+        width: 100%;
+        background: #211917;
+        border: 1px solid #392824;
+        border-radius: 15px;
         overflow: hidden;
+        box-shadow: 0 14px 35px rgba(0, 0, 0, 0.28);
     }
+
+    .ingredientes-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 17px 21px;
+        background: #271c1a;
+        border-bottom: 1px solid #3b2925;
+    }
+
+    .ingredientes-card-title {
+        margin: 0;
+        color: #eee4dd;
+        font-size: 0.94rem;
+        font-weight: 900;
+    }
+
+    .ingredientes-card-subtitle {
+        margin: 4px 0 0;
+        color: #867770;
+        font-size: 0.7rem;
+    }
+
+    .ingredientes-count {
+        padding: 6px 10px;
+        background: #321b18;
+        border: 1px solid #593027;
+        border-radius: 7px;
+        color: #c99b58;
+        font-size: 0.66rem;
+        font-weight: 900;
+    }
+
+    /* =========================================================
+       TABLA
+       ========================================================= */
 
     .tabla-ingredientes {
         width: 100%;
         border-collapse: collapse;
+        background: #211917;
     }
 
-        .tabla-ingredientes thead {
-            background-color: #343a40;
-            color: white;
-        }
+    .tabla-ingredientes thead {
+        background: #2b1e1b;
+        color: #bfaea4;
+    }
 
-        .tabla-ingredientes th {
-            padding: 15px 16px;
-            text-align: left;
-            font-size: 13px;
-            font-weight: 600;
-        }
+    .tabla-ingredientes th {
+        padding: 14px 17px;
+        text-align: left;
+        font-size: 0.67rem;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 0.55px;
+        border-bottom: 1px solid #44302a;
+        white-space: nowrap;
+    }
 
-        .tabla-ingredientes td {
-            padding: 14px 16px;
-            border-bottom: 1px solid #eeeeee;
-            color: #444;
-            font-size: 14px;
-            vertical-align: middle;
-        }
+    .tabla-ingredientes td {
+        padding: 15px 17px;
+        border-bottom: 1px solid #332521;
+        color: #b8aaa2;
+        font-size: 0.76rem;
+        font-weight: 500;
+        vertical-align: middle;
+    }
 
-        .tabla-ingredientes tbody tr:hover {
-            background-color: #f8f9fa;
-        }
+    .tabla-ingredientes tbody tr {
+        background: #211917;
+        transition: background 0.18s ease;
+    }
+
+    .tabla-ingredientes tbody tr:hover {
+        background: #2a1c1a;
+    }
+
+    .tabla-ingredientes tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* =========================================================
+       NOMBRE
+       ========================================================= */
+
+    .ingrediente-nombre-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .ingrediente-icon {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #2d201d;
+        border: 1px solid #47312b;
+        border-radius: 8px;
+        color: #c99b58;
+        flex-shrink: 0;
+    }
+
+    .ingrediente-icon svg {
+        width: 17px;
+        height: 17px;
+        stroke: currentColor;
+    }
 
     .nombre-ingrediente {
-        font-size: 15px;
-        font-weight: 700;
-        color: #343a40;
+        display: block;
+        color: #eee5df;
+        font-size: 0.8rem;
+        font-weight: 900;
     }
 
-    .cantidad {
-        font-weight: 700;
-    }
-
-    .cantidad-normal {
-        color: #198754;
-    }
-
-    .cantidad-baja {
-        color: #dc3545;
-    }
-
-    .alerta-stock {
-        display: inline-block;
-        margin-left: 7px;
-        padding: 4px 8px;
-        border-radius: 12px;
-        background-color: #f8d7da;
-        color: #842029;
-        font-size: 11px;
-        font-weight: 700;
-    }
-
-    .unidad {
-        color: #777;
-    }
-
-    .estado {
-        display: inline-block;
-        padding: 6px 10px;
-        border-radius: 20px;
-        background-color: #d1e7dd;
-        color: #0f5132;
-        font-size: 12px;
+    .ingrediente-id {
+        display: block;
+        margin-top: 2px;
+        color: #71635d;
+        font-size: 0.61rem;
         font-weight: 600;
     }
 
+    /* =========================================================
+       CANTIDADES
+       ========================================================= */
+
+    .cantidad {
+        font-size: 0.8rem;
+        font-weight: 900;
+    }
+
+    .cantidad-normal {
+        color: #69b58d;
+    }
+
+    .cantidad-baja {
+        color: #d97970;
+    }
+
+    .alerta-stock {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 7px;
+        padding: 4px 7px;
+        background: #421f1d;
+        border: 1px solid #71302b;
+        border-radius: 6px;
+        color: #df8178;
+        font-size: 0.58rem;
+        font-weight: 900;
+        letter-spacing: 0.3px;
+    }
+
+    .cantidad-minima {
+        color: #c2afa5;
+        font-weight: 800;
+    }
+
+    .unidad {
+        color: #a4968e;
+        font-weight: 700;
+    }
+
+    /* =========================================================
+       ESTADO
+       ========================================================= */
+
+    .estado {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        background: #183126;
+        border: 1px solid #28543f;
+        border-radius: 7px;
+        color: #70bc94;
+        font-size: 0.64rem;
+        font-weight: 900;
+    }
+
+    .estado::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: #62ae87;
+        border-radius: 50%;
+        box-shadow: 0 0 7px rgba(98, 174, 135, 0.45);
+    }
+
+    /* =========================================================
+       ACCIONES
+       ========================================================= */
+
     .acciones {
         display: flex;
+        align-items: center;
         gap: 6px;
         white-space: nowrap;
     }
 
     .btn-accion {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+        min-width: 58px;
+        height: 32px;
+        padding: 0 9px;
+        border-radius: 7px;
+        font-size: 0.64rem;
+        font-weight: 900;
         text-decoration: none;
-        padding: 7px 10px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 600;
+        transition: background 0.18s ease,
+                    border-color 0.18s ease,
+                    color 0.18s ease,
+                    transform 0.18s ease;
+    }
+
+    .btn-accion:hover {
+        transform: translateY(-1px);
+    }
+
+    .btn-detalles {
+        background: #28211f;
+        border: 1px solid #49362f;
+        color: #c1b3ab;
+    }
+
+    .btn-detalles:hover {
+        background: #352723;
+        border-color: #68483d;
+        color: #eee4dd;
     }
 
     .btn-editar {
-        background-color: #ffc107;
-        color: #212529;
+        background: #382d1d;
+        border: 1px solid #66502b;
+        color: #d3ac62;
     }
 
-        .btn-editar:hover {
-            background-color: #ffca2c;
-            color: #212529;
-        }
-
-    .btn-detalles {
-        background-color: #0d6efd;
-        color: white;
+    .btn-editar:hover {
+        background: #4a3821;
+        border-color: #87652f;
+        color: #e5c37c;
     }
-
-        .btn-detalles:hover {
-            background-color: #0b5ed7;
-            color: white;
-        }
 
     .btn-eliminar {
-        background-color: #dc3545;
-        color: white;
+        background: #3c201f;
+        border: 1px solid #672d2a;
+        color: #d77a72;
     }
 
-        .btn-eliminar:hover {
-            background-color: #bb2d3b;
-            color: white;
-        }
+    .btn-eliminar:hover {
+        background: #542522;
+        border-color: #8a3933;
+        color: #f09a91;
+    }
+
+    /* =========================================================
+       TABLA VACÍA
+       ========================================================= */
 
     .tabla-vacia {
         text-align: center;
-        padding: 45px;
-        color: #777;
-        font-size: 15px;
+        padding: 60px 45px !important;
+        color: #756861 !important;
+        font-size: 0.78rem !important;
+        line-height: 1.7;
+    }
+
+    .tabla-vacia strong {
+        color: #c39a5a;
+    }
+
+    .tabla-vacia-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #2c201d;
+        border: 1px solid #49312b;
+        border-radius: 11px;
+        color: #947568;
+    }
+
+    .tabla-vacia-icon svg {
+        width: 22px;
+        height: 22px;
+        stroke: currentColor;
     }
 </style>
 
 
-<div class="ingredientes-container">
+<div class="ingredientes-page">
 
-    <!-- ENCABEZADO -->
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
     <div class="ingredientes-header">
 
-        <div>
+        <div class="ingredientes-header-left">
 
-            <h1 class="ingredientes-titulo">
-                Ingredientes
-            </h1>
+            <div class="ingredientes-header-icon">
 
-            <p class="ingredientes-subtitulo">
-                Control y administración del inventario de ingredientes
-            </p>
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M4 7h16" />
+                    <path d="M5 7v12h14V7" />
+                    <path d="M8 7V4h8v3" />
+                    <path d="M9 11h6" />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="ingredientes-eyebrow">
+                    Gestión de inventario
+                </p>
+
+                <h1 class="ingredientes-titulo">
+                    Ingredientes
+                </h1>
+
+                <p class="ingredientes-subtitulo">
+                    Control y administración de los ingredientes del restaurante.
+                </p>
+
+            </div>
 
         </div>
 
 
         <a asp-action="Create"
            class="btn-nuevo">
-            + Crear nuevo ingrediente
+
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+
+            </svg>
+
+            Nuevo ingrediente
+
         </a>
 
     </div>
 
 
-    <!-- TABLA -->
+    <!-- =====================================================
+         RESUMEN
+         ===================================================== -->
+
+    <div class="ingredientes-resumen">
+
+        <!-- TOTAL -->
+
+        <div class="ingrediente-stat">
+
+            <div class="ingrediente-stat-icon total">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M4 7h16" />
+                    <path d="M5 7v12h14V7" />
+                    <path d="M8 7V4h8v3" />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="ingrediente-stat-label">
+                    Total registrados
+                </p>
+
+                <p class="ingrediente-stat-value">
+                    @totalIngredientes
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STOCK NORMAL -->
+
+        <div class="ingrediente-stat">
+
+            <div class="ingrediente-stat-icon normal">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="m8 12 2.5 2.5L16 9" />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="ingrediente-stat-label">
+                    Stock normal
+                </p>
+
+                <p class="ingrediente-stat-value">
+                    @stockNormalTotal
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- STOCK BAJO -->
+
+        <div class="ingrediente-stat">
+
+            <div class="ingrediente-stat-icon alerta">
+
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.8"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+
+                    <path d="M12 3 2.8 19h18.4L12 3z" />
+                    <path d="M12 9v4" />
+                    <path d="M12 16h.01" />
+
+                </svg>
+
+            </div>
+
+            <div>
+
+                <p class="ingrediente-stat-label">
+                    Stock bajo
+                </p>
+
+                <p class="ingrediente-stat-value">
+                    @stockBajoTotal
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         TABLA
+         ===================================================== -->
+
     <div class="ingredientes-card">
+
+        <div class="ingredientes-card-header">
+
+            <div>
+
+                <h2 class="ingredientes-card-title">
+                    Inventario de ingredientes
+                </h2>
+
+                <p class="ingredientes-card-subtitle">
+                    Consulta cantidades disponibles y niveles mínimos.
+                </p>
+
+            </div>
+
+            <span class="ingredientes-count">
+                @totalIngredientes REGISTRADOS
+            </span>
+
+        </div>
+
 
         <table class="tabla-ingredientes">
 
@@ -245,25 +755,60 @@
 
             <tbody>
 
-                @if (Model != null && Model.Any())
+                @if (ingredientes.Any())
                 {
-                    foreach (var item in Model)
+                    foreach (var item in ingredientes)
                     {
                         var stockBajo = item.CantidadDisponible <= item.CantidadMinima;
 
                         <tr>
 
-                            <!-- NOMBRE -->
+                            <!-- =================================================
+                                 NOMBRE
+                                 ================================================= -->
+
                             <td>
 
-                                <span class="nombre-ingrediente">
-                                    @item.Nombre
-                                </span>
+                                <div class="ingrediente-nombre-wrapper">
+
+                                    <span class="ingrediente-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <path d="M4 7h16" />
+                                            <path d="M5 7v12h14V7" />
+                                            <path d="M8 7V4h8v3" />
+
+                                        </svg>
+
+                                    </span>
+
+                                    <span>
+
+                                        <span class="nombre-ingrediente">
+                                            @item.Nombre
+                                        </span>
+
+                                        <span class="ingrediente-id">
+                                            ID #@item.IdIngrediente
+                                        </span>
+
+                                    </span>
+
+                                </div>
 
                             </td>
 
 
-                            <!-- DISPONIBLE -->
+                            <!-- =================================================
+                                 DISPONIBLE
+                                 ================================================= -->
+
                             <td>
 
                                 @if (stockBajo)
@@ -286,17 +831,23 @@
                             </td>
 
 
-                            <!-- MÍNIMO -->
+                            <!-- =================================================
+                                 MÍNIMO
+                                 ================================================= -->
+
                             <td>
 
-                                <span class="cantidad">
+                                <span class="cantidad-minima">
                                     @item.CantidadMinima
                                 </span>
 
                             </td>
 
 
-                            <!-- UNIDAD -->
+                            <!-- =================================================
+                                 UNIDAD
+                                 ================================================= -->
+
                             <td>
 
                                 <span class="unidad">
@@ -306,7 +857,10 @@
                             </td>
 
 
-                            <!-- ESTADO -->
+                            <!-- =================================================
+                                 ESTADO
+                                 ================================================= -->
+
                             <td>
 
                                 <span class="estado">
@@ -316,7 +870,10 @@
                             </td>
 
 
-                            <!-- ACCIONES -->
+                            <!-- =================================================
+                                 ACCIONES
+                                 ================================================= -->
+
                             <td>
 
                                 <div class="acciones">
@@ -324,19 +881,25 @@
                                     <a asp-action="Details"
                                        asp-route-id="@item.IdIngrediente"
                                        class="btn-accion btn-detalles">
+
                                         Ver
+
                                     </a>
 
                                     <a asp-action="Edit"
                                        asp-route-id="@item.IdIngrediente"
                                        class="btn-accion btn-editar">
+
                                         Editar
+
                                     </a>
 
                                     <a asp-action="Delete"
                                        asp-route-id="@item.IdIngrediente"
                                        class="btn-accion btn-eliminar">
+
                                         Eliminar
+
                                     </a>
 
                                 </div>
@@ -353,12 +916,29 @@
                         <td colspan="6"
                             class="tabla-vacia">
 
+                            <div class="tabla-vacia-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <path d="M4 7h16" />
+                                    <path d="M5 7v12h14V7" />
+                                    <path d="M8 7V4h8v3" />
+
+                                </svg>
+
+                            </div>
+
                             No hay ingredientes registrados.
 
                             <br />
 
                             Utiliza
-                            <strong>“Crear nuevo ingrediente”</strong>
+                            <strong>“Nuevo ingrediente”</strong>
                             para agregar el primero.
 
                         </td>
@@ -373,4 +953,3 @@
     </div>
 
 </div>
-
