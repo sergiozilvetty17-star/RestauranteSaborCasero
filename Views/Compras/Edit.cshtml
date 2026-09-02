@@ -5,396 +5,537 @@
 }
 
 <style>
-    .editar-compra-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Basado en el Dashboard)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-danger-bg: #fdf3f2;
+        --sc-danger-text: #c92a2a;
     }
 
-    .editar-compra-header {
-        margin-bottom: 25px;
+    .sc-page-container {
+        width: 100%;
+        max-width: 800px;
+        padding-top: 12px;
+        color: var(--sc-dark);
     }
 
-    .editar-compra-titulo {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
-    }
-
-    .editar-compra-subtitulo {
-        margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
-    }
-
-    .editar-compra-card {
-        width: 600px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
-    }
-
-    .compra-identificacion {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 25px;
-        color: #343a40;
-    }
-
-        .compra-identificacion strong {
-            font-size: 18px;
-        }
-
-    .campo {
-        margin-bottom: 20px;
-    }
-
-        .campo label {
-            display: block;
-            margin-bottom: 7px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .campo input,
-        .campo select {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 7px;
-            background-color: white;
-            color: #333;
-            font-size: 15px;
-        }
-
-            .campo input:focus,
-            .campo select:focus {
-                outline: none;
-                border-color: #198754;
-                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
-            }
-
-    .ayuda {
-        display: block;
-        margin-top: 6px;
-        color: #888;
-        font-size: 12px;
-    }
-
-    .validation {
-        display: block;
-        margin-top: 5px;
-        color: #dc3545;
-        font-size: 13px;
-    }
-
-    .validation-summary {
-        background-color: #f8d7da;
-        border: 1px solid #f1aeb5;
-        color: #842029;
-        border-radius: 7px;
-        padding: 12px 15px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-
-    .acciones {
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
         display: flex;
-        gap: 10px;
         align-items: center;
-        padding-top: 20px;
-        border-top: 1px solid #eeeeee;
-        margin-top: 25px;
+        gap: 16px;
+        margin-bottom: 25px;
     }
 
-    .btn-guardar {
-        border: none;
-        background-color: #198754;
-        color: white;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
-        cursor: pointer;
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
     }
 
-        .btn-guardar:hover {
-            background-color: #157347;
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+    }
+
+    .sc-description {
+        margin: 6px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
         font-weight: 600;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
-        }
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
 
-    .ingredientes-header {
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 15px;
-        margin-top: 30px;
-        border-top: 1px solid #eeeeee;
-        padding-top: 20px;
     }
 
-    .btn-agregar-ingrediente {
-        background-color: #0d6efd;
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 7px;
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.1rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
         font-weight: 600;
-        cursor: pointer;
     }
 
-        .btn-agregar-ingrediente:hover {
-            background-color: #0b5ed7;
+    .sc-panel-body {
+        padding: 24px;
+    }
+
+    /* =========================================================
+           FORMULARIO Y CAMPOS
+           ========================================================= */
+    .sc-form-group {
+        margin-bottom: 22px;
+    }
+
+    .sc-form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
+
+    .sc-input-wrapper {
+        position: relative;
+    }
+
+    .sc-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #a3968f;
+        pointer-events: none;
+    }
+
+        .sc-input-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
         }
 
-    .ingredientes-container {
-        margin-bottom: 25px;
+    .sc-input,
+    .sc-select {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px 0 42px;
+        background: #ffffff;
+        border: 1px solid #dcd2cc;
+        border-radius: 10px;
+        color: var(--sc-dark);
+        font-size: 0.9rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
     }
 
-    .ingrediente-row {
+    .sc-select {
+        cursor: pointer;
+        appearance: auto;
+        padding-right: 36px;
+    }
+
+        .sc-input:hover,
+        .sc-select:hover {
+            border-color: #c4b5ac;
+        }
+
+        .sc-input:focus,
+        .sc-select:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
+            background: #ffffff;
+        }
+
+    .sc-help-text {
+        display: block;
+        margin-top: 6px;
+        color: #8c8078;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+    .sc-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger-text);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sc-validation-summary {
+        background-color: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        color: var(--sc-danger-text);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           FILAS DINÁMICAS (INGREDIENTES)
+           ========================================================= */
+    .sc-ingredients-header {
         display: flex;
-        gap: 15px;
-        align-items: flex-end;
-        margin-bottom: 15px;
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        border: 1px solid #e9ecef;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
     }
 
-    .ingrediente-campo {
+    .sc-ingredients-title {
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: var(--sc-dark);
+        margin: 0;
+    }
+
+    .sc-ingredient-row {
+        display: flex;
+        gap: 16px;
+        align-items: flex-end;
+        padding: 16px;
+        background: #faf8f6;
+        border: 1px solid var(--sc-border);
+        border-radius: 12px;
+        margin-bottom: 16px;
+    }
+
+    .sc-ingredient-field {
         flex: 1;
     }
 
-        .ingrediente-campo label {
+        .sc-ingredient-field label {
             display: block;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #555;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--sc-gray);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .ingrediente-campo select, .ingrediente-campo input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ced4da;
-            border-radius: 5px;
-        }
-
-    .btn-eliminar-ingrediente {
-        background-color: #dc3545;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 5px;
-        font-weight: bold;
-        cursor: pointer;
-        height: fit-content;
-    }
-
-    .sin-ingredientes {
+    .sc-empty-state {
         text-align: center;
-        color: #777;
-        padding: 20px;
-        background: #f8f9fa;
-        border-radius: 8px;
-        border: 1px dashed #ced4da;
+        padding: 30px 20px;
+        background: #faf8f6;
+        border: 1px dashed #dcd2cc;
+        border-radius: 12px;
+        color: #8c8078;
+        font-weight: 600;
+        font-size: 0.9rem;
     }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+        margin-top: 10px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
+        color: #ffffff;
+    }
+
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
+        }
+
+    .sc-btn-danger {
+        background-color: #dc3545;
+        color: #ffffff;
+        padding: 0 16px;
+    }
+
+        .sc-btn-danger:hover {
+            background-color: #c82333;
+        }
+
+    .sc-btn-info {
+        background-color: #e6f0fa;
+        color: #0b5ed7;
+        border-color: #cce0f5;
+        height: 38px;
+        padding: 0 16px;
+    }
+
+        .sc-btn-info:hover {
+            background-color: #cce0f5;
+            color: #084298;
+        }
 </style>
 
-
-<div class="editar-compra-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="editar-compra-header">
-
-        <h1 class="editar-compra-titulo">
-            Editar compra
-        </h1>
-
-        <p class="editar-compra-subtitulo">
-            Modifica la información de la compra seleccionada
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                <line x1="3" y1="6" x2="21" y2="6" />
+                <path d="M16 10a4 4 0 0 1-8 0" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Compras</p>
+            <h1 class="sc-title">Editar compra</h1>
+            <p class="sc-description">Modifica la información de la compra y sus ingredientes.</p>
+        </div>
     </div>
-
 
     <!-- FORMULARIO -->
-    <div class="editar-compra-card">
+    <div class="sc-panel">
 
-        <div class="compra-identificacion">
-
-            Compra:
-            <strong>
-                #@Model.IdCompra
-            </strong>
-
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Compra #@Model.IdCompra</h2>
+                <p class="sc-panel-subtitle">Registro de abastecimiento</p>
+            </div>
+            <div style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase;">
+                Modo Edición
+            </div>
         </div>
 
+        <div class="sc-panel-body">
 
-        <form asp-action="Edit"
-              method="post">
+            <form asp-action="Edit" method="post">
 
-            <input type="hidden"
-                   asp-for="IdCompra" />
+                <input type="hidden" asp-for="IdCompra" />
 
+                <!-- VALIDACIONES -->
+                <div asp-validation-summary="ModelOnly" class="sc-validation-summary"></div>
 
-            <!-- VALIDACIONES -->
-            <div asp-validation-summary="ModelOnly"
-                 class="validation-summary">
-            </div>
-
-
-            <!-- USUARIO -->
-            <div class="campo">
-
-                <label asp-for="IdUsuario">
-                    Usuario que registra la compra
-                </label>
-
-                <select asp-for="IdUsuario"
-                        asp-items="ViewBag.IdUsuario">
-
-                    <option value="">
-                        Seleccione un usuario
-                    </option>
-
-                </select>
-
-                <span class="ayuda">
-                    Selecciona el usuario encargado de registrar esta compra.
-                </span>
-
-                <span asp-validation-for="IdUsuario"
-                      class="validation">
-                </span>
-
-            </div>
-
-
-            <!-- FECHA -->
-            <div class="campo">
-
-                <label asp-for="Fecha">
-                    Fecha de compra
-                </label>
-
-                <input asp-for="Fecha"
-                       type="date" />
-
-                <span asp-validation-for="Fecha"
-                      class="validation">
-                </span>
-
-            </div>
-
-
-            <!-- PROVEEDOR -->
-            <div class="campo">
-
-                <label asp-for="Proveedor">
-                    Proveedor
-                </label>
-
-                <input asp-for="Proveedor"
-                       type="text"
-                       placeholder="Ejemplo: Distribuidora ABC" />
-
-                <span class="ayuda">
-                    Nombre del proveedor de la compra.
-                </span>
-
-                <span asp-validation-for="Proveedor"
-                      class="validation">
-                </span>
-
-            </div>
-            <div class="ingredientes-header">
-                <h2 class="seccion-titulo" style="border: none; padding: 0; margin: 0;">Ingredientes de la compra</h2>
-                <button type="button" class="btn-agregar-ingrediente" onclick="agregarIngrediente()">+ Agregar ingrediente</button>
-            </div>
-
-            <div id="ingredientes-container" class="ingredientes-container">
-                @if (Model?.Detalles != null && Model.Detalles.Count > 0)
-                {
-                    var indice = 0;
-                    foreach (var detalle in Model.Detalles)
-                    {
-                        <div class="ingrediente-row">
-                            <div class="ingrediente-campo">
-                                <label>Ingrediente</label>
-                                <select name="Detalles[@indice].IdIngrediente" required>
-                                    <option value="">Seleccione...</option>
-                                    @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
-                                    {
-                                        if (ing.IdIngrediente == detalle.IdIngrediente)
-                                        {
-                                            <option value="@ing.IdIngrediente" selected>@ing.Nombre (@ing.UnidadMedida)</option>
-                                        }
-                                        else
-                                        {
-                                            <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            <div class="ingrediente-campo">
-                                <label>Cantidad</label>
-                                <input type="number" name="Detalles[@indice].Cantidad" value="@detalle.Cantidad" step="0.01" min="0.01" required />
-                            </div>
-                            <button type="button" class="btn-eliminar-ingrediente" onclick="eliminarIngrediente(this)">X</button>
-                        </div>
-                        indice++;
-                    }
-                }
-                else
-                {
-                    <div class="sin-ingredientes" id="mensaje-sin-ingredientes">
-                        No has agregado ningún ingrediente.<br />
-                        Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
+                <!-- USUARIO -->
+                <div class="sc-form-group">
+                    <label asp-for="IdUsuario" class="sc-form-label">
+                        Usuario responsable
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </span>
+                        <select asp-for="IdUsuario" class="sc-select" asp-items="ViewBag.IdUsuario">
+                            <option value="">Seleccione un usuario...</option>
+                        </select>
                     </div>
-                }
-            </div>
+                    <span class="sc-help-text">Usuario encargado de registrar esta compra en el sistema.</span>
+                    <span asp-validation-for="IdUsuario" class="sc-validation"></span>
+                </div>
 
-            <!-- ACCIONES -->
-            <div class="acciones">
+                <!-- FECHA -->
+                <div class="sc-form-group">
+                    <label asp-for="Fecha" class="sc-form-label">
+                        Fecha de compra
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                        </span>
+                        <!-- Nota: El input date tiene un icon propio en navegadores, le damos padding izquierdo para el ícono SVG personalizado -->
+                        <input asp-for="Fecha" type="date" class="sc-input" />
+                    </div>
+                    <span asp-validation-for="Fecha" class="sc-validation"></span>
+                </div>
 
-                <button type="submit"
-                        class="btn-guardar">
-                    Guardar cambios
-                </button>
+                <!-- PROVEEDOR -->
+                <div class="sc-form-group">
+                    <label asp-for="Proveedor" class="sc-form-label">
+                        Proveedor
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="3" width="15" height="13" />
+                                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                                <circle cx="5.5" cy="18.5" r="2.5" />
+                                <circle cx="18.5" cy="18.5" r="2.5" />
+                            </svg>
+                        </span>
+                        <input asp-for="Proveedor" type="text" class="sc-input" placeholder="Ejemplo: Distribuidora ABC" />
+                    </div>
+                    <span class="sc-help-text">Nombre de la empresa o persona proveedora.</span>
+                    <span asp-validation-for="Proveedor" class="sc-validation"></span>
+                </div>
 
-                <a asp-action="Index"
-                   class="btn-volver">
-                    Volver a compras
-                </a>
+                <!-- SECCIÓN DE INGREDIENTES -->
+                <div class="sc-ingredients-header">
+                    <h2 class="sc-ingredients-title">Ingredientes de la compra</h2>
+                    <button type="button" class="sc-btn sc-btn-info" onclick="agregarIngrediente()">
+                        + Agregar ingrediente
+                    </button>
+                </div>
 
-            </div>
+                <div id="ingredientes-container">
+                    @if (Model?.Detalles != null && Model.Detalles.Count > 0)
+                    {
+                        var indice = 0;
+                        foreach (var detalle in Model.Detalles)
+                        {
+                            <div class="sc-ingredient-row">
+                                <div class="sc-ingredient-field">
+                                    <label>Ingrediente</label>
+                                    <select class="sc-select" style="padding-left: 16px;" name="Detalles[@indice].IdIngrediente" required>
+                                        <option value="">Seleccione...</option>
+                                        @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
+                                        {
+                                            if (ing.IdIngrediente == detalle.IdIngrediente)
+                                            {
+                                                <option value="@ing.IdIngrediente" selected>@ing.Nombre (@ing.UnidadMedida)</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                                <div class="sc-ingredient-field">
+                                    <label>Cantidad</label>
+                                    <input type="number" class="sc-input" style="padding-left: 16px;" name="Detalles[@indice].Cantidad" value="@detalle.Cantidad" step="0.01" min="0.01" required />
+                                </div>
+                                <button type="button" class="sc-btn sc-btn-danger" onclick="eliminarIngrediente(this)">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+                            indice++;
+                        }
+                    }
+                    else
+                    {
+                        <div class="sc-empty-state" id="mensaje-sin-ingredientes">
+                            No has agregado ningún ingrediente aún.<br />
+                            Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
+                        </div>
+                    }
+                </div>
 
-        </form>
+                <!-- ACCIONES -->
+                <div class="sc-actions">
+                    <button type="submit" class="sc-btn sc-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        Guardar cambios
+                    </button>
 
+                    <a asp-action="Index" class="sc-btn sc-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
+                        Volver a compras
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
     </div>
-
 </div>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
@@ -407,38 +548,43 @@
             if (mensaje) mensaje.remove();
 
             const fila = document.createElement("div");
-            fila.className = "ingrediente-row";
+            fila.className = "sc-ingredient-row";
             fila.innerHTML = `
-                        <div class="ingrediente-campo">
+                        <div class="sc-ingredient-field">
                             <label>Ingrediente</label>
-                            <select name="Detalles[${indiceIngrediente}].IdIngrediente" required>
+                            <select class="sc-select" style="padding-left: 16px;" name="Detalles[${indiceIngrediente}].IdIngrediente" required>
                                 <option value="">Seleccione...</option>
                                 @foreach (var ing in (IEnumerable<RestauranteSaborCasero.Models.Ingrediente>)ViewData["Ingredientes"])
                                 {
-                                        <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
+                                            <option value="@ing.IdIngrediente">@ing.Nombre (@ing.UnidadMedida)</option>
                                 }
                             </select>
                         </div>
-                        <div class="ingrediente-campo">
+                        <div class="sc-ingredient-field">
                             <label>Cantidad</label>
-                            <input type="number" name="Detalles[${indiceIngrediente}].Cantidad" value="1" step="0.01" min="0.01" required />
+                            <input type="number" class="sc-input" style="padding-left: 16px;" name="Detalles[${indiceIngrediente}].Cantidad" value="1" step="0.01" min="0.01" required />
                         </div>
-                        <button type="button" class="btn-eliminar-ingrediente" onclick="eliminarIngrediente(this)">X</button>
+                        <button type="button" class="sc-btn sc-btn-danger" onclick="eliminarIngrediente(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
                     `;
             container.appendChild(fila);
             indiceIngrediente++;
         }
 
         function eliminarIngrediente(boton) {
-            const fila = boton.closest(".ingrediente-row");
+            const fila = boton.closest(".sc-ingredient-row");
             if (fila) fila.remove();
 
-            const filas = document.querySelectorAll(".ingrediente-row");
+            const filas = document.querySelectorAll(".sc-ingredient-row");
             if (filas.length === 0) {
                 const container = document.getElementById("ingredientes-container");
                 container.innerHTML = `
-                            <div class="sin-ingredientes" id="mensaje-sin-ingredientes">
-                                No has agregado ningún ingrediente.<br />
+                            <div class="sc-empty-state" id="mensaje-sin-ingredientes">
+                                No has agregado ningún ingrediente aún.<br />
                                 Presiona <strong>+ Agregar ingrediente</strong> para comenzar.
                             </div>`;
             }
