@@ -147,12 +147,14 @@ CREATE TABLE compras (
     IdUsuario INT NOT NULL,
     Fecha DATE NOT NULL,
     Proveedor VARCHAR(150) NOT NULL,
+    Estado INT NOT NULL DEFAULT 1, /* <-- NUEVA COLUMNA (1 equivale a Realizada) */
 
     CONSTRAINT fk_compra_usuario
         FOREIGN KEY (IdUsuario)
         REFERENCES usuarios(IdUsuario)
         ON DELETE RESTRICT
         ON UPDATE CASCADE
+);
 );
 
 

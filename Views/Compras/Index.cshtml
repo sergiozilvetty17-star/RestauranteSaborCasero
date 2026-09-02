@@ -191,6 +191,7 @@
                     <th>
                         Usuario
                     </th>
+                    <th>Estado</th>
 
                     <th>
                         Acciones
@@ -246,12 +247,25 @@
                                 }
 
                             </td>
-
+                            <td>
+                                @switch (item.Estado)
+                                {
+                                    case RestauranteSaborCasero.Models.EstadoCompra.Pendiente:
+                                        <span style="background-color: #fff3cd; color: #856404; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;">Pendiente</span>
+                                        break;
+                                    case RestauranteSaborCasero.Models.EstadoCompra.Realizada:
+                                        <span style="background-color: #d1e7dd; color: #0f5132; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;">Realizada</span>
+                                        break;
+                                    case RestauranteSaborCasero.Models.EstadoCompra.Cancelada:
+                                        <span style="background-color: #f8d7da; color: #842029; padding: 6px 12px; border-radius: 20px; font-size: 13px; font-weight: bold;">Cancelada</span>
+                                        break;
+                                }
+                            </td>
 
                             <!-- ACCIONES -->
                             <td>
 
-                                <div class="acciones">
+                                <div class="acciones" style="align-items: center;">
 
                                     <a asp-action="Details"
                                        asp-route-id="@item.IdCompra"
@@ -259,12 +273,41 @@
                                         Ver
                                     </a>
 
-                                    <a asp-action="Edit"
-                                       asp-route-id="@item.IdCompra"
-                                       class="btn-accion btn-editar">
-                                        Editar
-                                    </a>
+                                    @if (item.Estado == RestauranteSaborCasero.Models.EstadoCompra.Pendiente)
+                                    {
+                                        <!-- Botón Editar Activo -->
+                                        <a asp-action="Edit"
+                                           asp-route-id="@item.IdCompra"
+                                           class="btn-accion btn-editar">
+                                            Editar
+                                        </a>
 
+                                        <!-- Botones de Cambio de Estado -->
+                                        <form asp-action="CambiarEstado" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.IdCompra" />
+                                            <input type="hidden" name="nuevoEstado" value="Realizada" />
+                                            <button type="submit" class="btn-accion" style="background-color: #198754; color: white; border: none; cursor: pointer;">
+                                                ✓ Recibida
+                                            </button>
+                                        </form>
+
+                                        <form asp-action="CambiarEstado" method="post" style="display:inline;">
+                                            @Html.AntiForgeryToken()
+                                            <input type="hidden" name="id" value="@item.IdCompra" />
+                                            <input type="hidden" name="nuevoEstado" value="Cancelada" />
+                                            <button type="submit" class="btn-accion" style="background-color: #dc3545; color: white; border: none; cursor: pointer;">
+                                                ✕ Cancelar
+                                            </button>
+                                        </form>
+                                    }
+                                    else
+                                    {
+                                        <!-- Botón Editar Plomo (Deshabilitado) -->
+                                        <span class="btn-accion" style="background-color: #adb5bd; color: white; cursor: not-allowed; opacity: 0.7;">
+                                            Editar
+                                        </span>
+                                    }
                                 </div>
 
                             </td>
@@ -276,7 +319,7 @@
                 {
                     <tr>
 
-                        <td colspan="4"
+                        <td colspan="5"
                             class="tabla-vacia">
 
                             No hay compras registradas.

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RestauranteSaborCasero.Data;
 
@@ -10,9 +11,11 @@ using RestauranteSaborCasero.Data;
 namespace proyecto_final.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260902001732_AgregarEstadoCompra")]
+    partial class AgregarEstadoCompra
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,9 +26,6 @@ namespace proyecto_final.Migrations
                 {
                     b.Property<int>("IdCompra")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("Estado")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Fecha")

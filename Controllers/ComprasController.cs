@@ -19,7 +19,6 @@ namespace RestauranteSaborCasero.Controllers
         // ==========================================
         // GET: Compras
         // ==========================================
-
         public async Task<IActionResult> Index()
         {
             var compras = await _context.Compras
@@ -32,15 +31,12 @@ namespace RestauranteSaborCasero.Controllers
             return View(compras);
         }
 
-
         // ==========================================
         // GET: Compras/Details/5
         // ==========================================
-
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-                return NotFound();
+            if (id == null) return NotFound();
 
             var compra = await _context.Compras
                 .Include(c => c.Usuario)
@@ -48,12 +44,10 @@ namespace RestauranteSaborCasero.Controllers
                     .ThenInclude(d => d.Ingrediente)
                 .FirstOrDefaultAsync(c => c.IdCompra == id);
 
-            if (compra == null)
-                return NotFound();
+            if (compra == null) return NotFound();
 
             return View(compra);
         }
-
 
         // ==========================================
         // GET: Compras/Create
@@ -93,20 +87,14 @@ namespace RestauranteSaborCasero.Controllers
                     compra.Fecha = DateTime.Now.Date;
                 }
 
+                // Aseguramos que nazca como pendiente
+                compra.Estado = EstadoCompra.Pendiente;
+
                 _context.Compras.Add(compra);
                 await _context.SaveChangesAsync();
 
-                // Sumar al inventario
-                foreach (var detalle in compra.Detalles)
-                {
-                    var ingrediente = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
-                    if (ingrediente != null)
-                    {
-                        ingrediente.CantidadDisponible += detalle.Cantidad;
-                        _context.Update(ingrediente);
-                    }
-                }
-                await _context.SaveChangesAsync();
+                // NOTA: Ya no sumamos al inventario aquí. 
+                // Se sumará únicamente cuando el estado cambie a "Realizada".
 
                 return RedirectToAction(nameof(Index));
             }
@@ -128,6 +116,13 @@ namespace RestauranteSaborCasero.Controllers
                 .FirstOrDefaultAsync(c => c.IdCompra == id);
 
             if (compra == null) return NotFound();
+
+            // 🔒 NUEVO CANDADO DE SEGURIDAD
+            if (compra.Estado != EstadoCompra.Pendiente)
+            {
+                // Si alguien intenta entrar a la fuerza, lo regresamos al Index
+                return RedirectToAction(nameof(Index));
+            }
 
             await CargarUsuarios(compra.IdUsuario);
             await CargarIngredientes();
@@ -167,11 +162,14 @@ namespace RestauranteSaborCasero.Controllers
 
                     if (compraOriginal == null) return NotFound();
 
-                    // Revertir stock anterior
-                    foreach (var detalle in compraOriginal.Detalles)
+                    // Si la compra ya estaba "Realizada", revertimos el stock temporalmente antes de editar
+                    if (compraOriginal.Estado == EstadoCompra.Realizada)
                     {
-                        var ing = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
-                        if (ing != null) ing.CantidadDisponible -= detalle.Cantidad;
+                        foreach (var detalle in compraOriginal.Detalles)
+                        {
+                            var ing = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
+                            if (ing != null) ing.CantidadDisponible -= detalle.Cantidad;
+                        }
                     }
 
                     _context.DetalleCompras.RemoveRange(compraOriginal.Detalles);
@@ -189,8 +187,12 @@ namespace RestauranteSaborCasero.Controllers
                             Cantidad = detalle.Cantidad
                         });
 
-                        var ing = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
-                        if (ing != null) ing.CantidadDisponible += detalle.Cantidad;
+                        // Si la compra editada está "Realizada", volvemos a sumar el stock nuevo
+                        if (compraOriginal.Estado == EstadoCompra.Realizada)
+                        {
+                            var ing = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
+                            if (ing != null) ing.CantidadDisponible += detalle.Cantidad;
+                        }
                     }
 
                     await _context.SaveChangesAsync();
@@ -210,6 +212,55 @@ namespace RestauranteSaborCasero.Controllers
         }
 
         // ==========================================
+        // CAMBIAR ESTADO (MOTOR LÓGICO DEL INVENTARIO)
+        // ==========================================
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CambiarEstado(int id, EstadoCompra nuevoEstado)
+        {
+            var compra = await _context.Compras
+                .Include(c => c.Detalles)
+                .FirstOrDefaultAsync(c => c.IdCompra == id);
+
+            if (compra == null) return NotFound();
+
+            EstadoCompra estadoAnterior = compra.Estado;
+
+            // CASO 1: Pasa a "Realizada" (Llegó el pedido) -> SUMAMOS al inventario
+            if (nuevoEstado == EstadoCompra.Realizada && estadoAnterior != EstadoCompra.Realizada)
+            {
+                foreach (var detalle in compra.Detalles)
+                {
+                    var ingrediente = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
+                    if (ingrediente != null)
+                    {
+                        ingrediente.CantidadDisponible += detalle.Cantidad;
+                        _context.Update(ingrediente);
+                    }
+                }
+            }
+            // CASO 2: Pasa a "Cancelada" y antes estaba "Realizada" -> RESTAMOS lo que habíamos sumado
+            else if (nuevoEstado == EstadoCompra.Cancelada && estadoAnterior == EstadoCompra.Realizada)
+            {
+                foreach (var detalle in compra.Detalles)
+                {
+                    var ingrediente = await _context.Ingredientes.FindAsync(detalle.IdIngrediente);
+                    if (ingrediente != null)
+                    {
+                        ingrediente.CantidadDisponible -= detalle.Cantidad;
+                        _context.Update(ingrediente);
+                    }
+                }
+            }
+
+            compra.Estado = nuevoEstado;
+            _context.Update(compra);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // ==========================================
         // CARGAR INGREDIENTES
         // ==========================================
         private async Task CargarIngredientes()
@@ -219,11 +270,9 @@ namespace RestauranteSaborCasero.Controllers
                 .ToListAsync();
         }
 
-
         // ==========================================
         // CARGAR USUARIOS
         // ==========================================
-
         private async Task CargarUsuarios(int? usuarioSeleccionado = null)
         {
             var usuarios = await _context.Usuarios
