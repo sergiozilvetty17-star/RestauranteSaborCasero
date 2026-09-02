@@ -208,7 +208,8 @@
             stroke: currentColor;
         }
 
-    .sc-input {
+    .sc-input,
+    .sc-select {
         width: 100%;
         height: 48px;
         padding: 0 16px 0 42px;
@@ -223,19 +224,27 @@
         box-sizing: border-box;
     }
 
-        .sc-input:hover {
+    .sc-select {
+        cursor: pointer;
+        appearance: auto;
+        padding-right: 36px;
+    }
+
+        .sc-input:hover,
+        .sc-select:hover {
             border-color: #c4b5ac;
         }
 
-        .sc-input:focus {
+        .sc-input:focus,
+        .sc-select:focus {
             border-color: var(--sc-primary);
             box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
             background: #ffffff;
         }
 
-        .sc-input::placeholder {
-            color: #b5aba4;
-        }
+    .sc-input::placeholder {
+        color: #b5aba4;
+    }
 
     .sc-help-text {
         display: block;
@@ -268,6 +277,147 @@
     }
 
     /* =========================================================
+           SECCIÓN RECETA E INGREDIENTES
+           ========================================================= */
+    .sc-receta-section {
+        margin-top: 30px;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+    }
+
+    .sc-receta-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 16px;
+    }
+
+    .sc-receta-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.1rem;
+        font-weight: 900;
+    }
+
+    .sc-receta-title-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 8px;
+        color: var(--sc-primary);
+        flex-shrink: 0;
+    }
+
+        .sc-receta-title-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+    .sc-add-ingredient-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        height: 38px;
+        padding: 0 16px;
+        background: var(--sc-primary);
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 0.78rem;
+        font-weight: 800;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s ease;
+    }
+
+        .sc-add-ingredient-btn:hover {
+            background: var(--sc-primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(141, 48, 36, 0.2);
+        }
+
+        .sc-add-ingredient-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+    .sc-ingredientes-container {
+        padding: 16px;
+        background: #faf8f6;
+        border: 1px solid var(--sc-border);
+        border-radius: 12px;
+        min-height: 60px;
+    }
+
+    .sc-ingrediente-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+        .sc-ingrediente-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .sc-ingrediente-row .sc-select {
+            flex: 2;
+            padding-left: 16px;
+        }
+
+        .sc-ingrediente-row .sc-input {
+            flex: 1;
+            padding-left: 16px;
+        }
+
+    .sc-remove-ingredient-btn {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        border-radius: 10px;
+        color: var(--sc-danger-text);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .sc-remove-ingredient-btn:hover {
+            background: #f5c2c2;
+            transform: translateY(-1px);
+        }
+
+        .sc-remove-ingredient-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+    .sc-receta-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        min-height: 50px;
+        color: var(--sc-gray);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    /* =========================================================
            BOTONES Y ACCIONES
            ========================================================= */
     .sc-actions {
@@ -276,7 +426,7 @@
         align-items: center;
         padding-top: 24px;
         border-top: 1px solid var(--sc-border);
-        margin-top: 10px;
+        margin-top: 20px;
     }
 
     .sc-btn {
@@ -451,6 +601,11 @@
             grid-template-columns: 1fr;
             gap: 0;
         }
+
+        .sc-ingrediente-row {
+            flex-direction: column;
+            align-items: stretch;
+        }
     }
 </style>
 
@@ -468,7 +623,7 @@
         <div>
             <p class="sc-eyebrow">Gestión del Menú</p>
             <h1 class="sc-title">Editar plato</h1>
-            <p class="sc-description">Modifica la información del plato seleccionado en el menú.</p>
+            <p class="sc-description">Modifica la información y receta del plato seleccionado.</p>
         </div>
     </div>
 
@@ -480,8 +635,8 @@
 
             <div class="sc-panel-header">
                 <div>
-                    <h2 class="sc-panel-title">Información del plato</h2>
-                    <p class="sc-panel-subtitle">Actualiza los datos que necesites modificar</p>
+                    <h2 class="sc-panel-title">Información y Receta</h2>
+                    <p class="sc-panel-subtitle">Actualiza los datos y los ingredientes necesarios</p>
                 </div>
                 <div style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.72rem; padding: 6px 12px; border-radius: 8px; font-weight: 800;">
                     ID: <strong>@Model.IdPlato</strong>
@@ -493,6 +648,8 @@
                 <form asp-action="Edit" method="post">
 
                     <input type="hidden" asp-for="IdPlato" />
+
+                    <div asp-validation-summary="ModelOnly" class="sc-validation-summary"></div>
 
                     <!-- IDENTIFICADOR VISUAL -->
                     <div class="sc-record-banner">
@@ -575,13 +732,86 @@
                                     <path d="m8 12 2.5 2.5L16 9" />
                                 </svg>
                             </span>
-                            <input asp-for="Estado" class="sc-input" placeholder="Ej. Disponible" />
+                            <select asp-for="Estado" class="sc-select" asp-items="Html.GetEnumSelectList<EstadoPlato>()">
+                            </select>
                         </div>
-                        <span class="sc-help-text">Indica si el plato está disponible actualmente.</span>
+                        <span class="sc-help-text">Selecciona si el plato está disponible u agotado.</span>
                         <span asp-validation-for="Estado" class="sc-validation"></span>
                     </div>
 
-                    <!-- BOTONES DE ACCIÓN -->
+                    <!-- SECCIÓN DE RECETA E INGREDIENTES -->
+                    <div class="sc-receta-section">
+                        <div class="sc-receta-header">
+                            <h3 class="sc-receta-title">
+                                <span class="sc-receta-title-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 7h16" />
+                                        <path d="M4 12h16" />
+                                        <path d="M4 17h10" />
+                                    </svg>
+                                </span>
+                                Receta e ingredientes
+                            </h3>
+                            <button type="button" id="btnAgregarIngrediente" class="sc-add-ingredient-btn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="5" x2="12" y2="19" />
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                </svg>
+                                Agregar ingrediente
+                            </button>
+                        </div>
+                        <p class="sc-help-text" style="margin-bottom: 12px;">
+                            Define o ajusta los ingredientes y las cantidades necesarias para la preparación de este plato.
+                        </p>
+
+                        <div id="contenedorIngredientes" class="sc-ingredientes-container">
+                            @if (Model.PlatoIngredientes != null && Model.PlatoIngredientes.Any())
+                            {
+                                foreach (var detalle in Model.PlatoIngredientes)
+                                {
+                                    <div class="sc-ingrediente-row">
+                                        <select name="IdsIngredientes" class="sc-select" required>
+                                            <option value="">Seleccione un ingrediente...</option>
+                                            @if (ViewBag.Ingredientes != null)
+                                            {
+                                                foreach (var ing in ViewBag.Ingredientes)
+                                                {
+                                                    if (ing.Value == detalle.IdIngrediente.ToString())
+                                                    {
+                                                        <option value="@ing.Value" selected>@ing.Text</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@ing.Value">@ing.Text</option>
+                                                    }
+                                                }
+                                            }
+                                        </select>
+                                        <input type="number" name="CantidadesNecesarias" class="sc-input" step="0.01" min="0.01" value="@detalle.CantidadNecesaria" placeholder="Cantidad" required />
+                                        <button type="button" class="sc-remove-ingredient-btn" title="Eliminar ingrediente" onclick="this.parentElement.remove(); verificarRecetaVacia();">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="18" y1="6" x2="6" y2="18" />
+                                                <line x1="6" y1="6" x2="18" y2="18" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div id="recetaVacia" class="sc-receta-empty">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                                        <circle cx="12" cy="12" r="9" />
+                                        <line x1="12" y1="8" x2="12" y2="12" />
+                                        <line x1="12" y1="16" x2="12.01" y2="16" />
+                                    </svg>
+                                    No hay ingredientes agregados a esta receta.
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- BOTONES -->
                     <div class="sc-actions">
                         <button type="submit" class="sc-btn sc-btn-primary">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
@@ -619,7 +849,7 @@
                     </svg>
                 </div>
                 <h2 class="sc-aside-title">Editando información</h2>
-                <p class="sc-aside-text">Los cambios realizados se aplicarán al registro del plato seleccionado.</p>
+                <p class="sc-aside-text">Los cambios realizados se aplicarán al registro del plato seleccionado y su estructura de costos.</p>
             </div>
 
             <div class="sc-aside-body">
@@ -633,8 +863,8 @@
                             </svg>
                         </span>
                         <div>
-                            <p class="sc-aside-item-title">Precio</p>
-                            <p class="sc-aside-item-text">Puedes actualizar el precio de venta del plato en cualquier momento.</p>
+                            <p class="sc-aside-item-title">Precio y Costos</p>
+                            <p class="sc-aside-item-text">Puedes actualizar el precio de venta y verificar las porciones requeridas.</p>
                         </div>
                     </li>
 
@@ -654,13 +884,14 @@
                     <li class="sc-aside-item">
                         <span class="sc-aside-item-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="m8 12 2.5 2.5L16 9" />
+                                <path d="M4 7h16" />
+                                <path d="M4 12h16" />
+                                <path d="M4 17h10" />
                             </svg>
                         </span>
                         <div>
-                            <p class="sc-aside-item-title">Disponibilidad</p>
-                            <p class="sc-aside-item-text">Mantén al día el estado para que los meseros sepan si se puede ofrecer.</p>
+                            <p class="sc-aside-item-title">Receta Dinámica</p>
+                            <p class="sc-aside-item-text">Agrega o quita ingredientes para mantener sincronizado el inventario de almacén.</p>
                         </div>
                     </li>
 
@@ -681,4 +912,60 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        document.getElementById('btnAgregarIngrediente').addEventListener('click', function() {
+            const container = document.getElementById('contenedorIngredientes');
+            const recetaVacia = document.getElementById('recetaVacia');
+            if (recetaVacia) {
+                recetaVacia.remove();
+            }
+
+            const fila = document.createElement('div');
+            fila.className = 'sc-ingrediente-row';
+
+            let optionsHtml = '<option value="">Seleccione un ingrediente...</option>';
+            @if (ViewBag.Ingredientes != null)
+                {
+                            foreach (var ing in ViewBag.Ingredientes)
+                    {
+                        <text>optionsHtml += '<option value="@ing.Value">@ing.Text</option>';</text>
+                }
+                }
+
+                fila.innerHTML = `
+                        <select name="IdsIngredientes" class="sc-select" required>
+                            ${optionsHtml}
+                        </select>
+                        <input type="number" name="CantidadesNecesarias" class="sc-input" step="0.01" min="0.01" placeholder="Cantidad (Ej: 0.2)" required />
+                        <button type="button" class="sc-remove-ingredient-btn" title="Eliminar ingrediente" onclick="this.parentElement.remove(); verificarRecetaVacia();">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="18" y1="6" x2="6" y2="18" />
+                                <line x1="6" y1="6" x2="18" y2="18" />
+                            </svg>
+                        </button>
+                    `;
+            container.appendChild(fila);
+        });
+
+        function verificarRecetaVacia() {
+            const container = document.getElementById('contenedorIngredientes');
+            const filas = container.querySelectorAll('.sc-ingrediente-row');
+            if (filas.length === 0) {
+                if (!document.getElementById('recetaVacia')) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.id = 'recetaVacia';
+                    emptyDiv.className = 'sc-receta-empty';
+                    emptyDiv.innerHTML = `
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <line x1="12" y1="8" x2="12" y2="12" />
+                                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                                </svg>
+                                No hay ingredientes agregados a esta receta.
+                            `;
+                    container.appendChild(emptyDiv);
+                }
+            }
+        }
+    </script>
 }
