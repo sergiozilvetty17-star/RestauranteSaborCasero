@@ -5,238 +5,377 @@
 }
 
 <style>
-    .ingrediente-detalles-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-success: #198754;
+        --sc-success-bg: #e3f2eb;
+        --sc-danger: #dc3545;
+        --sc-danger-bg: #fdf3f2;
     }
 
-    .ingrediente-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 700px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .ingrediente-titulo {
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
-    .ingrediente-subtitulo {
+    .sc-description {
         margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
-    .ingrediente-card {
-        width: 650px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
-        margin-bottom: 20px;
-    }
-
-    .ingrediente-nombre {
-        font-size: 22px;
-        font-weight: 700;
-        color: #343a40;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eeeeee;
-    }
-
-    .informacion {
-        border: 1px solid #eeeeee;
-        border-radius: 8px;
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
         overflow: hidden;
+        margin-bottom: 25px;
     }
 
-    .dato {
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px;
-        border-bottom: 1px solid #eeeeee;
     }
 
-        .dato:last-child {
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.15rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 0;
+    }
+
+    /* =========================================================
+           LISTA DE DATOS
+           ========================================================= */
+    .sc-data-list {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .sc-data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--sc-border);
+    }
+
+        .sc-data-item:last-child {
             border-bottom: none;
         }
 
-    .dato-titulo {
-        color: #777;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-data-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 700;
     }
 
-    .dato-valor {
-        color: #333;
-        font-size: 15px;
-        font-weight: 600;
+        .sc-data-label svg {
+            width: 17px;
+            height: 17px;
+            color: #a3968f;
+        }
+
+    .sc-data-value {
+        color: var(--sc-dark);
+        font-size: 0.95rem;
+        font-weight: 800;
         text-align: right;
     }
 
-    .cantidad-disponible {
-        font-size: 18px;
-        font-weight: 700;
-        color: #198754;
-    }
-
-    .cantidad-minima {
-        font-size: 16px;
-        font-weight: 700;
-        color: #dc3545;
-    }
-
-    .estado {
-        display: inline-block;
-        padding: 6px 11px;
-        border-radius: 20px;
-        background-color: #d1e7dd;
-        color: #0f5132;
-        font-size: 13px;
-        font-weight: 600;
-    }
-
-    .acciones {
-        display: flex;
-        gap: 10px;
+    /* =========================================================
+           BADGES & DESTACADOS DE STOCK
+           ========================================================= */
+    .sc-stock-badge {
+        display: inline-flex;
         align-items: center;
+        padding: 5px 12px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        font-weight: 900;
     }
 
-    .btn {
-        display: inline-block;
+    .sc-stock-available {
+        background: var(--sc-success-bg);
+        color: var(--sc-success);
+    }
+
+    .sc-stock-minimum {
+        background: var(--sc-danger-bg);
+        color: var(--sc-danger);
+    }
+
+    .sc-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        background-color: #f3f0ed;
+        color: #5f534d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
         text-decoration: none;
-        padding: 11px 20px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
     }
 
-    .btn-editar {
-        background-color: #ffc107;
-        color: #212529;
-    }
-
-        .btn-editar:hover {
-            background-color: #ffca2c;
-            color: #212529;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
+    .sc-btn-warning {
+        background-color: #f2d7a0;
+        color: #5f430f;
+        border-color: #e8c785;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-warning:hover {
+            background-color: #e8c785;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(242, 215, 160, 0.4);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
         }
 </style>
 
-
-<div class="ingrediente-detalles-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="ingrediente-header">
-
-        <h1 class="ingrediente-titulo">
-            Detalles del ingrediente
-        </h1>
-
-        <p class="ingrediente-subtitulo">
-            Información actual del ingrediente en inventario
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 8l6-3 6 3v8l-6 3-6-3V8" />
+                <path d="M12 11v7" />
+                <path d="M6 11l6 3 6-3" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Control de Inventario</p>
+            <h1 class="sc-title">Detalles del ingrediente</h1>
+            <p class="sc-description">Información actual del ingrediente en almacén.</p>
+        </div>
     </div>
 
+    <!-- INFORMACIÓN DE LA TARJETA -->
+    <div class="sc-panel">
 
-    <!-- TARJETA -->
-    <div class="ingrediente-card">
-
-        <div class="ingrediente-nombre">
-            @Model.Nombre
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">@Model.Nombre</h2>
+                <p class="sc-panel-subtitle">Ficha técnica del insumo</p>
+            </div>
+            <div class="sc-header-icon" style="width: 40px; height: 40px; background: #ffffff; border: 1px solid var(--sc-border);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; color: var(--sc-gray);">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+            </div>
         </div>
 
+        <div class="sc-panel-body">
+            <ul class="sc-data-list">
 
-        <div class="informacion">
+                <!-- NOMBRE -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                            <line x1="7" y1="7" x2="7.01" y2="7" />
+                        </svg>
+                        Nombre del insumo
+                    </span>
+                    <span class="sc-data-value" style="font-weight: 900; color: var(--sc-primary);">@Model.Nombre</span>
+                </li>
 
-            <!-- NOMBRE -->
-            <div class="dato">
+                <!-- CANTIDAD DISPONIBLE -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                        </svg>
+                        Stock disponible
+                    </span>
+                    <span class="sc-stock-badge sc-stock-available">
+                        @Model.CantidadDisponible @Model.UnidadMedida
+                    </span>
+                </li>
 
-                <span class="dato-titulo">
-                    Nombre
-                </span>
+                <!-- CANTIDAD MÍNIMA -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 18h20L12 2M12 10v4M12 16h0.01" />
+                        </svg>
+                        Stock mínimo de alerta
+                    </span>
+                    <span class="sc-stock-badge sc-stock-minimum">
+                        @Model.CantidadMinima @Model.UnidadMedida
+                    </span>
+                </li>
 
-                <span class="dato-valor">
-                    @Model.Nombre
-                </span>
+                <!-- ESTADO -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Estado del insumo
+                    </span>
+                    <span class="sc-badge">
+                        <span style="display: inline-block; width: 6px; height: 6px; background: currentColor; border-radius: 50%; margin-right: 6px;"></span>
+                        @Model.Estado
+                    </span>
+                </li>
 
-            </div>
-
-
-            <!-- CANTIDAD DISPONIBLE -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Cantidad disponible
-                </span>
-
-                <span class="dato-valor cantidad-disponible">
-                    @Model.CantidadDisponible
-                    @Model.UnidadMedida
-                </span>
-
-            </div>
-
-
-            <!-- CANTIDAD MÍNIMA -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Cantidad mínima
-                </span>
-
-                <span class="dato-valor cantidad-minima">
-                    @Model.CantidadMinima
-                    @Model.UnidadMedida
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Estado
-                </span>
-
-                <span class="estado">
-                    @Model.Estado
-                </span>
-
-            </div>
-
+            </ul>
         </div>
 
     </div>
-
 
     <!-- ACCIONES -->
-    <div class="acciones">
+    <div class="sc-actions">
 
         <a asp-action="Edit"
            asp-route-id="@Model.IdIngrediente"
-           class="btn btn-editar">
+           class="sc-btn sc-btn-warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
             Editar ingrediente
         </a>
 
         <a asp-action="Index"
-           class="btn btn-volver">
+           class="sc-btn sc-btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+            </svg>
             Volver al inventario
         </a>
 
     </div>
 
 </div>
-
