@@ -5,321 +5,497 @@
 }
 
 <style>
-    .pedido-form-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-danger-bg: #fdf3f2;
+        --sc-danger-text: #c92a2a;
     }
 
-    .pedido-form-header {
-        margin-bottom: 25px;
+    .sc-page-container {
+        width: 100%;
+        max-width: 750px;
+        padding-top: 12px;
+        color: var(--sc-dark);
     }
 
-    .pedido-form-title {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
-    }
-
-    .pedido-form-subtitle {
-        margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
-    }
-
-    .pedido-form-card {
-        width: 700px;
-        background: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
-    }
-
-    .campo {
-        margin-bottom: 20px;
-    }
-
-        .campo label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .campo select,
-        .campo input {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 11px 12px;
-            border: 1px solid #ced4da;
-            border-radius: 7px;
-            font-size: 15px;
-            background-color: white;
-            color: #333;
-        }
-
-            .campo select:focus,
-            .campo input:focus {
-                outline: none;
-                border-color: #198754;
-                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
-            }
-
-    .campo-validation {
-        display: block;
-        margin-top: 5px;
-        color: #dc3545;
-        font-size: 13px;
-    }
-
-    .resumen-pedido {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 25px;
-    }
-
-        .resumen-pedido strong {
-            color: #343a40;
-        }
-
-    .acciones-form {
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-top: 25px;
-        padding-top: 20px;
-        border-top: 1px solid #eeeeee;
+        gap: 16px;
+        margin-bottom: 25px;
     }
 
-    .btn-guardar {
-        border: none;
-        background-color: #198754;
-        color: white;
-        padding: 11px 20px;
-        border-radius: 7px;
-        font-size: 14px;
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+    }
+
+    .sc-description {
+        margin: 6px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
         font-weight: 600;
+    }
+
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.1rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 24px;
+    }
+
+    /* =========================================================
+           FORMULARIO Y CAMPOS
+           ========================================================= */
+    .sc-form-group {
+        margin-bottom: 22px;
+    }
+
+    .sc-form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .sc-form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
+
+    .sc-input-wrapper {
+        position: relative;
+    }
+
+    .sc-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #a3968f;
+        pointer-events: none;
+    }
+
+        .sc-input-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+        }
+
+    .sc-input,
+    .sc-select {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px 0 42px;
+        background: #ffffff;
+        border: 1px solid #dcd2cc;
+        border-radius: 10px;
+        color: var(--sc-dark);
+        font-size: 0.9rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+    .sc-select {
+        cursor: pointer;
+        appearance: auto;
+        padding-right: 36px;
+    }
+
+        .sc-input:hover,
+        .sc-select:hover {
+            border-color: #c4b5ac;
+        }
+
+        .sc-input:focus,
+        .sc-select:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
+            background: #ffffff;
+        }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+    .sc-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger-text);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sc-validation-summary {
+        background-color: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        color: var(--sc-danger-text);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+        margin-top: 10px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
         cursor: pointer;
     }
 
-        .btn-guardar:hover {
-            background-color: #157347;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 11px 20px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
+        color: #ffffff;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
         }
 
-    .validation-summary {
-        background-color: #f8d7da;
-        border: 1px solid #f1aeb5;
-        color: #842029;
-        border-radius: 7px;
-        padding: 12px 15px;
-        margin-bottom: 20px;
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
+        }
+
+    @@media (max-width: 650px) {
+        .sc-form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
     }
 </style>
 
-<div class="pedido-form-container">
+<div class="sc-page-container">
 
-    <div class="pedido-form-header">
-        <h1 class="pedido-form-title">Editar pedido</h1>
-
-        <p class="pedido-form-subtitle">
-            Modifica la información del pedido #@Model.IdPedido
-        </p>
+    <!-- ENCABEZADO -->
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Sala y Pedidos</p>
+            <h1 class="sc-title">Editar pedido</h1>
+            <p class="sc-description">Modifica los detalles operativos del pedido #@Model.IdPedido</p>
+        </div>
     </div>
 
+    <!-- PANEL PRINCIPAL -->
+    <div class="sc-panel">
 
-    <div class="pedido-form-card">
-
-        <div class="resumen-pedido">
-            <strong>Pedido #@Model.IdPedido</strong>
-            <br />
-            <span>
-                Actualiza los datos necesarios y luego presiona
-                <strong>Guardar cambios</strong>.
-            </span>
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Pedido #@Model.IdPedido</h2>
+                <p class="sc-panel-subtitle">Actualización de asignación y estado</p>
+            </div>
+            <div style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase;">
+                Modo Edición
+            </div>
         </div>
 
+        <div class="sc-panel-body">
 
-        <form asp-action="Edit" method="post">
+            <form asp-action="Edit" method="post">
 
-            <input type="hidden"
-                   asp-for="IdPedido" />
+                <input type="hidden" asp-for="IdPedido" />
 
+                <div asp-validation-summary="ModelOnly" class="sc-validation-summary"></div>
 
-            <div asp-validation-summary="ModelOnly"
-                 class="validation-summary">
-            </div>
+                <!-- MESERO -->
+                <div class="sc-form-group">
+                    <label asp-for="IdMesero" class="sc-form-label">
+                        Mesero asignado
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </span>
+                        <select asp-for="IdMesero" class="sc-select" asp-items="ViewBag.IdMesero">
+                            <option value="">Seleccione un mesero...</option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="IdMesero" class="sc-validation"></span>
+                </div>
 
+                <!-- TIPO DE PEDIDO Y MESA -->
+                <div class="sc-form-row">
 
-            <!-- MESERO -->
-            <div class="campo">
+                    <!-- TIPO DE PEDIDO -->
+                    <div class="sc-form-group">
+                        <label asp-for="TipoPedido" class="sc-form-label">
+                            Modalidad de pedido
+                        </label>
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1" />
+                                    <circle cx="20" cy="21" r="1" />
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                                </svg>
+                            </span>
+                            <select asp-for="TipoPedido" class="sc-select" asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.TipoPedido>()">
+                            </select>
+                        </div>
+                        <span asp-validation-for="TipoPedido" class="sc-validation"></span>
+                    </div>
 
-                <label asp-for="IdMesero">
-                    Mesero
-                </label>
+                    <!-- MESA -->
+                    <div class="sc-form-group">
+                        <label asp-for="IdMesa" class="sc-form-label">
+                            Mesa
+                        </label>
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="8" width="18" height="4" rx="1" />
+                                    <path d="M12 8v13" />
+                                    <path d="M19 12v9" />
+                                    <path d="M5 12v9" />
+                                    <path d="M7 4h10" />
+                                </svg>
+                            </span>
+                            <select asp-for="IdMesa" class="sc-select" asp-items="ViewBag.IdMesa">
+                                <option value="">Sin mesa</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="IdMesa" class="sc-validation"></span>
+                    </div>
 
-                <select asp-for="IdMesero"
-                        asp-items="ViewBag.IdMesero">
+                </div>
 
-                    <option value="">
-                        Seleccione un mesero
-                    </option>
+                <!-- FECHA Y ESTADO -->
+                <div class="sc-form-row">
 
-                </select>
+                    <!-- FECHA -->
+                    <div class="sc-form-group">
+                        <label asp-for="Fecha" class="sc-form-label">
+                            Fecha
+                        </label>
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
+                                </svg>
+                            </span>
+                            <input asp-for="Fecha" type="date" class="sc-input" />
+                        </div>
+                        <span asp-validation-for="Fecha" class="sc-validation"></span>
+                    </div>
 
-                <span asp-validation-for="IdMesero"
-                      class="campo-validation">
-                </span>
+                    <!-- ESTADO -->
+                    <div class="sc-form-group">
+                        <label asp-for="Estado" class="sc-form-label">
+                            Estado del pedido
+                        </label>
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                    <polyline points="22 4 12 14.01 9 11.01" />
+                                </svg>
+                            </span>
+                            <select asp-for="Estado" class="sc-select" asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoPedido>()">
+                            </select>
+                        </div>
+                        <span asp-validation-for="Estado" class="sc-validation"></span>
+                    </div>
 
-            </div>
+                </div>
 
+                <!-- HORAS (INICIO Y FIN) -->
+                <div class="sc-form-row">
 
-            <!-- TIPO DE PEDIDO -->
-            <div class="campo">
+                    <!-- HORA INICIO -->
+                    <div class="sc-form-group">
+                        <label asp-for="HoraInicio" class="sc-form-label">
+                            Hora de inicio
+                        </label>
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg>
+                            </span>
+                            <input asp-for="HoraInicio" type="time" class="sc-input" />
+                        </div>
+                        <span asp-validation-for="HoraInicio" class="sc-validation"></span>
+                    </div>
 
-                <label asp-for="TipoPedido">
-                    Tipo de pedido
-                </label>
+                    <!-- HORA FIN -->
+                    <div class="sc-form-group">
+                        <label asp-for="HoraFin" class="sc-form-label">
+                            Hora de finalización
+                        </label>
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 15 15" />
+                                </svg>
+                            </span>
+                            <input asp-for="HoraFin" type="time" class="sc-input" />
+                        </div>
+                        <span asp-validation-for="HoraFin" class="sc-validation"></span>
+                    </div>
 
-                <select asp-for="TipoPedido"
-                        asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.TipoPedido>()">
-                </select>
+                </div>
 
-                <span asp-validation-for="TipoPedido"
-                      class="campo-validation">
-                </span>
+                <!-- BOTONES -->
+                <div class="sc-actions">
+                    <button type="submit" class="sc-btn sc-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        Guardar cambios
+                    </button>
 
-            </div>
+                    <a asp-action="Index" class="sc-btn sc-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
+                        Volver a pedidos
+                    </a>
+                </div>
 
+            </form>
 
-            <!-- MESA -->
-            <div class="campo">
-
-                <label asp-for="IdMesa">
-                    Mesa
-                </label>
-
-                <select asp-for="IdMesa"
-                        asp-items="ViewBag.IdMesa">
-
-                    <option value="">
-                        Sin mesa
-                    </option>
-
-                </select>
-
-                <span asp-validation-for="IdMesa"
-                      class="campo-validation">
-                </span>
-
-            </div>
-
-
-            <!-- FECHA -->
-            <div class="campo">
-
-                <label asp-for="Fecha">
-                    Fecha
-                </label>
-
-                <input asp-for="Fecha"
-                       type="date" />
-
-                <span asp-validation-for="Fecha"
-                      class="campo-validation">
-                </span>
-
-            </div>
-
-
-            <!-- HORA INICIO -->
-            <div class="campo">
-
-                <label asp-for="HoraInicio">
-                    Hora de inicio
-                </label>
-
-                <input asp-for="HoraInicio"
-                       type="time" />
-
-                <span asp-validation-for="HoraInicio"
-                      class="campo-validation">
-                </span>
-
-            </div>
-
-
-            <!-- HORA FIN -->
-            <div class="campo">
-
-                <label asp-for="HoraFin">
-                    Hora de finalización
-                </label>
-
-                <input asp-for="HoraFin"
-                       type="time" />
-
-                <span asp-validation-for="HoraFin"
-                      class="campo-validation">
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="campo">
-
-                <label asp-for="Estado">
-                    Estado
-                </label>
-
-                <select asp-for="Estado"
-                        asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoPedido>()">
-                </select>
-
-                <span asp-validation-for="Estado"
-                      class="campo-validation">
-                </span>
-
-            </div>
-
-
-            <!-- BOTONES -->
-            <div class="acciones-form">
-
-                <button type="submit"
-                        class="btn-guardar">
-                    Guardar cambios
-                </button>
-
-                <a asp-action="Index"
-                   class="btn-volver">
-                    Volver a pedidos
-                </a>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
 </div>
-
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

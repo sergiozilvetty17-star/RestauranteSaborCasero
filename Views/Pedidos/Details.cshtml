@@ -1,425 +1,521 @@
-﻿
-@model RestauranteSaborCasero.Models.Pedido
+﻿@model RestauranteSaborCasero.Models.Pedido
 
 @{
     ViewData["Title"] = "Detalles del Pedido";
 }
 
 <style>
-    .detalles-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
     }
 
-    .detalles-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 900px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .detalles-titulo {
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
-    .detalles-subtitulo {
+    .sc-description {
         margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
-    .pedido-card {
-        width: 900px;
-        background: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 25px;
-        margin-bottom: 25px;
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        margin-bottom: 30px;
     }
 
-    .pedido-card-titulo {
-        margin: 0 0 20px;
-        font-size: 20px;
-        color: #343a40;
-        border-bottom: 1px solid #eeeeee;
-        padding-bottom: 15px;
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .informacion-pedido {
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.15rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 0;
+    }
+
+    /* =========================================================
+           LISTA DE DATOS (2 COLUMNAS)
+           ========================================================= */
+    .sc-data-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        column-gap: 40px;
-        row-gap: 18px;
+        padding: 12px 24px;
+        gap: 12px 30px;
     }
 
-    .dato {
-        padding: 12px;
-        background-color: #f8f9fa;
-        border-radius: 7px;
+    .sc-data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--sc-border);
     }
 
-    .dato-titulo {
-        display: block;
-        font-size: 13px;
-        font-weight: 600;
-        color: #777;
-        margin-bottom: 5px;
+    .sc-data-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 700;
     }
 
-    .dato-valor {
-        font-size: 16px;
-        font-weight: 600;
-        color: #333;
+        .sc-data-label svg {
+            width: 17px;
+            height: 17px;
+            color: #a3968f;
+        }
+
+    .sc-data-value {
+        color: var(--sc-dark);
+        font-size: 0.95rem;
+        font-weight: 800;
+        text-align: right;
     }
 
-    .estado {
-        display: inline-block;
-        padding: 6px 11px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        background-color: #cfe2ff;
-        color: #084298;
+    .sc-highlight {
+        font-size: 1.05rem;
+        color: var(--sc-primary);
+        font-weight: 900;
     }
 
-    .mesa-sin {
-        color: #999;
+    .sc-sin-dato {
+        color: #a3968f;
         font-style: italic;
-        font-weight: normal;
+        font-weight: 500;
     }
 
-    .detalles-platos {
-        width: 900px;
-        background: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 25px;
+    /* =========================================================
+           BADGE ESTADO
+           ========================================================= */
+    .sc-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        background-color: #f3f0ed;
+        color: #5f534d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .platos-header {
-        padding: 20px 25px;
-        border-bottom: 1px solid #eeeeee;
-    }
-
-        .platos-header h2 {
-            margin: 0;
-            font-size: 20px;
-            color: #343a40;
-        }
-
-        .platos-header p {
-            margin: 5px 0 0;
-            color: #777;
-            font-size: 14px;
-        }
-
-    .tabla-platos {
+    /* =========================================================
+           TABLA DE PLATOS
+           ========================================================= */
+    .sc-table {
         width: 100%;
         border-collapse: collapse;
     }
 
-        .tabla-platos th {
-            background-color: #343a40;
-            color: white;
-            padding: 13px 20px;
+        .sc-table th {
+            padding: 16px 24px;
+            background: #fbf9f8;
+            border-bottom: 2px solid var(--sc-border);
+            color: var(--sc-gray);
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             text-align: left;
-            font-size: 14px;
         }
 
-        .tabla-platos td {
-            padding: 14px 20px;
-            border-bottom: 1px solid #eeeeee;
-            color: #444;
+        .sc-table td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--sc-border);
+            color: var(--sc-dark);
+            font-size: 0.9rem;
+            font-weight: 600;
         }
 
-        .tabla-platos tbody tr:hover {
-            background-color: #f8f9fa;
+        .sc-table tr:last-child td {
+            border-bottom: none;
         }
 
-    .nombre-plato {
+        .sc-table tbody tr:hover {
+            background-color: var(--sc-primary-soft);
+        }
+
+    .sc-empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        color: #8c8078;
+        font-size: 0.9rem;
         font-weight: 600;
-        color: #333;
     }
 
-    .cantidad {
-        font-weight: 700;
-        text-align: center;
-    }
-
-    .sin-detalles {
-        padding: 35px;
-        text-align: center;
-        color: #777;
-    }
-
-    .acciones {
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
         display: flex;
-        gap: 10px;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
     }
 
-    .btn {
-        display: inline-block;
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
         text-decoration: none;
-        padding: 11px 20px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
     }
 
-    .btn-editar {
-        background-color: #ffc107;
-        color: #212529;
-    }
-
-        .btn-editar:hover {
-            background-color: #ffca2c;
-            color: #212529;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
+    .sc-btn-warning {
+        background-color: #f2d7a0;
+        color: #5f430f;
+        border-color: #e8c785;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-warning:hover {
+            background-color: #e8c785;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(242, 215, 160, 0.4);
         }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
+        }
+
+    @@media (max-width: 768px) {
+        .sc-data-grid {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+    }
 </style>
 
-
-<div class="detalles-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="detalles-header">
-
-        <h1 class="detalles-titulo">
-            Detalles del pedido
-        </h1>
-
-        <p class="detalles-subtitulo">
-            Información completa del pedido #@Model.IdPedido
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Sala</p>
+            <h1 class="sc-title">Detalles del pedido</h1>
+            <p class="sc-description">Información completa y platos solicitados en el pedido #@Model.IdPedido</p>
+        </div>
     </div>
 
+    <!-- INFORMACIÓN GENERAL DEL PEDIDO -->
+    <div class="sc-panel">
 
-    <!-- INFORMACIÓN DEL PEDIDO -->
-    <div class="pedido-card">
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Pedido #@Model.IdPedido</h2>
+                <p class="sc-panel-subtitle">Datos de servicio y tiempos</p>
+            </div>
+            <div class="sc-badge" style="background: var(--sc-primary-soft); color: var(--sc-primary);">
+                <span style="display: inline-block; width: 6px; height: 6px; background: currentColor; border-radius: 50%; margin-right: 6px;"></span>
+                @Model.Estado
+            </div>
+        </div>
 
-        <h2 class="pedido-card-titulo">
-            Información del pedido #@Model.IdPedido
-        </h2>
+        <div class="sc-panel-body">
+            <div class="sc-data-grid">
 
-        <div class="informacion-pedido">
+                <!-- MESERO -->
+                <div class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        Mesero
+                    </span>
+                    <span class="sc-data-value">
+                        @(Model.Usuario != null ? Model.Usuario.Nombre : "Sin mesero")
+                    </span>
+                </div>
 
-            <!-- MESERO -->
-            <div class="dato">
+                <!-- MESA -->
+                <div class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="8" width="18" height="4" rx="1" />
+                            <path d="M12 8v13" />
+                            <path d="M19 12v9" />
+                            <path d="M5 12v9" />
+                            <path d="M7 4h10" />
+                        </svg>
+                        Mesa
+                    </span>
+                    <span class="sc-data-value sc-highlight">
+                        @if (Model.Mesa != null)
+                        {
+                            <span>Mesa #@Model.Mesa.NumeroMesa</span>
+                        }
+                        else
+                        {
+                            <span class="sc-sin-dato">Sin mesa</span>
+                        }
+                    </span>
+                </div>
 
-                <span class="dato-titulo">
-                    Mesero
-                </span>
+                <!-- TIPO DE PEDIDO -->
+                <div class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
+                        Modalidad
+                    </span>
+                    <span class="sc-data-value">@Model.TipoPedido</span>
+                </div>
 
-                <span class="dato-valor">
-                    @(Model.Usuario != null
-                        ? Model.Usuario.Nombre
-                        : "Sin mesero")
-                </span>
+                <!-- FECHA -->
+                <div class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="10" x2="21" y2="10" />
+                        </svg>
+                        Fecha
+                    </span>
+                    <span class="sc-data-value">@Model.Fecha.ToString("dd/MM/yyyy")</span>
+                </div>
+
+                <!-- HORA INICIO -->
+                <div class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Hora de inicio
+                    </span>
+                    <span class="sc-data-value">@Model.HoraInicio</span>
+                </div>
+
+                <!-- HORA FIN -->
+                <div class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 15 15" />
+                        </svg>
+                        Hora de finalización
+                    </span>
+                    <span class="sc-data-value">
+                        @if (Model.HoraFin.HasValue)
+                        {
+                            @Model.HoraFin.Value.ToString()
+                        }
+                        else
+                        {
+                            <span class="sc-sin-dato">No finalizado</span>
+                        }
+                    </span>
+                </div>
 
             </div>
-
-
-            <!-- MESA -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Mesa
-                </span>
-
-                <span class="dato-valor">
-
-                    @if (Model.Mesa != null)
-                    {
-                        <span>
-                            Mesa @Model.Mesa.NumeroMesa
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="mesa-sin">
-                            Sin mesa
-                        </span>
-                    }
-
-                </span>
-
-            </div>
-
-
-            <!-- TIPO -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Tipo de pedido
-                </span>
-
-                <span class="dato-valor">
-                    @Model.TipoPedido
-                </span>
-
-            </div>
-
-
-            <!-- FECHA -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Fecha
-                </span>
-
-                <span class="dato-valor">
-                    @Model.Fecha.ToString("dd/MM/yyyy")
-                </span>
-
-            </div>
-
-
-            <!-- HORA INICIO -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Hora de inicio
-                </span>
-
-                <span class="dato-valor">
-                    @Model.HoraInicio
-                </span>
-
-            </div>
-
-
-            <!-- HORA FIN -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Hora de finalización
-                </span>
-
-                <span class="dato-valor">
-
-                    @if (Model.HoraFin.HasValue)
-                    {
-                        @Model.HoraFin.Value.ToString()
-                    }
-                    else
-                    {
-                        <span class="mesa-sin">
-                            No finalizado
-                        </span>
-                    }
-
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Estado
-                </span>
-
-                <span class="estado">
-                    @Model.Estado
-                </span>
-
-            </div>
-
         </div>
 
     </div>
-
 
     <!-- PLATOS DEL PEDIDO -->
-    <div class="detalles-platos">
+    <div class="sc-panel">
 
-        <div class="platos-header">
-
-            <h2>
-                Platos del pedido
-            </h2>
-
-            <p>
-                Lista de platos y cantidades solicitadas
-            </p>
-
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Platos del pedido</h2>
+                <p class="sc-panel-subtitle">Lista de platos y cantidades solicitadas</p>
+            </div>
+            <div class="sc-header-icon" style="width: 36px; height: 36px; background: #ffffff; border: 1px solid var(--sc-border);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px; color: var(--sc-gray);">
+                    <circle cx="12" cy="12" r="8" />
+                    <path d="M4 12h16" />
+                    <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+                </svg>
+            </div>
         </div>
 
-
-        @if (Model.Detalles != null && Model.Detalles.Any())
-        {
-            <table class="tabla-platos">
-
-                <thead>
-                    <tr>
-                        <th>Plato</th>
-                        <th style="width: 150px;">
-                            Cantidad
-                        </th>
-                    </tr>
-                </thead>
-
-                <tbody>
-
-                    @foreach (var detalle in Model.Detalles)
-                    {
+        <div class="sc-panel-body">
+            @if (Model.Detalles != null && Model.Detalles.Any())
+            {
+                <table class="sc-table">
+                    <thead>
                         <tr>
-
-                            <td>
-                                <span class="nombre-plato">
-                                    @(detalle.Plato != null
-                                        ? detalle.Plato.Nombre
-                                        : "Plato no disponible")
-                                </span>
-                            </td>
-
-                            <td class="cantidad">
-                                @detalle.Cantidad
-                            </td>
-
+                            <th>Plato</th>
+                            <th style="width: 160px; text-align: center;">Cantidad</th>
                         </tr>
-                    }
-
-                </tbody>
-
-            </table>
-        }
-        else
-        {
-            <div class="sin-detalles">
-                Este pedido no tiene platos registrados.
-            </div>
-        }
+                    </thead>
+                    <tbody>
+                        @foreach (var detalle in Model.Detalles)
+                        {
+                            <tr>
+                                <td>
+                                    <strong style="color: var(--sc-dark); font-size: 0.95rem;">
+                                        @(detalle.Plato != null ? detalle.Plato.Nombre : "Plato no disponible")
+                                    </strong>
+                                </td>
+                                <td style="text-align: center;">
+                                    <span style="display: inline-block; background: var(--sc-primary-soft); color: var(--sc-primary); font-weight: 800; padding: 4px 12px; border-radius: 8px; font-size: 0.95rem;">
+                                        @detalle.Cantidad
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="sc-empty-state">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="width: 48px; height: 48px; margin-bottom: 12px; color: #dcd2cc;">
+                        <circle cx="12" cy="12" r="8" />
+                        <line x1="4" y1="4" x2="20" y2="20" />
+                    </svg>
+                    <br />
+                    Este pedido no tiene platos registrados.
+                </div>
+            }
+        </div>
 
     </div>
 
-
     <!-- ACCIONES -->
-    <div class="acciones">
+    <div class="sc-actions">
 
         <a asp-action="Edit"
            asp-route-id="@Model.IdPedido"
-           class="btn btn-editar">
+           class="sc-btn sc-btn-warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
             Editar pedido
         </a>
 
         <a asp-action="Index"
-           class="btn btn-volver">
+           class="sc-btn sc-btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+            </svg>
             Volver a pedidos
         </a>
 
     </div>
 
 </div>
-
