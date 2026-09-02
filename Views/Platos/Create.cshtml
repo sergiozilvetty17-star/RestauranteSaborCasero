@@ -7,8 +7,8 @@
 
 <style>
     /* =========================================================
-               CREAR PLATO - SABOR CASERO
-               ========================================================= */
+                   CREAR PLATO - SABOR CASERO
+                   ========================================================= */
 
     .plato-create-page {
         width: 100%;
@@ -16,8 +16,8 @@
     }
 
     /* =========================================================
-               ENCABEZADO
-               ========================================================= */
+                   ENCABEZADO
+                   ========================================================= */
 
     .plato-create-header {
         display: flex;
@@ -68,8 +68,8 @@
     }
 
     /* =========================================================
-               CONTENEDOR PRINCIPAL
-               ========================================================= */
+                   CONTENEDOR PRINCIPAL
+                   ========================================================= */
 
     .plato-create-layout {
         display: grid;
@@ -79,8 +79,8 @@
     }
 
     /* =========================================================
-               FORMULARIO
-               ========================================================= */
+                   FORMULARIO
+                   ========================================================= */
 
     .plato-form-card {
         background: #ffffff;
@@ -128,8 +128,8 @@
     }
 
     /* =========================================================
-               CAMPOS
-               ========================================================= */
+                   CAMPOS
+                   ========================================================= */
 
     .plato-form-group {
         margin-bottom: 20px;
@@ -205,8 +205,8 @@
         }
 
     /* =========================================================
-               SELECT ESTADO
-               ========================================================= */
+                   SELECT ESTADO
+                   ========================================================= */
 
     .plato-form-select {
         width: 100%;
@@ -239,8 +239,8 @@
         }
 
     /* =========================================================
-               CAMPOS EN DOS COLUMNAS
-               ========================================================= */
+                   CAMPOS EN DOS COLUMNAS
+                   ========================================================= */
 
     .plato-form-row {
         display: grid;
@@ -249,8 +249,8 @@
     }
 
     /* =========================================================
-               AYUDA
-               ========================================================= */
+                   AYUDA
+                   ========================================================= */
 
     .plato-form-help {
         margin: 6px 0 0;
@@ -260,8 +260,8 @@
     }
 
     /* =========================================================
-               VALIDACIÓN
-               ========================================================= */
+                   VALIDACIÓN
+                   ========================================================= */
 
     .plato-validation {
         display: block;
@@ -272,8 +272,8 @@
     }
 
     /* =========================================================
-               BOTONES
-               ========================================================= */
+                   BOTONES
+                   ========================================================= */
 
     .plato-form-actions {
         display: flex;
@@ -333,8 +333,8 @@
         }
 
     /* =========================================================
-               TARJETA LATERAL
-               ========================================================= */
+                   TARJETA LATERAL
+                   ========================================================= */
 
     .plato-info-card {
         background: #ffffff;
@@ -434,8 +434,8 @@
     }
 
     /* =========================================================
-               LÍNEA INFERIOR
-               ========================================================= */
+                   LÍNEA INFERIOR
+                   ========================================================= */
 
     .plato-info-footer {
         padding: 13px 21px;
@@ -447,8 +447,8 @@
     }
 
     /* =========================================================
-               RESPONSIVE
-               ========================================================= */
+                   RESPONSIVE
+                   ========================================================= */
 
     @@media (max-width: 900px) {
 
@@ -480,7 +480,6 @@
 
 <div class="plato-create-page">
 
-    ```
     <!-- =====================================================
      ENCABEZADO
      ===================================================== -->
@@ -522,13 +521,11 @@
 
     </div>
 
-
     <!-- =====================================================
      CONTENIDO
      ===================================================== -->
 
     <div class="plato-create-layout">
-
 
         <!-- =================================================
          FORMULARIO
@@ -556,12 +553,10 @@
 
             </div>
 
-
             <div class="plato-form-body">
 
                 <form asp-action="Create"
                       method="post">
-
 
                     <!-- NOMBRE -->
 
@@ -608,11 +603,9 @@
 
                     </div>
 
-
                     <!-- PRECIO + TIEMPO -->
 
                     <div class="plato-form-row">
-
 
                         <!-- PRECIO -->
 
@@ -666,7 +659,6 @@
 
                         </div>
 
-
                         <!-- TIEMPO -->
 
                         <div class="plato-form-group">
@@ -719,7 +711,6 @@
                         </div>
 
                     </div>
-
 
                     <!-- ESTADO -->
 
@@ -779,6 +770,29 @@
 
                     </div>
 
+                    <!-- ========================================== -->
+                    <!-- RECETA DEL PLATO (INGREDIENTES)            -->
+                    <!-- ========================================== -->
+                    <div class="plato-form-group" style="margin-top: 30px; border-top: 1px solid #eee; padding-top: 20px;">
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <label class="plato-form-label" style="font-size: 1rem; margin-bottom: 0;">
+                                Receta (Ingredientes requeridos)
+                            </label>
+                            <button type="button" id="btnAgregarIngrediente" style="background: #198754; color: white; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: bold; cursor: pointer;">
+                                + Agregar ingrediente
+                            </button>
+                        </div>
+
+                        <p class="plato-form-help" style="margin-bottom: 15px;">
+                            Agrega los ingredientes y la cantidad exacta que se consumirá del inventario por cada plato vendido.
+                        </p>
+
+                        <div id="contenedorIngredientes">
+                            <!-- Aquí se agregarán las filas de ingredientes dinámicamente con JS -->
+                        </div>
+                    </div>
+
 
                     <!-- BOTONES -->
 
@@ -803,7 +817,6 @@
                             Guardar plato
 
                         </button>
-
 
                         <a asp-action="Index"
                            class="plato-cancel-btn">
@@ -832,13 +845,11 @@
 
         </div>
 
-
         <!-- =================================================
          INFORMACIÓN LATERAL
          ================================================= -->
 
         <aside class="plato-info-card">
-
 
             <div class="plato-info-top">
 
@@ -870,11 +881,9 @@
 
             </div>
 
-
             <div class="plato-info-body">
 
                 <ul class="plato-info-list">
-
 
                     <li class="plato-info-item">
 
@@ -908,7 +917,6 @@
 
                     </li>
 
-
                     <li class="plato-info-item">
 
                         <span class="plato-info-item-icon">
@@ -940,7 +948,6 @@
                         </div>
 
                     </li>
-
 
                     <li class="plato-info-item">
 
@@ -978,7 +985,6 @@
 
             </div>
 
-
             <div class="plato-info-footer">
                 Los campos marcados con <strong>*</strong> son obligatorios.
             </div>
@@ -986,9 +992,44 @@
         </aside>
 
     </div>
-    ```
 
 </div>
+
+<!-- SCRIPT PARA AGREGAR FILAS DINÁMICAS -->
+<script>
+    document.getElementById('btnAgregarIngrediente').addEventListener('click', function() {
+        var container = document.getElementById('contenedorIngredientes');
+
+        var fila = document.createElement('div');
+        fila.style.display = 'flex';
+        fila.style.gap = '10px';
+        fila.style.marginBottom = '10px';
+
+        var htmlSelect = `
+                <select name="IdsIngredientes" class="plato-form-select" style="flex: 2; padding-left: 15px;" required>
+                    <option value="">Seleccione un ingrediente...</option>
+                    @if (ViewBag.Ingredientes != null)
+                    {
+                            foreach (var ing in ViewBag.Ingredientes)
+                            {
+                                    <option value="@ing.Value">@ing.Text</option>
+                            }
+                    }
+                </select>
+            `;
+
+        var htmlCantidad = `
+                <input type="number" name="CantidadesNecesarias" class="plato-form-input" style="flex: 1; padding-left: 15px;" step="0.01" min="0.01" placeholder="Cantidad (Ej: 0.2)" required />
+            `;
+
+        var btnEliminar = `
+                <button type="button" onclick="this.parentElement.remove()" style="background: #dc3545; color: white; border: none; border-radius: 6px; width: 45px; cursor: pointer; font-weight: bold;">X</button>
+            `;
+
+        fila.innerHTML = htmlSelect + htmlCantidad + btnEliminar;
+        container.appendChild(fila);
+    });
+</script>
 
 @section Scripts {
     @{

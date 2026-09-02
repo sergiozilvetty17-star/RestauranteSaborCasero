@@ -641,7 +641,7 @@ namespace RestauranteSaborCasero.Controllers
         }
 
         // ======================================================
-        // CAMBIAR ESTADO
+        // CAMBIAR ESTADO (CON DESCUENTO AUTOMÁTICO DE INVENTARIO)
         // ======================================================
 
         [HttpPost]
@@ -650,10 +650,14 @@ namespace RestauranteSaborCasero.Controllers
             int id,
             EstadoPedido nuevoEstado)
         {
+            // Agregamos los Includes necesarios para traer los ingredientes de cada plato
             var pedido = await _context.Pedidos
                 .Include(p => p.Mesa)
-                .FirstOrDefaultAsync(p =>
-                    p.IdPedido == id);
+                .Include(p => p.Detalles)
+                    .ThenInclude(d => d.Plato)
+                        .ThenInclude(pl => pl.PlatoIngredientes)
+                            .ThenInclude(pi => pi.Ingrediente)
+                .FirstOrDefaultAsync(p => p.IdPedido == id);
 
             if (pedido == null)
                 return NotFound();
@@ -701,8 +705,7 @@ namespace RestauranteSaborCasero.Controllers
 
                     if (pedido.HoraInicio == default)
                     {
-                        pedido.HoraInicio =
-                            horaActual;
+                        pedido.HoraInicio = horaActual;
                     }
 
                     break;
@@ -711,8 +714,7 @@ namespace RestauranteSaborCasero.Controllers
 
                     if (pedido.HoraEnPreparacion == null)
                     {
-                        pedido.HoraEnPreparacion =
-                            horaActual;
+                        pedido.HoraEnPreparacion = horaActual;
                     }
 
                     break;
@@ -721,8 +723,7 @@ namespace RestauranteSaborCasero.Controllers
 
                     if (pedido.HoraListo == null)
                     {
-                        pedido.HoraListo =
-                            horaActual;
+                        pedido.HoraListo = horaActual;
                     }
 
                     break;
@@ -731,12 +732,33 @@ namespace RestauranteSaborCasero.Controllers
 
                     if (pedido.HoraEntregado == null)
                     {
-                        pedido.HoraEntregado =
-                            horaActual;
+                        pedido.HoraEntregado = horaActual;
                     }
 
-                    pedido.HoraFin =
-                        horaActual;
+                    pedido.HoraFin = horaActual;
+
+                    // ==================================================
+                    // MAGIA: DESCUENTO DE INVENTARIO
+                    // ==================================================
+                    if (pedido.Detalles != null)
+                    {
+                        foreach (var detalle in pedido.Detalles)
+                        {
+                            // Si el plato tiene una receta configurada
+                            if (detalle.Plato != null && detalle.Plato.PlatoIngredientes != null)
+                            {
+                                foreach (var receta in detalle.Plato.PlatoIngredientes)
+                                {
+                                    if (receta.Ingrediente != null)
+                                    {
+                                        // Restamos la cantidad requerida * la cantidad de platos
+                                        var cantidadGastar = receta.CantidadNecesaria * detalle.Cantidad;
+                                        receta.Ingrediente.CantidadDisponible -= cantidadGastar;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
                     // Liberar mesa
                     if (pedido.IdMesa.HasValue)
@@ -759,12 +781,10 @@ namespace RestauranteSaborCasero.Controllers
 
                     if (pedido.HoraCancelado == null)
                     {
-                        pedido.HoraCancelado =
-                            horaActual;
+                        pedido.HoraCancelado = horaActual;
                     }
 
-                    pedido.HoraFin =
-                        horaActual;
+                    pedido.HoraFin = horaActual;
 
                     // Liberar mesa
                     if (pedido.IdMesa.HasValue)
@@ -800,7 +820,7 @@ namespace RestauranteSaborCasero.Controllers
                     .SendAsync("PedidosActualizados");
 
                 TempData["Success"] =
-                    "El estado del pedido se actualizó correctamente.";
+                    "El estado del pedido se actualizó correctamente y el inventario fue descontado (si corresponde).";
             }
             catch (Exception ex)
             {
