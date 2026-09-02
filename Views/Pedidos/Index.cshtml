@@ -647,3 +647,98 @@
     }
 
 </div>
+<!-- ========================================================= -->
+<!-- SIGNALR - ACTUALIZACIÓN DE PEDIDOS EN TIEMPO REAL -->
+<!-- ========================================================= -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+
+<script>
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/pedidosHub")
+        .withAutomaticReconnect()
+        .build();
+
+
+    // =========================================================
+    // CUANDO CUALQUIER USUARIO MODIFICA UN PEDIDO
+    // =========================================================
+
+    connection.on("PedidosActualizados", function () {
+
+        console.log("🔄 Se detectó una actualización de pedidos.");
+
+        window.location.reload();
+
+    });
+
+
+    // =========================================================
+    // RECONEXIÓN
+    // =========================================================
+
+    connection.onreconnecting(function () {
+
+        console.log(
+            "⚠️ SignalR intentando reconectar..."
+        );
+
+    });
+
+
+    connection.onreconnected(function () {
+
+        console.log(
+            "✅ SignalR reconectado correctamente."
+        );
+
+    });
+
+
+    connection.onclose(function () {
+
+        console.log(
+            "❌ SignalR desconectado."
+        );
+
+    });
+
+
+    // =========================================================
+    // INICIAR CONEXIÓN
+    // =========================================================
+
+    async function iniciarSignalR() {
+
+        try {
+
+            await connection.start();
+
+            console.log(
+                "✅ SignalR conectado correctamente."
+            );
+
+        }
+        catch (error) {
+
+            console.error(
+                "❌ Error al conectar SignalR:",
+                error
+            );
+
+            // Intentar nuevamente después de 5 segundos
+
+            setTimeout(
+                iniciarSignalR,
+                5000
+            );
+
+        }
+
+    }
+
+
+    iniciarSignalR();
+
+</script>

@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RestauranteSaborCasero.Data;
 using RestauranteSaborCasero.Models;
@@ -10,15 +11,19 @@ namespace RestauranteSaborCasero.Controllers
     public class PedidosController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHubContext<PedidosHub> _hubContext;
 
-        public PedidosController(ApplicationDbContext context)
+        public PedidosController(
+            ApplicationDbContext context,
+            IHubContext<PedidosHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
-        // ============================================================
-        // GET: Pedidos
-        // ============================================================
+        // ======================================================
+        // INDEX
+        // ======================================================
 
         public async Task<IActionResult> Index()
         {
@@ -34,9 +39,9 @@ namespace RestauranteSaborCasero.Controllers
             return View(pedidos);
         }
 
-        // ============================================================
-        // GET: Pedidos/Details/5
-        // ============================================================
+        // ======================================================
+        // DETAILS
+        // ======================================================
 
         public async Task<IActionResult> Details(int? id)
         {
@@ -56,9 +61,9 @@ namespace RestauranteSaborCasero.Controllers
             return View(pedido);
         }
 
-        // ============================================================
-        // GET: Pedidos/Create
-        // ============================================================
+        // ======================================================
+        // CREATE - GET
+        // ======================================================
 
         public async Task<IActionResult> Create()
         {
@@ -90,18 +95,14 @@ namespace RestauranteSaborCasero.Controllers
             return View(pedido);
         }
 
-        // ============================================================
-        // POST: Pedidos/Create
-        // ============================================================
+        // ======================================================
+        // CREATE - POST
+        // ======================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Pedido pedido)
         {
-            // ========================================================
-            // OBTENER USUARIO ACTUAL
-            // ========================================================
-
             var usuario = await ObtenerUsuarioActual();
 
             if (usuario == null)
@@ -115,10 +116,6 @@ namespace RestauranteSaborCasero.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // ========================================================
-            // ELIMINAR VALIDACIONES DE PROPIEDADES DE NAVEGACIÓN
-            // ========================================================
-
             ModelState.Remove(nameof(Pedido.Usuario));
             ModelState.Remove(nameof(Pedido.Mesa));
 
@@ -131,14 +128,13 @@ namespace RestauranteSaborCasero.Controllers
                 }
             }
 
-            // ========================================================
-            // DATOS AUTOMÁTICOS
-            // ========================================================
+            // ==================================================
+            // DATOS CONTROLADOS POR EL SERVIDOR
+            // ==================================================
 
             pedido.IdMesero = usuario.IdUsuario;
             pedido.Fecha = DateTime.Now.Date;
             pedido.HoraInicio = DateTime.Now.TimeOfDay;
-
             pedido.Estado = EstadoPedido.Pendiente;
 
             pedido.HoraFin = null;
@@ -147,9 +143,9 @@ namespace RestauranteSaborCasero.Controllers
             pedido.HoraEntregado = null;
             pedido.HoraCancelado = null;
 
-            // ========================================================
+            // ==================================================
             // VALIDAR MESERO
-            // ========================================================
+            // ==================================================
 
             var meseroExiste = await _context.Usuarios
                 .AnyAsync(u =>
@@ -164,9 +160,9 @@ namespace RestauranteSaborCasero.Controllers
                 );
             }
 
-            // ========================================================
-            // VALIDAR TIPO DE PEDIDO
-            // ========================================================
+            // ==================================================
+            // VALIDAR MESA
+            // ==================================================
 
             if (pedido.TipoPedido == TipoPedido.ParaLlevar)
             {
@@ -204,9 +200,9 @@ namespace RestauranteSaborCasero.Controllers
                 }
             }
 
-            // ========================================================
+            // ==================================================
             // VALIDAR DETALLES
-            // ========================================================
+            // ==================================================
 
             if (pedido.Detalles == null ||
                 !pedido.Detalles.Any())
@@ -261,9 +257,9 @@ namespace RestauranteSaborCasero.Controllers
                 }
             }
 
-            // ========================================================
-            // QUITAR VALIDACIONES DE DATOS AUTOMÁTICOS
-            // ========================================================
+            // ==================================================
+            // ELIMINAR VALIDACIONES DE CAMPOS CONTROLADOS
+            // ==================================================
 
             ModelState.Remove(nameof(Pedido.IdMesero));
             ModelState.Remove(nameof(Pedido.Fecha));
@@ -275,30 +271,12 @@ namespace RestauranteSaborCasero.Controllers
             ModelState.Remove(nameof(Pedido.HoraEntregado));
             ModelState.Remove(nameof(Pedido.HoraCancelado));
 
-            // ========================================================
-            // MOSTRAR ERRORES REALES EN CONSOLA
-            // ========================================================
+            // ==================================================
+            // SI HAY ERRORES
+            // ==================================================
 
             if (!ModelState.IsValid)
             {
-                Console.WriteLine("");
-                Console.WriteLine("==============================================");
-                Console.WriteLine("ERRORES DE MODELO AL CREAR PEDIDO");
-                Console.WriteLine("==============================================");
-
-                foreach (var item in ModelState)
-                {
-                    foreach (var error in item.Value.Errors)
-                    {
-                        Console.WriteLine(
-                            $"CAMPO: {item.Key} | ERROR: {error.ErrorMessage}"
-                        );
-                    }
-                }
-
-                Console.WriteLine("==============================================");
-                Console.WriteLine("");
-
                 await CargarListas(pedido.IdMesa);
 
                 ViewData["NombreMesero"] = usuario.Nombre;
@@ -306,16 +284,12 @@ namespace RestauranteSaborCasero.Controllers
                 return View(pedido);
             }
 
-            // ========================================================
+            // ==================================================
             // GUARDAR PEDIDO
-            // ========================================================
+            // ==================================================
 
             try
             {
-                // ----------------------------------------------------
-                // CREAR PEDIDO PRINCIPAL
-                // ----------------------------------------------------
-
                 var nuevoPedido = new Pedido
                 {
                     IdMesero = usuario.IdUsuario,
@@ -323,30 +297,23 @@ namespace RestauranteSaborCasero.Controllers
                     TipoPedido = pedido.TipoPedido,
                     Fecha = DateTime.Now.Date,
                     HoraInicio = DateTime.Now.TimeOfDay,
+
                     HoraFin = null,
                     HoraEnPreparacion = null,
                     HoraListo = null,
                     HoraEntregado = null,
                     HoraCancelado = null,
+
                     Estado = EstadoPedido.Pendiente
                 };
 
-                // ----------------------------------------------------
-                // AGREGAR PEDIDO
-                // ----------------------------------------------------
-
                 _context.Pedidos.Add(nuevoPedido);
 
-                // Primero guardamos para obtener IdPedido
                 await _context.SaveChangesAsync();
 
-                Console.WriteLine(
-                    $"PEDIDO CREADO CORRECTAMENTE. ID: {nuevoPedido.IdPedido}"
-                );
-
-                // ----------------------------------------------------
+                // ==================================================
                 // GUARDAR DETALLES
-                // ----------------------------------------------------
+                // ==================================================
 
                 foreach (var detalle in pedido.Detalles!)
                 {
@@ -355,6 +322,7 @@ namespace RestauranteSaborCasero.Controllers
                         IdPedido = nuevoPedido.IdPedido,
                         IdPlato = detalle.IdPlato,
                         Cantidad = detalle.Cantidad,
+
                         IndicacionesExtra =
                             string.IsNullOrWhiteSpace(
                                 detalle.IndicacionesExtra)
@@ -365,9 +333,9 @@ namespace RestauranteSaborCasero.Controllers
                     _context.DetallePedidos.Add(nuevoDetalle);
                 }
 
-                // ----------------------------------------------------
+                // ==================================================
                 // OCUPAR MESA
-                // ----------------------------------------------------
+                // ==================================================
 
                 if (nuevoPedido.TipoPedido == TipoPedido.Mesa &&
                     nuevoPedido.IdMesa.HasValue)
@@ -379,22 +347,18 @@ namespace RestauranteSaborCasero.Controllers
                     if (mesa != null)
                     {
                         mesa.Estado = EstadoMesa.Ocupada;
-
-                        Console.WriteLine(
-                            $"MESA {mesa.NumeroMesa} CAMBIADA A OCUPADA."
-                        );
                     }
                 }
 
-                // ----------------------------------------------------
-                // GUARDAR DETALLES Y MESA
-                // ----------------------------------------------------
-
                 await _context.SaveChangesAsync();
 
-                Console.WriteLine(
-                    $"DETALLES DEL PEDIDO {nuevoPedido.IdPedido} GUARDADOS."
-                );
+                // ==================================================
+                // SIGNALR
+                // Notificar a todos los usuarios
+                // ==================================================
+
+                await _hubContext.Clients.All
+                    .SendAsync("PedidosActualizados");
 
                 TempData["Success"] =
                     $"El pedido #{nuevoPedido.IdPedido} se registró correctamente.";
@@ -403,44 +367,30 @@ namespace RestauranteSaborCasero.Controllers
             }
             catch (DbUpdateException ex)
             {
-                Console.WriteLine("");
-                Console.WriteLine("==============================================");
-                Console.WriteLine("ERROR DE BASE DE DATOS AL GUARDAR PEDIDO");
-                Console.WriteLine("==============================================");
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(
+                    "ERROR DB CREATE:"
+                );
 
-                if (ex.InnerException != null)
-                {
-                    Console.WriteLine("INNER EXCEPTION:");
-                    Console.WriteLine(ex.InnerException.Message);
-                }
-
-                Console.WriteLine("==============================================");
+                Console.WriteLine(ex.ToString());
 
                 ModelState.AddModelError(
                     "",
-                    "No se pudo guardar el pedido en la base de datos. " +
-                    "Revisa la consola para ver el error."
+                    "Ocurrió un error al guardar el pedido."
                 );
             }
             catch (Exception ex)
             {
-                Console.WriteLine("");
-                Console.WriteLine("==============================================");
-                Console.WriteLine("ERROR GENERAL AL GUARDAR PEDIDO");
-                Console.WriteLine("==============================================");
+                Console.WriteLine(
+                    "ERROR CREATE:"
+                );
+
                 Console.WriteLine(ex.ToString());
-                Console.WriteLine("==============================================");
 
                 ModelState.AddModelError(
                     "",
-                    "Ocurrió un error inesperado al guardar el pedido."
+                    "Ocurrió un error al registrar el pedido."
                 );
             }
-
-            // ========================================================
-            // VOLVER AL FORMULARIO
-            // ========================================================
 
             await CargarListas(pedido.IdMesa);
 
@@ -449,9 +399,9 @@ namespace RestauranteSaborCasero.Controllers
             return View(pedido);
         }
 
-        // ============================================================
-        // GET: Pedidos/Edit/5
-        // ============================================================
+        // ======================================================
+        // EDIT - GET
+        // ======================================================
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -489,9 +439,9 @@ namespace RestauranteSaborCasero.Controllers
             return View(pedido);
         }
 
-        // ============================================================
-        // POST: Pedidos/Edit/5
-        // ============================================================
+        // ======================================================
+        // EDIT - POST
+        // ======================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -514,7 +464,7 @@ namespace RestauranteSaborCasero.Controllers
                 pedidoOriginal.Estado == EstadoPedido.Cancelado)
             {
                 TempData["Error"] =
-                    "No se puede modificar un pedido entregado o cancelado.";
+                    "No se puede modificar el pedido.";
 
                 return RedirectToAction(nameof(Index));
             }
@@ -526,10 +476,17 @@ namespace RestauranteSaborCasero.Controllers
             {
                 for (int i = 0; i < pedido.Detalles.Count; i++)
                 {
-                    ModelState.Remove($"Detalles[{i}].Pedido");
-                    ModelState.Remove($"Detalles[{i}].Plato");
+                    ModelState.Remove(
+                        $"Detalles[{i}].Pedido");
+
+                    ModelState.Remove(
+                        $"Detalles[{i}].Plato");
                 }
             }
+
+            // ==================================================
+            // VALIDAR MESA
+            // ==================================================
 
             if (pedido.TipoPedido == TipoPedido.ParaLlevar)
             {
@@ -560,6 +517,10 @@ namespace RestauranteSaborCasero.Controllers
                 }
             }
 
+            // ==================================================
+            // CAMPOS CONTROLADOS
+            // ==================================================
+
             ModelState.Remove(nameof(Pedido.IdMesero));
             ModelState.Remove(nameof(Pedido.Fecha));
             ModelState.Remove(nameof(Pedido.HoraInicio));
@@ -570,11 +531,16 @@ namespace RestauranteSaborCasero.Controllers
             ModelState.Remove(nameof(Pedido.HoraEntregado));
             ModelState.Remove(nameof(Pedido.HoraCancelado));
 
+            // ==================================================
+            // ACTUALIZAR
+            // ==================================================
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var mesaAnterior = pedidoOriginal.IdMesa;
+                    var mesaAnterior =
+                        pedidoOriginal.IdMesa;
 
                     pedidoOriginal.TipoPedido =
                         pedido.TipoPedido;
@@ -582,13 +548,18 @@ namespace RestauranteSaborCasero.Controllers
                     pedidoOriginal.IdMesa =
                         pedido.IdMesa;
 
+                    // ==================================================
+                    // LIBERAR MESA ANTERIOR
+                    // ==================================================
+
                     if (mesaAnterior.HasValue &&
                         mesaAnterior != pedido.IdMesa)
                     {
                         var mesaAnteriorDb =
                             await _context.Mesas
                                 .FirstOrDefaultAsync(m =>
-                                    m.IdMesa == mesaAnterior.Value);
+                                    m.IdMesa ==
+                                    mesaAnterior.Value);
 
                         if (mesaAnteriorDb != null)
                         {
@@ -597,13 +568,18 @@ namespace RestauranteSaborCasero.Controllers
                         }
                     }
 
+                    // ==================================================
+                    // OCUPAR NUEVA MESA
+                    // ==================================================
+
                     if (pedido.TipoPedido == TipoPedido.Mesa &&
                         pedido.IdMesa.HasValue)
                     {
                         var nuevaMesa =
                             await _context.Mesas
                                 .FirstOrDefaultAsync(m =>
-                                    m.IdMesa == pedido.IdMesa.Value);
+                                    m.IdMesa ==
+                                    pedido.IdMesa.Value);
 
                         if (nuevaMesa != null)
                         {
@@ -614,6 +590,13 @@ namespace RestauranteSaborCasero.Controllers
 
                     await _context.SaveChangesAsync();
 
+                    // ==================================================
+                    // SIGNALR
+                    // ==================================================
+
+                    await _hubContext.Clients.All
+                        .SendAsync("PedidosActualizados");
+
                     TempData["Success"] =
                         "El pedido se actualizó correctamente.";
 
@@ -622,7 +605,8 @@ namespace RestauranteSaborCasero.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!await _context.Pedidos
-                        .AnyAsync(p => p.IdPedido == id))
+                        .AnyAsync(p =>
+                            p.IdPedido == id))
                     {
                         return NotFound();
                     }
@@ -631,7 +615,9 @@ namespace RestauranteSaborCasero.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine(
+                        ex.ToString()
+                    );
 
                     ModelState.AddModelError(
                         "",
@@ -642,9 +628,11 @@ namespace RestauranteSaborCasero.Controllers
 
             await CargarListas(pedido.IdMesa);
 
-            var mesero = await _context.Usuarios
-                .FirstOrDefaultAsync(u =>
-                    u.IdUsuario == pedidoOriginal.IdMesero);
+            var mesero =
+                await _context.Usuarios
+                    .FirstOrDefaultAsync(u =>
+                        u.IdUsuario ==
+                        pedidoOriginal.IdMesero);
 
             ViewData["NombreMesero"] =
                 mesero?.Nombre ?? "Sin mesero";
@@ -652,9 +640,9 @@ namespace RestauranteSaborCasero.Controllers
             return View(pedido);
         }
 
-        // ============================================================
-        // POST: Pedidos/CambiarEstado
-        // ============================================================
+        // ======================================================
+        // CAMBIAR ESTADO
+        // ======================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -670,6 +658,10 @@ namespace RestauranteSaborCasero.Controllers
             if (pedido == null)
                 return NotFound();
 
+            // ==================================================
+            // PEDIDO FINALIZADO
+            // ==================================================
+
             if (pedido.Estado == EstadoPedido.Entregado ||
                 pedido.Estado == EstadoPedido.Cancelado)
             {
@@ -679,9 +671,13 @@ namespace RestauranteSaborCasero.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
+            // ==================================================
+            // VALIDAR TRANSICIÓN
+            // ==================================================
+
             if (!EsTransicionValida(
-                    pedido.Estado,
-                    nuevoEstado))
+                pedido.Estado,
+                nuevoEstado))
             {
                 TempData["Error"] =
                     $"No se puede cambiar el pedido de " +
@@ -689,6 +685,10 @@ namespace RestauranteSaborCasero.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
+
+            // ==================================================
+            // ACTUALIZAR ESTADO
+            // ==================================================
 
             var horaActual =
                 DateTime.Now.TimeOfDay;
@@ -738,11 +738,13 @@ namespace RestauranteSaborCasero.Controllers
                     pedido.HoraFin =
                         horaActual;
 
+                    // Liberar mesa
                     if (pedido.IdMesa.HasValue)
                     {
                         var mesa = await _context.Mesas
                             .FirstOrDefaultAsync(m =>
-                                m.IdMesa == pedido.IdMesa.Value);
+                                m.IdMesa ==
+                                pedido.IdMesa.Value);
 
                         if (mesa != null)
                         {
@@ -764,11 +766,13 @@ namespace RestauranteSaborCasero.Controllers
                     pedido.HoraFin =
                         horaActual;
 
+                    // Liberar mesa
                     if (pedido.IdMesa.HasValue)
                     {
                         var mesa = await _context.Mesas
                             .FirstOrDefaultAsync(m =>
-                                m.IdMesa == pedido.IdMesa.Value);
+                                m.IdMesa ==
+                                pedido.IdMesa.Value);
 
                         if (mesa != null)
                         {
@@ -780,16 +784,29 @@ namespace RestauranteSaborCasero.Controllers
                     break;
             }
 
+            // ==================================================
+            // GUARDAR
+            // ==================================================
+
             try
             {
                 await _context.SaveChangesAsync();
+
+                // ==================================================
+                // SIGNALR
+                // ==================================================
+
+                await _hubContext.Clients.All
+                    .SendAsync("PedidosActualizados");
 
                 TempData["Success"] =
                     "El estado del pedido se actualizó correctamente.";
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(
+                    ex.ToString()
+                );
 
                 TempData["Error"] =
                     "Ocurrió un error al cambiar el estado.";
@@ -798,9 +815,9 @@ namespace RestauranteSaborCasero.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // ============================================================
+        // ======================================================
         // VALIDAR TRANSICIONES
-        // ============================================================
+        // ======================================================
 
         private bool EsTransicionValida(
             EstadoPedido estadoActual,
@@ -814,23 +831,23 @@ namespace RestauranteSaborCasero.Controllers
                 case EstadoPedido.Pendiente:
 
                     return nuevoEstado ==
-                               EstadoPedido.EnPreparacion
-                           || nuevoEstado ==
-                               EstadoPedido.Cancelado;
+                            EstadoPedido.EnPreparacion
+                        || nuevoEstado ==
+                            EstadoPedido.Cancelado;
 
                 case EstadoPedido.EnPreparacion:
 
                     return nuevoEstado ==
-                               EstadoPedido.Listo
-                           || nuevoEstado ==
-                               EstadoPedido.Cancelado;
+                            EstadoPedido.Listo
+                        || nuevoEstado ==
+                            EstadoPedido.Cancelado;
 
                 case EstadoPedido.Listo:
 
                     return nuevoEstado ==
-                               EstadoPedido.Entregado
-                           || nuevoEstado ==
-                               EstadoPedido.Cancelado;
+                            EstadoPedido.Entregado
+                        || nuevoEstado ==
+                            EstadoPedido.Cancelado;
 
                 case EstadoPedido.Entregado:
                 case EstadoPedido.Cancelado:
@@ -843,9 +860,9 @@ namespace RestauranteSaborCasero.Controllers
             }
         }
 
-        // ============================================================
-        // OBTENER USUARIO ACTUAL
-        // ============================================================
+        // ======================================================
+        // USUARIO ACTUAL
+        // ======================================================
 
         private async Task<Usuario?> ObtenerUsuarioActual()
         {
@@ -853,12 +870,15 @@ namespace RestauranteSaborCasero.Controllers
                 User.FindFirstValue(
                     ClaimTypes.NameIdentifier);
 
-            if (string.IsNullOrEmpty(idUsuarioClaim))
+            if (string.IsNullOrEmpty(
+                idUsuarioClaim))
+            {
                 return null;
+            }
 
             if (!int.TryParse(
-                    idUsuarioClaim,
-                    out int idUsuario))
+                idUsuarioClaim,
+                out int idUsuario))
             {
                 return null;
             }
@@ -876,18 +896,22 @@ namespace RestauranteSaborCasero.Controllers
             return usuario;
         }
 
-        // ============================================================
-        // CARGAR MESAS Y PLATOS
-        // ============================================================
+        // ======================================================
+        // CARGAR LISTAS
+        // ======================================================
 
         private async Task CargarListas(
             int? mesaSeleccionada = null)
         {
             var mesas = await _context.Mesas
                 .Where(m =>
-                    m.Estado == EstadoMesa.Disponible ||
-                    m.IdMesa == mesaSeleccionada)
-                .OrderBy(m => m.NumeroMesa)
+                    m.Estado ==
+                        EstadoMesa.Disponible
+                    ||
+                    m.IdMesa ==
+                        mesaSeleccionada)
+                .OrderBy(m =>
+                    m.NumeroMesa)
                 .ToListAsync();
 
             ViewData["IdMesa"] =
@@ -900,8 +924,10 @@ namespace RestauranteSaborCasero.Controllers
 
             var platos = await _context.Platos
                 .Where(p =>
-                    p.Estado == EstadoPlato.Disponible)
-                .OrderBy(p => p.Nombre)
+                    p.Estado ==
+                    EstadoPlato.Disponible)
+                .OrderBy(p =>
+                    p.Nombre)
                 .ToListAsync();
 
             ViewData["Platos"] =
@@ -909,5 +935,3 @@ namespace RestauranteSaborCasero.Controllers
         }
     }
 }
-
-

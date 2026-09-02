@@ -546,6 +546,56 @@
 
 
             /* =========================================================
+                       LOGOUT
+                       ========================================================= */
+
+            .navbar-logout-form {
+                display: flex;
+                margin-left: auto;
+                margin-right: 0;
+            }
+
+            .navbar-logout-btn {
+                padding: 8px 16px;
+                background: var(--sc-danger);
+                border: none;
+                border-radius: var(--sc-radius-sm);
+                color: #ffffff;
+                font-size: 0.88rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background var(--sc-transition), box-shadow var(--sc-transition), transform var(--sc-transition);
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+                .navbar-logout-btn:hover {
+                    background: #aa3e3e;
+                    box-shadow: 0 6px 15px rgba(201, 74, 74, 0.18);
+                    transform: translateY(-1px);
+                }
+
+                .navbar-logout-btn:active {
+                    transform: translateY(0);
+                }
+
+            .logout-icon {
+                width: 17px;
+                height: 17px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+                .logout-icon svg {
+                    width: 100%;
+                    height: 100%;
+                    stroke: currentColor;
+                }
+
+
+            /* =========================================================
                        SCROLLBAR
                        ========================================================= */
 
@@ -607,6 +657,7 @@
                 .navbar-collapse {
                     width: 100%;
                     margin-top: 10px;
+                    flex-direction: column;
                 }
 
                 .navbar-nav {
@@ -616,6 +667,17 @@
 
                     .navbar-nav .nav-link {
                         padding: 9px 12px !important;
+                    }
+
+                .navbar-logout-form {
+                    margin-left: 0;
+                    margin-top: 10px;
+                    width: 100%;
+                }
+
+                    .navbar-logout-form .navbar-logout-btn {
+                        width: 100%;
+                        justify-content: center;
                     }
             }
 
@@ -1017,6 +1079,50 @@
                         }
 
                     </ul>
+
+                    <!-- =================================================
+                         LOGOUT
+                         ================================================= -->
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form class="navbar-logout-form"
+                              asp-area=""
+                              asp-controller="Login"
+                              asp-action="Logout"
+                              method="post">
+
+                            <button type="submit"
+                                    class="navbar-logout-btn">
+
+                                <span class="logout-icon">
+
+                                    <svg viewBox="0 0 24 24"
+                                         fill="none"
+                                         stroke="currentColor"
+                                         stroke-width="1.8"
+                                         stroke-linecap="round"
+                                         stroke-linejoin="round">
+
+                                        <!-- Puerta -->
+                                        <path d="M5 3h12c1 0 2 1 2 2v14c0 1-1 2-2 2H5c-1 0-2-1-2-2V5c0-1 1-2 2-2" />
+                                        <!-- Marco de puerta -->
+                                        <path d="M17 10h5" />
+                                        <!-- Círculo de manija -->
+                                        <circle cx="20" cy="10" r="1.5" />
+                                        <!-- Flecha de salida -->
+                                        <path d="M9 7v8" />
+                                        <path d="M6 10l3-3l3 3" />
+
+                                    </svg>
+
+                                </span>
+
+                                Cerrar sesión
+
+                            </button>
+
+                        </form>
+                    }
 
                 </div>
 

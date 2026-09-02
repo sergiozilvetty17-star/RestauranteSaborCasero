@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RestauranteSaborCasero.Data;
 
@@ -49,6 +50,12 @@ builder.Services.AddAuthorization();
 // ======================================================
 
 builder.Services.AddControllersWithViews();
+
+// ======================================================
+// SIGNALR
+// ======================================================
+
+builder.Services.AddSignalR();
 
 // ======================================================
 // RED LOCAL
@@ -138,6 +145,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // ======================================================
+// SIGNALR - PEDIDOS EN TIEMPO REAL
+// ======================================================
+
+app.MapHub<PedidosHub>("/pedidosHub");
+
+// ======================================================
 // RUTA PRINCIPAL
 // ======================================================
 
@@ -147,3 +160,11 @@ app.MapControllerRoute(
 );
 
 app.Run();
+
+// ======================================================
+// HUB DE PEDIDOS
+// ======================================================
+
+public class PedidosHub : Hub
+{
+}
