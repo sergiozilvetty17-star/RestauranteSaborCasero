@@ -1,96 +1,67 @@
 ﻿<!DOCTYPE html>
-
 <html lang="es">
-
 <head>
-
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>@ViewData["Title"] - Sabor Casero</title>
 
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <!-- CSS principal -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <style>
-
         /* =========================================================
-           SABOR CASERO - SISTEMA VISUAL DARK RED
-           Diseño elegante / oscuro / gastronómico
+           VARIABLES
            ========================================================= */
 
         :root {
-
-            /* DARK RED */
             --sc-primary: #7a1f2b;
             --sc-primary-dark: #54131d;
             --sc-primary-light: #9b2d3a;
             --sc-primary-soft: #32191e;
 
-            /* DORADO */
             --sc-secondary: #b88945;
-            --sc-secondary-dark: #8f672f;
-            --sc-secondary-soft: #2d261c;
+            --sc-secondary-light: #d1a866;
 
-            /* FONDOS */
-            --sc-background: #151312;
-            --sc-background-soft: #1b1817;
-            --sc-surface: #211e1c;
-            --sc-surface-light: #282422;
-            --sc-surface-hover: #302a27;
+            --sc-bg: #151312;
+            --sc-bg-secondary: #1b1817;
+            --sc-card: #211e1c;
+            --sc-card-header: #282422;
 
-            /* TEXTOS */
-            --sc-dark: #f1ebe5;
-            --sc-dark-soft: #d3cbc4;
-            --sc-gray: #aaa19a;
-            --sc-gray-light: #827a74;
-
-            /* BORDES */
             --sc-border: #3a3430;
-            --sc-border-light: #302b28;
+            --sc-border-soft: #302b28;
 
-            /* ESTADOS */
-            --sc-success: #5fa879;
-            --sc-success-soft: #1d3025;
+            --sc-text: #f1ebe5;
+            --sc-text-secondary: #d3cbc4;
+            --sc-text-muted: #aaa19a;
+            --sc-text-dark: #827a74;
 
-            --sc-danger: #d45c61;
-            --sc-danger-soft: #351d20;
+            --sc-success: #3d8b65;
+            --sc-danger: #a6403a;
+            --sc-warning: #b88945;
+            --sc-info: #527d91;
 
-            --sc-info: #719bc4;
-            --sc-info-soft: #1d2a35;
-
-            --sc-warning: #d0a052;
-            --sc-warning-soft: #352c1d;
-
-            /* RADIOS */
+            --sc-radius: 12px;
             --sc-radius-sm: 8px;
-            --sc-radius-md: 12px;
-            --sc-radius-lg: 16px;
 
-            /* SOMBRAS */
-            --sc-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
-            --sc-shadow: 0 8px 25px rgba(0, 0, 0, 0.30);
-            --sc-shadow-lg: 0 15px 40px rgba(0, 0, 0, 0.42);
+            --sc-shadow:
+                0 12px 30px rgba(0, 0, 0, 0.28);
 
-            --sc-transition: 0.2s ease;
+            --sc-shadow-soft:
+                0 6px 18px rgba(0, 0, 0, 0.22);
         }
 
 
         /* =========================================================
-           BASE
+           GENERAL
            ========================================================= */
 
         html {
             font-size: 14px;
             min-height: 100%;
-            background: var(--sc-background);
         }
 
         body {
-
             margin: 0;
             min-height: 100vh;
 
@@ -98,34 +69,26 @@
                 radial-gradient(
                     circle at top right,
                     rgba(122, 31, 43, 0.08),
-                    transparent 35%
+                    transparent 32%
                 ),
-                var(--sc-background);
+                var(--sc-bg);
 
-            color: var(--sc-dark);
+            color: var(--sc-text);
 
             font-family:
                 "Segoe UI",
                 Arial,
                 Helvetica,
                 sans-serif;
-
-            -webkit-font-smoothing: antialiased;
-            text-rendering: optimizeLegibility;
-        }
-
-        ::selection {
-            background: var(--sc-primary);
-            color: #ffffff;
         }
 
         a {
-            color: #c56b75;
-            transition: color var(--sc-transition);
+            color: inherit;
+            text-decoration: none;
         }
 
         a:hover {
-            color: #e08a93;
+            color: inherit;
         }
 
 
@@ -133,285 +96,180 @@
            NAVBAR
            ========================================================= */
 
-        .navbar {
+        header {
+            position: relative;
+            z-index: 100;
+        }
 
+        .navbar {
             min-height: 76px;
 
-            padding: 0 32px;
-
-            margin: 0 !important;
+            padding: 0 28px;
 
             background:
                 linear-gradient(
-                    135deg,
-                    #211d1b 0%,
-                    #181615 100%
+                    180deg,
+                    #211c1a 0%,
+                    #1b1817 100%
                 ) !important;
 
-            border: none !important;
-
-            border-bottom:
-                1px solid
-                #3d302e !important;
+            border-bottom: 1px solid var(--sc-border);
 
             box-shadow:
-                0 5px 25px rgba(0, 0, 0, 0.35);
-
-            position: relative;
-
-            z-index: 1000;
-        }
-
-        .navbar .container-fluid {
-
-            width: 100%;
-
-            max-width: 1480px;
-
-            padding: 0;
+                0 8px 24px rgba(0, 0, 0, 0.28);
         }
 
 
         /* =========================================================
-           LOGO
+           BRAND
            ========================================================= */
 
         .navbar-brand {
-
             display: flex;
-
             align-items: center;
 
             gap: 12px;
 
-            margin-right: 38px;
+            color: var(--sc-text) !important;
 
-            color:
-                #eee3dc !important;
-
-            font-size: 1.35rem;
-
+            font-size: 1.08rem;
             font-weight: 800;
 
-            letter-spacing: -0.45px;
+            letter-spacing: 0.2px;
 
-            text-decoration: none;
-
-            transition:
-                transform var(--sc-transition),
-                color var(--sc-transition);
+            margin-right: 28px;
         }
 
         .navbar-brand:hover {
-
             color: #ffffff !important;
-
-            transform: translateY(-1px);
         }
 
-        .brand-icon {
+        .navbar-brand-logo {
+            width: 48px;
+            height: 48px;
 
-            width: 43px;
-            height: 43px;
-
-            display: inline-flex;
-
+            display: flex;
             align-items: center;
             justify-content: center;
+
+            border-radius: 12px;
 
             background:
                 linear-gradient(
                     145deg,
-                    var(--sc-primary-light),
-                    var(--sc-primary-dark)
+                    #2c211e,
+                    #171312
                 );
 
-            color: #ffffff;
-
-            border-radius: 12px;
-
-            border:
-                1px solid
-                rgba(255,255,255,0.08);
+            border: 1px solid #49352e;
 
             box-shadow:
-                0 7px 20px
-                rgba(122, 31, 43, 0.38);
+                0 5px 16px rgba(0, 0, 0, 0.35);
+
+            overflow: hidden;
         }
 
-        .brand-icon svg {
-
-            width: 23px;
-            height: 23px;
-
-            stroke: currentColor;
+        .navbar-brand-logo svg {
+            width: 40px;
+            height: 40px;
         }
 
-        .brand-text {
-
+        .navbar-brand-text {
             display: flex;
-
             flex-direction: column;
-
             line-height: 1.05;
         }
 
-        .brand-name {
+        .navbar-brand-title {
+            color: #f5eee8;
 
-            font-size: 1.35rem;
-
+            font-size: 1rem;
             font-weight: 800;
-
-            color: #f1e9e3;
         }
 
-        .brand-subtitle {
-
+        .navbar-brand-subtitle {
             margin-top: 4px;
 
-            color: #827a74;
+            color: var(--sc-secondary);
 
-            font-size: 0.68rem;
+            font-size: 0.62rem;
+            font-weight: 700;
 
-            font-weight: 600;
-
-            letter-spacing: 1.2px;
-
+            letter-spacing: 1.3px;
             text-transform: uppercase;
         }
 
 
         /* =========================================================
-           NAVIGATION
+           NAVIGATION LINKS
            ========================================================= */
 
-        .navbar-collapse {
-
-            display: flex !important;
-
-            align-items: center;
-        }
-
         .navbar-nav {
-
             display: flex;
-
             align-items: center;
 
-            gap: 3px;
-        }
-
-        .navbar-nav .nav-item {
-            margin: 0;
+            gap: 5px;
         }
 
         .navbar-nav .nav-link {
-
             position: relative;
 
             display: flex;
-
             align-items: center;
 
-            gap: 8px;
+            min-height: 42px;
 
-            padding: 10px 13px !important;
+            padding: 9px 13px !important;
 
-            border-radius:
-                var(--sc-radius-sm);
+            border-radius: var(--sc-radius-sm);
 
-            color:
-                #a59d96 !important;
+            color: var(--sc-text-muted) !important;
 
-            font-size: 0.88rem;
-
-            font-weight: 600;
-
-            text-decoration: none;
+            font-size: 0.84rem;
+            font-weight: 700;
 
             transition:
-                background var(--sc-transition),
-                color var(--sc-transition),
-                transform var(--sc-transition);
+                background 0.2s ease,
+                color 0.2s ease,
+                transform 0.2s ease;
         }
 
         .navbar-nav .nav-link:hover {
+            color: #ffffff !important;
 
-            background:
-                rgba(122, 31, 43, 0.18);
+            background: #302a27;
 
-            color:
-                #e2b0b5 !important;
-
-            transform:
-                translateY(-1px);
+            transform: translateY(-1px);
         }
 
         .navbar-nav .nav-link.active {
+            color: #ffffff !important;
 
             background:
                 linear-gradient(
                     135deg,
-                    var(--sc-primary),
-                    var(--sc-primary-dark)
+                    rgba(122, 31, 43, 0.9),
+                    rgba(84, 19, 29, 0.9)
                 );
 
-            color: #ffffff !important;
-
             box-shadow:
-                0 6px 18px
-                rgba(122, 31, 43, 0.35);
-
-            border:
-                1px solid
-                rgba(255,255,255,0.04);
-        }
-
-        .navbar-nav .nav-link.active:hover {
-
-            background:
-                var(--sc-primary-dark);
-
-            color: #ffffff !important;
-        }
-
-        .nav-icon {
-
-            width: 17px;
-            height: 17px;
-
-            flex-shrink: 0;
-        }
-
-        .nav-icon svg {
-
-            width: 100%;
-            height: 100%;
-
-            stroke: currentColor;
+                inset 0 0 0 1px rgba(155, 45, 58, 0.35),
+                0 5px 14px rgba(0, 0, 0, 0.18);
         }
 
 
         /* =========================================================
-           CONTENIDO
+           PAGE WRAPPER
            ========================================================= */
 
         .sc-page-wrapper {
+            min-height: calc(100vh - 76px - 64px);
 
-            width: 100%;
-
-            max-width: 1480px;
-
-            margin: 0 auto;
-
-            padding:
-                30px 32px 40px;
+            padding: 28px 30px 40px;
         }
 
         main {
-
-            min-height:
-                calc(100vh - 160px);
+            width: 100%;
         }
 
 
@@ -420,463 +278,210 @@
            ========================================================= */
 
         .card {
+            background: var(--sc-card);
 
-            background:
-                linear-gradient(
-                    145deg,
-                    #25211f,
-                    #1f1c1a
-                );
+            color: var(--sc-text);
 
-            border:
-                1px solid
-                var(--sc-border);
+            border: 1px solid var(--sc-border);
 
-            border-radius:
-                var(--sc-radius-lg);
+            border-radius: var(--sc-radius);
 
-            box-shadow:
-                var(--sc-shadow);
-
-            overflow: hidden;
-
-            transition:
-                box-shadow var(--sc-transition),
-                transform var(--sc-transition),
-                border-color var(--sc-transition);
-        }
-
-        .card:hover {
-
-            box-shadow:
-                var(--sc-shadow-lg);
-
-            border-color:
-                #4a3c38;
+            box-shadow: var(--sc-shadow-soft);
         }
 
         .card-header {
+            background: var(--sc-card-header);
 
-            padding: 17px 21px;
+            color: var(--sc-text);
 
-            background:
-                #25211f;
-
-            border-bottom:
-                1px solid
-                var(--sc-border);
-
-            color:
-                #c96b76;
-
-            font-weight: 700;
+            border-bottom: 1px solid var(--sc-border);
         }
 
         .card-body {
-
-            padding: 23px;
-
-            background:
-                #211e1c;
-        }
-
-        .card-footer {
-
-            padding: 15px 21px;
-
-            background:
-                #1b1817;
-
-            border-top:
-                1px solid
-                var(--sc-border);
-
-            color:
-                var(--sc-gray);
+            color: var(--sc-text-secondary);
         }
 
 
         /* =========================================================
-           BOTONES
+           BUTTONS
            ========================================================= */
 
         .btn {
+            border-radius: var(--sc-radius-sm);
 
-            min-height: 40px;
-
-            padding: 8px 16px;
-
-            border-radius:
-                var(--sc-radius-sm);
-
-            font-size: 0.88rem;
-
-            font-weight: 600;
+            font-weight: 700;
 
             transition:
-                background var(--sc-transition),
-                border-color var(--sc-transition),
-                box-shadow var(--sc-transition),
-                transform var(--sc-transition);
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.18s ease;
         }
 
         .btn:hover {
-
-            transform:
-                translateY(-1px);
+            transform: translateY(-1px);
         }
-
-        .btn:active {
-
-            transform:
-                translateY(0);
-        }
-
-
-        /* PRIMARY */
 
         .btn-primary {
+            background: var(--sc-primary);
 
-            background:
-                linear-gradient(
-                    135deg,
-                    var(--sc-primary-light),
-                    var(--sc-primary)
-                );
+            border-color: var(--sc-primary);
 
-            border-color:
-                var(--sc-primary);
-
-            color:
-                #ffffff;
+            color: #ffffff;
         }
 
-        .btn-primary:hover,
-        .btn-primary:focus {
+        .btn-primary:hover {
+            background: var(--sc-primary-light);
 
-            background:
-                var(--sc-primary-dark);
+            border-color: var(--sc-primary-light);
 
-            border-color:
-                var(--sc-primary-dark);
-
-            color:
-                #ffffff;
+            color: #ffffff;
 
             box-shadow:
-                0 7px 18px
-                rgba(122, 31, 43, 0.35);
+                0 6px 18px rgba(122, 31, 43, 0.28);
         }
-
-
-        /* WARNING / GOLD */
-
-        .btn-warning {
-
-            background:
-                linear-gradient(
-                    135deg,
-                    #bd8c48,
-                    #9b7137
-                );
-
-            border-color:
-                #b88945;
-
-            color:
-                #ffffff;
-        }
-
-        .btn-warning:hover,
-        .btn-warning:focus {
-
-            background:
-                #8f672f;
-
-            border-color:
-                #8f672f;
-
-            color:
-                #ffffff;
-
-            box-shadow:
-                0 7px 18px
-                rgba(184, 137, 69, 0.25);
-        }
-
-
-        /* SUCCESS */
-
-        .btn-success {
-
-            background:
-                #3f805a;
-
-            border-color:
-                #3f805a;
-
-            color:
-                #ffffff;
-        }
-
-        .btn-success:hover,
-        .btn-success:focus {
-
-            background:
-                #326947;
-
-            border-color:
-                #326947;
-
-            color:
-                #ffffff;
-
-            box-shadow:
-                0 6px 15px
-                rgba(63, 128, 90, 0.25);
-        }
-
-
-        /* DANGER */
-
-        .btn-danger {
-
-            background:
-                #a94148;
-
-            border-color:
-                #a94148;
-
-            color:
-                #ffffff;
-        }
-
-        .btn-danger:hover,
-        .btn-danger:focus {
-
-            background:
-                #823138;
-
-            border-color:
-                #823138;
-
-            color:
-                #ffffff;
-
-            box-shadow:
-                0 6px 15px
-                rgba(169, 65, 72, 0.28);
-        }
-
-
-        /* SECONDARY */
 
         .btn-secondary {
+            background: #282422;
 
-            background:
-                #37312d;
+            border-color: var(--sc-border);
 
-            border-color:
-                #4a403b;
-
-            color:
-                #d3cbc4;
+            color: var(--sc-text-secondary);
         }
 
-        .btn-secondary:hover,
-        .btn-secondary:focus {
+        .btn-secondary:hover {
+            background: #332d2a;
 
-            background:
-                #443b36;
+            border-color: #4a403a;
 
-            border-color:
-                #574b45;
+            color: #ffffff;
+        }
 
-            color:
-                #ffffff;
+        .btn-warning {
+            background: #382d1d;
+
+            border-color: #6e552e;
+
+            color: #d7b46e;
+        }
+
+        .btn-warning:hover {
+            background: #4a3923;
+
+            color: #e7c989;
+        }
+
+        .btn-danger {
+            background: #421f1d;
+
+            border-color: #71312d;
+
+            color: #d97970;
+        }
+
+        .btn-danger:hover {
+            background: #552622;
+
+            color: #ef8b81;
         }
 
 
         /* =========================================================
-           FORMULARIOS
+           FORMS
            ========================================================= */
-
-        .form-label {
-
-            margin-bottom: 7px;
-
-            color:
-                #ddd5cf;
-
-            font-size: 0.87rem;
-
-            font-weight: 700;
-        }
 
         .form-control,
         .form-select {
-
             min-height: 42px;
 
-            padding: 9px 13px;
+            background: #181514 !important;
 
-            background:
-                #181615;
+            color: var(--sc-text) !important;
 
-            border:
-                1px solid
-                #403934;
+            border: 1px solid var(--sc-border) !important;
 
-            border-radius:
-                var(--sc-radius-sm);
-
-            color:
-                #eee7e1;
-
-            font-size: 0.9rem;
-
-            transition:
-                border-color var(--sc-transition),
-                box-shadow var(--sc-transition),
-                background var(--sc-transition);
+            border-radius: var(--sc-radius-sm);
         }
 
         .form-control::placeholder {
-
-            color:
-                #756d67;
-        }
-
-        .form-control:hover,
-        .form-select:hover {
-
-            border-color:
-                #554942;
+            color: #766d67;
         }
 
         .form-control:focus,
         .form-select:focus {
+            background: #1d1918 !important;
 
-            background:
-                #1d1918;
+            color: #ffffff !important;
 
-            border-color:
-                var(--sc-primary);
+            border-color: var(--sc-primary-light) !important;
 
             box-shadow:
-                0 0 0 3px
-                rgba(122, 31, 43, 0.18);
-
-            color:
-                #ffffff;
-
-            outline:
-                none;
+                0 0 0 3px rgba(122, 31, 43, 0.18) !important;
         }
 
-        textarea.form-control {
+        .form-label {
+            color: var(--sc-text-secondary);
 
-            min-height: 100px;
+            font-weight: 700;
+        }
 
-            resize: vertical;
+        .form-text {
+            color: var(--sc-text-muted);
         }
 
         .form-select option {
+            background: #1b1817;
 
-            background:
-                #211e1c;
-
-            color:
-                #ffffff;
+            color: #ffffff;
         }
 
 
         /* =========================================================
-           TABLAS
+           TABLES
            ========================================================= */
 
         .table {
-
             margin-bottom: 0;
 
-            background:
-                #211e1c;
+            color: var(--sc-text-secondary);
 
-            border-color:
-                var(--sc-border);
-
-            vertical-align:
-                middle;
-
-            color:
-                #d8d0ca;
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--sc-text-secondary);
+            --bs-table-border-color: var(--sc-border);
         }
 
         .table thead th {
+            background: #282422;
 
-            padding:
-                13px 15px;
+            color: #eee5de;
 
-            background:
-                #302824;
+            border-bottom: 1px solid var(--sc-border);
 
-            border-bottom:
-                2px solid
-                #4a3b35;
+            font-size: 0.78rem;
 
-            color:
-                #c77a64;
+            font-weight: 800;
 
-            font-size:
-                0.79rem;
+            letter-spacing: 0.4px;
 
-            font-weight:
-                800;
-
-            letter-spacing:
-                0.35px;
-
-            text-transform:
-                uppercase;
-
-            white-space:
-                nowrap;
+            text-transform: uppercase;
         }
 
         .table tbody td {
+            background: #211e1c;
 
-            padding:
-                13px 15px;
+            color: var(--sc-text-secondary);
 
-            border-color:
-                var(--sc-border-light);
+            border-color: var(--sc-border-soft);
 
-            color:
-                #cfc6bf;
-
-            font-size:
-                0.88rem;
+            vertical-align: middle;
         }
 
         .table tbody tr {
-
-            background:
-                #211e1c;
-
             transition:
-                background var(--sc-transition);
+                background 0.18s ease;
         }
 
-        .table tbody tr:hover {
-
-            background:
-                #2b2522;
-        }
-
-        .table > :not(caption) > * > * {
-
-            box-shadow:
-                none;
+        .table tbody tr:hover td {
+            background: #292421;
         }
 
 
@@ -885,175 +490,196 @@
            ========================================================= */
 
         .badge {
+            padding: 6px 9px;
 
-            display:
-                inline-flex;
+            border-radius: 7px;
 
-            align-items:
-                center;
+            font-size: 0.7rem;
 
-            min-height:
-                27px;
-
-            padding:
-                5px 10px;
-
-            border-radius:
-                7px;
-
-            font-size:
-                0.74rem;
-
-            font-weight:
-                700;
-
-            letter-spacing:
-                0.15px;
+            font-weight: 800;
         }
 
-        .badge.bg-success {
+        .bg-success {
+            background: #183126 !important;
 
-            background:
-                var(--sc-success-soft) !important;
-
-            color:
-                #6fc28d !important;
-
-            border:
-                1px solid
-                rgba(95,168,121,0.18);
+            color: #69b58d !important;
         }
 
-        .badge.bg-danger {
+        .bg-danger {
+            background: #421f1d !important;
 
-            background:
-                var(--sc-danger-soft) !important;
-
-            color:
-                #df7479 !important;
-
-            border:
-                1px solid
-                rgba(212,92,97,0.18);
+            color: #d97970 !important;
         }
 
-        .badge.bg-warning {
+        .bg-warning {
+            background: #382d1d !important;
 
-            background:
-                var(--sc-warning-soft) !important;
-
-            color:
-                #d8ae68 !important;
-
-            border:
-                1px solid
-                rgba(208,160,82,0.18);
+            color: #d0a85f !important;
         }
 
-        .badge.bg-info {
+        .bg-primary {
+            background: #321b18 !important;
 
-            background:
-                var(--sc-info-soft) !important;
+            color: #d28a80 !important;
+        }
 
-            color:
-                #82add5 !important;
+        .bg-secondary {
+            background: #302a27 !important;
 
-            border:
-                1px solid
-                rgba(113,155,196,0.18);
+            color: #c2b8b0 !important;
         }
 
 
         /* =========================================================
-           ALERTAS
+           ALERTS
            ========================================================= */
 
         .alert {
+            border-radius: var(--sc-radius-sm);
 
-            padding:
-                13px 16px;
+            border-width: 1px;
+        }
 
-            border:
-                1px solid
-                transparent;
+        .alert-success {
+            background: #183126;
 
-            border-radius:
-                var(--sc-radius-md);
+            color: #83c8a5;
 
-            box-shadow:
-                var(--sc-shadow-sm);
+            border-color: #28553f;
+        }
 
-            font-size:
-                0.88rem;
+        .alert-danger {
+            background: #3b211f;
 
-            background:
-                #25211f;
+            color: #df8a82;
 
-            color:
-                #ddd5cf;
+            border-color: #63332e;
+        }
+
+        .alert-warning {
+            background: #382d1d;
+
+            color: #d5b46e;
+
+            border-color: #68532f;
+        }
+
+        .alert-info {
+            background: #1e2d34;
+
+            color: #8bb7c9;
+
+            border-color: #304b58;
         }
 
 
         /* =========================================================
-           FOOTER
+           VALIDATION
            ========================================================= */
 
-        footer.footer {
+        .field-validation-error,
+        .validation-summary-errors {
+            color: #df8178 !important;
 
-            margin-top:
-                0 !important;
+            font-size: 0.78rem;
 
-            padding:
-                20px 32px;
+            font-weight: 600;
+        }
+
+        .input-validation-error {
+            border-color: #8c3933 !important;
+
+            box-shadow:
+                0 0 0 2px rgba(140, 57, 51, 0.12) !important;
+        }
+
+
+        /* =========================================================
+           USUARIO ACTUAL
+           ========================================================= */
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+
+            gap: 11px;
+
+            margin-left: auto;
+            margin-right: 14px;
+
+            padding: 7px 12px;
+
+            background: #1b1817;
+
+            border: 1px solid var(--sc-border);
+
+            border-radius: var(--sc-radius-sm);
+
+            box-shadow:
+                0 4px 14px rgba(0, 0, 0, 0.16);
+        }
+
+        .navbar-user-icon {
+            width: 34px;
+            height: 34px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
 
             background:
-                #181615;
+                linear-gradient(
+                    145deg,
+                    var(--sc-primary-light),
+                    var(--sc-primary-dark)
+                );
 
-            border-top:
-                1px solid
-                #39322e !important;
+            color: #ffffff;
 
-            color:
-                #827a74;
+            box-shadow:
+                0 4px 12px rgba(122, 31, 43, 0.25);
         }
 
-        footer .container {
+        .navbar-user-icon svg {
+            width: 18px;
+            height: 18px;
 
-            max-width:
-                1480px;
-
-            color:
-                #746d67;
-
-            font-size:
-                0.82rem;
+            stroke: currentColor;
         }
 
-        footer strong {
+        .navbar-user-info {
+            display: flex;
+            flex-direction: column;
 
-            color:
-                #aaa19a;
+            line-height: 1.15;
         }
 
-        footer a {
+        .navbar-user-name {
+            color: #eee7e1;
 
-            color:
-                #b95d68;
+            font-size: 0.84rem;
 
-            font-weight:
-                600;
+            font-weight: 700;
 
-            text-decoration:
-                none;
+            white-space: nowrap;
         }
 
-        footer a:hover {
+        .navbar-user-role {
+            margin-top: 4px;
 
-            color:
-                #df7a84;
+            color: var(--sc-secondary);
 
-            text-decoration:
-                underline;
+            font-size: 0.68rem;
+
+            font-weight: 800;
+
+            letter-spacing: 0.7px;
+
+            text-transform: uppercase;
         }
 
 
@@ -1062,109 +688,156 @@
            ========================================================= */
 
         .navbar-logout-form {
+            display: flex;
+            align-items: center;
 
-            display:
-                flex;
-
-            margin-left:
-                auto;
-
-            margin-right:
-                0;
+            margin: 0;
         }
 
         .navbar-logout-btn {
+            display: flex;
+            align-items: center;
 
-            padding:
-                8px 16px;
+            gap: 8px;
 
-            background:
-                #54131d;
+            min-height: 40px;
 
-            border:
-                1px solid
-                #6d1a26;
+            padding: 8px 13px;
 
-            border-radius:
-                var(--sc-radius-sm);
+            background: #281f1d;
 
-            color:
-                #ffffff;
+            border: 1px solid #49302c;
 
-            font-size:
-                0.88rem;
+            border-radius: var(--sc-radius-sm);
 
-            font-weight:
-                600;
+            color: #d8c9c2;
 
-            cursor:
-                pointer;
+            font-size: 0.78rem;
 
-            display:
-                flex;
+            font-weight: 700;
 
-            align-items:
-                center;
-
-            gap:
-                8px;
+            cursor: pointer;
 
             transition:
-                background var(--sc-transition),
-                box-shadow var(--sc-transition),
-                transform var(--sc-transition);
+                background 0.18s ease,
+                color 0.18s ease,
+                border-color 0.18s ease,
+                transform 0.18s ease;
         }
 
         .navbar-logout-btn:hover {
+            background: #3b211f;
 
-            background:
-                #6d1a26;
+            border-color: #69342f;
 
-            border-color:
-                #7d202c;
+            color: #f0a39b;
 
-            box-shadow:
-                0 7px 18px
-                rgba(122,31,43,0.32);
-
-            transform:
-                translateY(-1px);
-        }
-
-        .navbar-logout-btn:active {
-
-            transform:
-                translateY(0);
+            transform: translateY(-1px);
         }
 
         .logout-icon {
+            width: 18px;
+            height: 18px;
 
-            width:
-                17px;
-
-            height:
-                17px;
-
-            display:
-                flex;
-
-            align-items:
-                center;
-
-            justify-content:
-                center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .logout-icon svg {
+            width: 17px;
+            height: 17px;
 
-            width:
-                100%;
+            stroke: currentColor;
+        }
 
-            height:
-                100%;
 
-            stroke:
-                currentColor;
+        /* =========================================================
+           FOOTER
+           ========================================================= */
+
+        .footer {
+            min-height: 64px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 16px 30px;
+
+            background: #1b1817;
+
+            border-top: 1px solid var(--sc-border);
+
+            color: var(--sc-text-muted);
+
+            font-size: 0.78rem;
+        }
+
+        .footer strong {
+            color: var(--sc-text-secondary);
+        }
+
+        .footer-accent {
+            color: var(--sc-secondary);
+        }
+
+
+        /* =========================================================
+           DROPDOWNS
+           ========================================================= */
+
+        .dropdown-menu {
+            background: #211e1c;
+
+            border: 1px solid var(--sc-border);
+
+            border-radius: var(--sc-radius-sm);
+
+            box-shadow: var(--sc-shadow);
+        }
+
+        .dropdown-item {
+            color: var(--sc-text-secondary);
+        }
+
+        .dropdown-item:hover {
+            background: #302a27;
+
+            color: #ffffff;
+        }
+
+
+        /* =========================================================
+           MODALS
+           ========================================================= */
+
+        .modal-content {
+            background: var(--sc-card);
+
+            color: var(--sc-text);
+
+            border: 1px solid var(--sc-border);
+
+            border-radius: var(--sc-radius);
+
+            box-shadow: var(--sc-shadow);
+        }
+
+        .modal-header,
+        .modal-footer {
+            border-color: var(--sc-border);
+        }
+
+        .modal-title {
+            color: #ffffff;
+
+            font-weight: 800;
+        }
+
+        .btn-close {
+            filter: invert(1) grayscale(1);
+
+            opacity: 0.75;
         }
 
 
@@ -1173,667 +846,419 @@
            ========================================================= */
 
         ::-webkit-scrollbar {
-
-            width:
-                9px;
-
-            height:
-                9px;
+            width: 9px;
+            height: 9px;
         }
 
         ::-webkit-scrollbar-track {
-
-            background:
-                #121110;
+            background: #151312;
         }
 
         ::-webkit-scrollbar-thumb {
+            background: #493b35;
 
-            background:
-                #493d38;
-
-            border-radius:
-                10px;
+            border-radius: 10px;
         }
 
         ::-webkit-scrollbar-thumb:hover {
-
-            background:
-                #604d46;
+            background: #604d45;
         }
-
-
-        /* =========================================================
-           RESPONSIVE
-           ========================================================= */
-
-        @@media (max-width: 1200px) {
-
-            .navbar {
-
-                padding:
-                    0 20px;
-            }
-
-            .navbar-brand {
-
-                margin-right:
-                    20px;
-            }
-
-            .navbar-nav .nav-link {
-
-                padding:
-                    9px 10px !important;
-
-                font-size:
-                    0.82rem;
-            }
-
-            .sc-page-wrapper {
-
-                padding-left:
-                    20px;
-
-                padding-right:
-                    20px;
-            }
-        }
-
-
-        @@media (max-width: 992px) {
-
-            .navbar {
-
-                min-height:
-                    auto;
-
-                padding:
-                    12px 20px;
-            }
-
-            .navbar .container-fluid {
-
-                flex-wrap:
-                    wrap;
-            }
-
-            .navbar-collapse {
-
-                width:
-                    100%;
-
-                margin-top:
-                    10px;
-
-                flex-direction:
-                    column;
-            }
-
-            .navbar-nav {
-
-                flex-wrap:
-                    wrap;
-
-                width:
-                    100%;
-            }
-
-            .navbar-nav .nav-link {
-
-                padding:
-                    9px 12px !important;
-            }
-
-            .navbar-logout-form {
-
-                margin-left:
-                    0;
-
-                margin-top:
-                    10px;
-
-                width:
-                    100%;
-            }
-
-            .navbar-logout-form .navbar-logout-btn {
-
-                width:
-                    100%;
-
-                justify-content:
-                    center;
-            }
-        }
-
-
-        @@media (max-width: 576px) {
-
-            html {
-
-                font-size:
-                    13px;
-            }
-
-            .navbar {
-
-                padding:
-                    10px 15px;
-            }
-
-            .navbar-brand {
-
-                margin-right:
-                    0;
-            }
-
-            .brand-icon {
-
-                width:
-                    38px;
-
-                height:
-                    38px;
-            }
-
-            .brand-name {
-
-                font-size:
-                    1.15rem;
-            }
-
-            .brand-subtitle {
-
-                font-size:
-                    0.58rem;
-            }
-
-            .sc-page-wrapper {
-
-                padding:
-                    20px 15px 30px;
-            }
-
-            .navbar-nav {
-
-                display:
-                    grid;
-
-                grid-template-columns:
-                    repeat(2, 1fr);
-
-                width:
-                    100%;
-            }
-
-            .navbar-nav .nav-link {
-
-                width:
-                    100%;
-            }
-
-            footer.footer {
-
-                padding:
-                    18px 15px;
-            }
-        }
-
     </style>
-
 </head>
 
 <body>
 
-    <!-- =========================================================
-         NAVBAR
-         ========================================================= -->
-
     <header>
-
         <nav class="navbar navbar-expand-sm navbar-light">
 
-            <div class="container-fluid">
+            <!-- =====================================================
+                 LOGO / MARCA
+                 ===================================================== -->
 
-                <!-- =================================================
-                     LOGO
-                     ================================================= -->
+            <a class="navbar-brand"
+               asp-area=""
+               asp-controller="Home"
+               asp-action="Index">
 
-                <a class="navbar-brand"
-                   asp-area=""
-                   asp-controller="Home"
-                   asp-action="Index">
+                <span class="navbar-brand-logo">
 
-                    <span class="brand-icon">
+                    <svg width="40"
+                         height="40"
+                         viewBox="0 0 280 280"
+                         xmlns="http://www.w3.org/2000/svg"
+                         aria-hidden="true">
 
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.5"
-                             stroke-linecap="round"
-                             stroke-linejoin="round"
-                             aria-hidden="true">
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="132"
+                            fill="#1B1714" />
 
-                            <!-- TENEDOR -->
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="124"
+                            fill="none"
+                            stroke="#842F25"
+                            stroke-width="8" />
 
-                            <path d="M5.2 3v6.2" />
-                            <path d="M7.2 3v6.2" />
-                            <path d="M9.2 3v6.2" />
+                        <circle
+                            cx="140"
+                            cy="140"
+                            r="104"
+                            fill="none"
+                            stroke="#C99B58"
+                            stroke-width="3"
+                            opacity="0.9" />
 
-                            <path d="M5.2 9.2
-                                     C5.2 10.6 6.1 11.5 7.2 11.5
-                                     C8.3 11.5 9.2 10.6 9.2 9.2" />
+                        <path
+                            d="M92 102
+                               C92 82 108 68 128 68
+                               H152
+                               C172 68 188 82 188 102
+                               V146
+                               C188 170 168 190 140 190
+                               C112 190 92 170 92 146 Z"
+                            fill="#842F25" />
 
-                            <path d="M7.2 11.5v9.5" />
+                        <path
+                            d="M108 105
+                               C108 91 118 82 132 82
+                               H148
+                               C162 82 172 91 172 105
+                               V143
+                               C172 158 158 171 140 171
+                               C122 171 108 158 108 143 Z"
+                            fill="#C99B58"
+                            opacity="0.95" />
 
-                            <!-- CUCHILLO -->
+                        <path
+                            d="M121 112
+                               C128 118 135 120 140 120
+                               C145 120 152 118 159 112"
+                            fill="none"
+                            stroke="#1B1714"
+                            stroke-width="6"
+                            stroke-linecap="round" />
 
-                            <path d="M14.5 3v18" />
+                        <circle
+                            cx="126"
+                            cy="136"
+                            r="4"
+                            fill="#1B1714" />
 
-                            <path d="M14.5 3
-                                     C17.2 3.8 19 6.2 19 9.2
-                                     V10.8
-                                     H14.5" />
+                        <circle
+                            cx="154"
+                            cy="136"
+                            r="4"
+                            fill="#1B1714" />
 
-                        </svg>
+                        <path
+                            d="M126 151
+                               C134 157 146 157 154 151"
+                            fill="none"
+                            stroke="#1B1714"
+                            stroke-width="4"
+                            stroke-linecap="round" />
 
+                    </svg>
+
+                </span>
+
+                <span class="navbar-brand-text">
+                    <span class="navbar-brand-title">
+                        Sabor Casero
                     </span>
 
-                    <span class="brand-text">
-
-                        <span class="brand-name">
-                            Sabor Casero
-                        </span>
-
+                    <span class="navbar-brand-subtitle">
+                        Restaurante
                     </span>
+                </span>
 
-                </a>
+            </a>
 
 
-                <!-- =================================================
-                     NAVEGACIÓN
-                     ================================================= -->
+            <!-- =====================================================
+                 BOTÓN MOBILE DE BOOTSTRAP
+                 ===================================================== -->
 
-                <div class="navbar-collapse">
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar"
+                    aria-expanded="false"
+                    aria-label="Mostrar navegación">
 
-                    <ul class="navbar-nav flex-grow-1">
+                <span class="navbar-toggler-icon"></span>
 
+            </button>
 
-                        <!-- =================================================
-                             INICIO
-                             Todos los usuarios autenticados
-                             ================================================= -->
 
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
+            <!-- =====================================================
+                 NAVEGACIÓN
+                 ===================================================== -->
 
-                            <li class="nav-item">
+            <div class="collapse navbar-collapse"
+                 id="mainNavbar">
 
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Dashboard"
-                                   asp-action="Index">
+                <ul class="navbar-nav">
 
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <path d="M3 10.5 12 3l9 7.5" />
-                                            <path d="M5 9.5V21h14V9.5" />
-                                            <path d="M9 21v-6h6v6" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Inicio
-
-                                </a>
-
-                            </li>
-
-                        }
-
-
-                        <!-- =================================================
-                             PLATOS
-                             Administrador + Cocinero
-                             ================================================= -->
-
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Cocinero"))
-                        {
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Platos"
-                                   asp-action="Index">
-
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <circle cx="12" cy="12" r="8" />
-
-                                            <path d="M4 12h16" />
-
-                                            <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
-
-                                            <path d="M12 4c-2.5 2-3.5 4.5-3.5 8s1 6 3.5 8" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Platos
-
-                                </a>
-
-                            </li>
-
-                        }
-
-
-                        <!-- =================================================
-                             MESAS
-                             Administrador + Mesero
-                             ================================================= -->
-
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Mesero"))
-                        {
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Mesas"
-                                   asp-action="Index">
-
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <rect x="4"
-                                                  y="7"
-                                                  width="16"
-                                                  height="8"
-                                                  rx="2" />
-
-                                            <path d="M7 15v5" />
-
-                                            <path d="M17 15v5" />
-
-                                            <path d="M3 7h18" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Mesas
-
-                                </a>
-
-                            </li>
-
-                        }
-
-
-                        <!-- =================================================
-                             INGREDIENTES
-                             Administrador + Cocinero
-                             ================================================= -->
-
-                        @if (User.IsInRole("Administrador") || User.IsInRole("Cocinero"))
-                        {
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Ingredientes"
-                                   asp-action="Index">
-
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <path d="M12 3c-3 3-6 6.5-6 10a6 6 0 0 0 12 0c0-3.5-3-7-6-10Z" />
-
-                                            <path d="M9 15c.5 1.3 1.5 2 3 2" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Ingredientes
-
-                                </a>
-
-                            </li>
-
-                        }
-
-
-                        <!-- =================================================
-                             PEDIDOS
-                             Todos los usuarios autenticados
-                             ================================================= -->
-
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Pedidos"
-                                   asp-action="Index">
-
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <path d="M6 3h12v18H6z" />
-
-                                            <path d="M9 7h6" />
-
-                                            <path d="M9 11h6" />
-
-                                            <path d="M9 15h4" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Pedidos
-
-                                </a>
-
-                            </li>
-
-                        }
-
-
-                        <!-- =================================================
-                             COMPRAS
-                             Solo Administrador
-                             ================================================= -->
-
-                        @if (User.IsInRole("Administrador"))
-                        {
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Compras"
-                                   asp-action="Index">
-
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <path d="M3 5h2l2.2 11h10.5L20 8H6" />
-
-                                            <circle cx="10" cy="20" r="1" />
-
-                                            <circle cx="17" cy="20" r="1" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Compras
-
-                                </a>
-
-                            </li>
-
-                        }
-
-
-                        <!-- =================================================
-                             USUARIOS
-                             Solo Administrador
-                             ================================================= -->
-
-                        @if (User.IsInRole("Administrador"))
-                        {
-
-                            <li class="nav-item">
-
-                                <a class="nav-link"
-                                   asp-area=""
-                                   asp-controller="Usuarios"
-                                   asp-action="Index">
-
-                                    <span class="nav-icon">
-
-                                        <svg viewBox="0 0 24 24"
-                                             fill="none"
-                                             stroke="currentColor"
-                                             stroke-width="1.8"
-                                             stroke-linecap="round"
-                                             stroke-linejoin="round">
-
-                                            <circle cx="12" cy="8" r="3" />
-
-                                            <path d="M5 21c0-3.5 2.8-6 7-6s7 2.5 7 6" />
-
-                                        </svg>
-
-                                    </span>
-
-                                    Usuarios
-
-                                </a>
-
-                            </li>
-
-                        }
-
-                    </ul>
-
-
-                    <!-- =================================================
-                         LOGOUT
-                         ================================================= -->
+                    <!-- Dashboard -->
 
                     @if (User.Identity?.IsAuthenticated == true)
                     {
+                        <li class="nav-item">
 
-                        <form class="navbar-logout-form"
-                              asp-area=""
-                              asp-controller="Login"
-                              asp-action="Logout"
-                              method="post">
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Dashboard"
+                               asp-action="Index">
 
-                            <button type="submit"
-                                    class="navbar-logout-btn">
+                                Dashboard
 
-                                <span class="logout-icon">
+                            </a>
 
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
-                                        <!-- Puerta -->
-
-                                        <path d="M5 3h12c1 0 2 1 2 2v14c0 1-1 2-2 2H5c-1 0-2-1-2-2V5c0-1 1-2 2-2" />
-
-                                        <!-- Marco de puerta -->
-
-                                        <path d="M17 10h5" />
-
-                                        <!-- Círculo de manija -->
-
-                                        <circle cx="20" cy="10" r="1.5" />
-
-                                        <!-- Flecha de salida -->
-
-                                        <path d="M9 7v8" />
-
-                                        <path d="M6 10l3-3l3 3" />
-
-                                    </svg>
-
-                                </span>
-
-                                Cerrar sesión
-
-                            </button>
-
-                        </form>
-
+                        </li>
                     }
 
-                </div>
+
+                    <!-- Platos -->
+
+                    @if (User.IsInRole("Administrador") ||
+                         User.IsInRole("Cocinero"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Platos"
+                               asp-action="Index">
+
+                                Platos
+
+                            </a>
+
+                        </li>
+                    }
+
+
+                    <!-- Mesas -->
+
+                    @if (User.IsInRole("Administrador") ||
+                         User.IsInRole("Mesero"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Mesas"
+                               asp-action="Index">
+
+                                Mesas
+
+                            </a>
+
+                        </li>
+                    }
+
+
+                    <!-- Ingredientes -->
+
+                    @if (User.IsInRole("Administrador") ||
+                         User.IsInRole("Cocinero"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Ingredientes"
+                               asp-action="Index">
+
+                                Ingredientes
+
+                            </a>
+
+                        </li>
+                    }
+
+
+                    <!-- Pedidos -->
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Pedidos"
+                               asp-action="Index">
+
+                                Pedidos
+
+                            </a>
+
+                        </li>
+                    }
+
+
+                    <!-- Compras -->
+
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Compras"
+                               asp-action="Index">
+
+                                Compras
+
+                            </a>
+
+                        </li>
+                    }
+
+
+                    <!-- Usuarios -->
+
+                    @if (User.IsInRole("Administrador"))
+                    {
+                        <li class="nav-item">
+
+                            <a class="nav-link"
+                               asp-area=""
+                               asp-controller="Usuarios"
+                               asp-action="Index">
+
+                                Usuarios
+
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+
+                <!-- =================================================
+                     USUARIO ACTUAL + ROL + LOGOUT
+                     ================================================= -->
+
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    var nombreUsuario =
+                        User.Identity.Name ?? "Usuario";
+
+                    var rolUsuario =
+                        User.IsInRole("Administrador")
+                            ? "Administrador"
+                            : User.IsInRole("Cocinero")
+                                ? "Cocinero"
+                                : User.IsInRole("Mesero")
+                                    ? "Mesero"
+                                    : "Usuario";
+
+
+                    <!-- Usuario -->
+
+                    <div class="navbar-user">
+
+                        <span class="navbar-user-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round"
+                                 aria-hidden="true">
+
+                                <circle
+                                    cx="12"
+                                    cy="8"
+                                    r="3" />
+
+                                <path
+                                    d="M5 21
+                                       C5 17.5 7.8 15 12 15
+                                       S19 17.5 19 21" />
+
+                            </svg>
+
+                        </span>
+
+
+                        <span class="navbar-user-info">
+
+                            <span class="navbar-user-name">
+                                @nombreUsuario
+                            </span>
+
+                            <span class="navbar-user-role">
+                                @rolUsuario
+                            </span>
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- Cerrar sesión -->
+
+                    <form class="navbar-logout-form"
+                          asp-area=""
+                          asp-controller="Login"
+                          asp-action="Logout"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="navbar-logout-btn">
+
+                            <span class="logout-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round"
+                                     aria-hidden="true">
+
+                                    <path
+                                        d="M9 21H5
+                                           C3.9 21 3 20.1 3 19V5
+                                           C3 3.9 3.9 3 5 3H9" />
+
+                                    <path
+                                        d="M16 17L21 12L16 7" />
+
+                                    <path
+                                        d="M21 12H9" />
+
+                                </svg>
+
+                            </span>
+
+                            Cerrar sesión
+
+                        </button>
+
+                    </form>
+                }
 
             </div>
 
         </nav>
-
     </header>
 
 
-    <!-- =========================================================
+    <!-- =============================================================
          CONTENIDO PRINCIPAL
-         ========================================================= -->
+         ============================================================= -->
 
     <div class="sc-page-wrapper">
 
@@ -1846,42 +1271,51 @@
     </div>
 
 
-    <!-- =========================================================
+    <!-- =============================================================
          FOOTER
-         ========================================================= -->
+         ============================================================= -->
 
     <footer class="footer">
 
-        <div class="container">
+        <div>
 
-            &copy; 2026 -
-            <strong>Sabor Casero</strong> -
+            <strong>
+                Sabor Casero
+            </strong>
 
-            <a asp-area=""
-               asp-controller="Home"
-               asp-action="Privacy">
+            <span>
+                &nbsp;•&nbsp;
+            </span>
 
-                Privacidad
+            <span>
+                Sistema de gestión de restaurante
+            </span>
 
-            </a>
+            <span>
+                &nbsp;•&nbsp;
+            </span>
+
+            <span class="footer-accent">
+                © @DateTime.Now.Year
+            </span>
 
         </div>
 
     </footer>
 
 
-    <!-- =========================================================
-         JAVASCRIPT
-         ========================================================= -->
+    <!-- =============================================================
+         SCRIPTS
+         ============================================================= -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
 </body>
-
 </html>
