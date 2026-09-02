@@ -186,68 +186,40 @@
         }
 </style>
 
-
 <div class="compra-detalles-container">
 
     <!-- ENCABEZADO -->
     <div class="compra-header">
-
         <h1 class="compra-titulo">
             Detalles de la compra
         </h1>
-
         <p class="compra-subtitulo">
             Información de la compra y los ingredientes registrados
         </p>
-
     </div>
-
 
     <!-- INFORMACIÓN GENERAL -->
     <div class="compra-card">
-
         <div class="compra-identificacion">
             Compra #@Model.IdCompra
         </div>
 
-
         <div class="informacion">
-
             <!-- FECHA -->
             <div class="dato">
-
-                <span class="dato-titulo">
-                    Fecha de compra
-                </span>
-
-                <span class="dato-valor">
-                    @Model.Fecha.ToString("dd/MM/yyyy")
-                </span>
-
+                <span class="dato-titulo">Fecha de compra</span>
+                <span class="dato-valor">@Model.Fecha.ToString("dd/MM/yyyy")</span>
             </div>
-
 
             <!-- PROVEEDOR -->
             <div class="dato">
-
-                <span class="dato-titulo">
-                    Proveedor
-                </span>
-
-                <span class="dato-valor">
-                    @Model.Proveedor
-                </span>
-
+                <span class="dato-titulo">Proveedor</span>
+                <span class="dato-valor">@Model.Proveedor</span>
             </div>
-
 
             <!-- USUARIO -->
             <div class="dato">
-
-                <span class="dato-titulo">
-                    Usuario que registró
-                </span>
-
+                <span class="dato-titulo">Usuario que registró</span>
                 <span class="dato-valor">
                     @if (Model.Usuario != null)
                     {
@@ -258,61 +230,55 @@
                         <span>No registrado</span>
                     }
                 </span>
-
             </div>
 
+            <!-- ESTADO -->
+            <div class="dato">
+                <span class="dato-titulo">Estado</span>
+                <span class="dato-valor">
+                    @switch (Model.Estado)
+                    {
+                        case RestauranteSaborCasero.Models.EstadoCompra.Pendiente:
+                            <span style="background-color: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Pendiente</span>
+                            break;
+                        case RestauranteSaborCasero.Models.EstadoCompra.Realizada:
+                            <span style="background-color: #d1e7dd; color: #0f5132; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Realizada</span>
+                            break;
+                        case RestauranteSaborCasero.Models.EstadoCompra.Cancelada:
+                            <span style="background-color: #f8d7da; color: #842029; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">Cancelada</span>
+                            break;
+                    }
+                </span>
+            </div>
         </div>
-
     </div>
-
 
     <!-- INGREDIENTES -->
     <div class="seccion">
-
         <h2 class="seccion-titulo">
             Ingredientes comprados
         </h2>
-
         <p class="seccion-subtitulo">
             Ingredientes incluidos en esta compra
         </p>
-
     </div>
 
-
     <div class="ingredientes-card">
-
         <table class="tabla-ingredientes">
-
             <thead>
-
                 <tr>
-
-                    <th>
-                        Ingrediente
-                    </th>
-
-                    <th>
-                        Cantidad
-                    </th>
-
+                    <th>Ingrediente</th>
+                    <th>Cantidad</th>
                 </tr>
-
             </thead>
-
-
             <tbody>
-
                 @if (Model.Detalles != null && Model.Detalles.Any())
                 {
                     foreach (var detalle in Model.Detalles)
                     {
                         <tr>
-
                             <td>
-
                                 <span class="nombre-ingrediente">
-
                                     @if (detalle.Ingrediente != null)
                                     {
                                         @detalle.Ingrediente.Nombre
@@ -321,58 +287,51 @@
                                     {
                                         <span>Ingrediente no disponible</span>
                                     }
-
                                 </span>
-
                             </td>
-
                             <td>
-
                                 <span class="cantidad">
                                     @detalle.Cantidad
                                 </span>
-
                             </td>
-
                         </tr>
                     }
                 }
                 else
                 {
                     <tr>
-
-                        <td colspan="2"
-                            class="tabla-vacia">
-
+                        <td colspan="2" class="tabla-vacia">
                             No hay ingredientes registrados para esta compra.
-
                         </td>
-
                     </tr>
                 }
-
             </tbody>
-
         </table>
-
     </div>
-
 
     <!-- ACCIONES -->
     <div class="acciones">
-
-        <a asp-action="Edit"
-           asp-route-id="@Model.IdCompra"
-           class="btn btn-editar">
-            Editar compra
-        </a>
+        @if (Model.Estado == RestauranteSaborCasero.Models.EstadoCompra.Pendiente)
+        {
+            <!-- Botón activo y funcional si está Pendiente -->
+            <a asp-action="Edit"
+               asp-route-id="@Model.IdCompra"
+               class="btn btn-editar">
+                Editar compra
+            </a>
+        }
+        else
+        {
+            <!-- Botón deshabilitado (plomo) si ya está Realizada o Cancelada -->
+            <span class="btn" style="background-color: #adb5bd; color: white; cursor: not-allowed; opacity: 0.7;">
+                Editar compra
+            </span>
+        }
 
         <a asp-action="Index"
            class="btn btn-volver">
             Volver a compras
         </a>
-
     </div>
 
-</div>
-```
+</div>git 
