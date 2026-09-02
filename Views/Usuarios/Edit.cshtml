@@ -1,332 +1,483 @@
-﻿
-@model RestauranteSaborCasero.Models.Usuario
+﻿@model RestauranteSaborCasero.Models.Usuario
 
 @{
     ViewData["Title"] = "Editar usuario";
 }
 
 <style>
-    .editar-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-danger-bg: #fdf3f2;
+        --sc-danger-text: #c92a2a;
     }
 
-    .editar-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 700px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .editar-titulo {
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
-    .editar-subtitulo {
+    .sc-description {
         margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
-    .editar-card {
-        width: 600px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        margin-bottom: 25px;
     }
 
-    .campo {
-        margin-bottom: 20px;
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-        .campo label {
-            display: block;
-            margin-bottom: 7px;
-            color: #333;
-            font-size: 14px;
-            font-weight: 600;
-        }
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.15rem;
+        font-weight: 900;
+    }
 
-        .campo input,
-        .campo select {
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 24px;
+    }
+
+    /* =========================================================
+           FORMULARIO Y CAMPOS
+           ========================================================= */
+    .sc-form-group {
+        margin-bottom: 22px;
+    }
+
+    .sc-form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
+
+    .sc-input-wrapper {
+        position: relative;
+    }
+
+    .sc-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #a3968f;
+        pointer-events: none;
+    }
+
+        .sc-input-icon svg {
             width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 7px;
-            background-color: white;
-            color: #333;
-            font-size: 15px;
+            height: 100%;
+            stroke: currentColor;
         }
 
-            .campo input:focus,
-            .campo select:focus {
-                outline: none;
-                border-color: #198754;
-                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
-            }
+    .sc-input,
+    .sc-select {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px 0 42px;
+        background: #ffffff;
+        border: 1px solid #dcd2cc;
+        border-radius: 10px;
+        color: var(--sc-dark);
+        font-size: 0.9rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
 
-    .ayuda {
+    .sc-select {
+        cursor: pointer;
+        appearance: auto;
+        padding-right: 36px;
+    }
+
+        .sc-input:hover,
+        .sc-select:hover {
+            border-color: #c4b5ac;
+        }
+
+        .sc-input:focus,
+        .sc-select:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
+            background: #ffffff;
+        }
+
+    .sc-input::placeholder {
+        color: #b5aba4;
+    }
+
+    .sc-help-text {
         display: block;
         margin-top: 6px;
-        color: #888;
-        font-size: 12px;
-    }
-
-    .validacion {
-        display: block;
-        margin-top: 5px;
-        color: #dc3545;
-        font-size: 13px;
-    }
-
-    .resumen-validacion {
-        background-color: #f8d7da;
-        border: 1px solid #f1aeb5;
-        color: #842029;
-        border-radius: 7px;
-        padding: 12px 15px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-
-    .activo {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 25px;
-        padding: 12px 15px;
-        background-color: #f8f9fa;
-        border: 1px solid #eeeeee;
-        border-radius: 7px;
-    }
-
-        .activo input {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-        }
-
-        .activo label {
-            color: #333;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-    .acciones {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding-top: 20px;
-        border-top: 1px solid #eeeeee;
-    }
-
-    .btn-guardar {
-        border: none;
-        background-color: #198754;
-        color: white;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
+        color: #8c8078;
+        font-size: 0.75rem;
         font-weight: 600;
+    }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+    .sc-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger-text);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sc-validation-summary {
+        background-color: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        color: var(--sc-danger-text);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           CHECKBOX ACTIVO
+           ========================================================= */
+    .sc-checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
+        padding: 14px 18px;
+        background: #faf8f6;
+        border: 1px solid var(--sc-border);
+        border-radius: 10px;
         cursor: pointer;
     }
 
-        .btn-guardar:hover {
-            background-color: #157347;
+        .sc-checkbox-container input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--sc-primary);
+            cursor: pointer;
         }
 
-    .btn-detalles {
-        background-color: #0d6efd;
-        color: white;
-        text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-checkbox-label {
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
+        cursor: pointer;
+        user-select: none;
     }
 
-        .btn-detalles:hover {
-            background-color: #0b5ed7;
-            color: white;
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+        margin-top: 10px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-cancelar {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
+        color: #ffffff;
     }
 
-        .btn-cancelar:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
+        }
+
+    .sc-btn-info {
+        background-color: #e6f0fa;
+        color: #0b5ed7;
+        border-color: #cce0f5;
+    }
+
+        .sc-btn-info:hover {
+            background-color: #cce0f5;
+            color: #084298;
+            transform: translateY(-2px);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
         }
 </style>
 
-
-<div class="editar-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="editar-header">
-
-        <h1 class="editar-titulo">
-            Editar usuario
-        </h1>
-
-        <p class="editar-subtitulo">
-            Modifica los datos del usuario seleccionado.
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Personal</p>
+            <h1 class="sc-title">Editar usuario</h1>
+            <p class="sc-description">Modifica los datos y credenciales del usuario seleccionado.</p>
+        </div>
     </div>
 
+    <!-- TARJETA FORMULARIO -->
+    <div class="sc-panel">
 
-    <!-- FORMULARIO -->
-    <div class="editar-card">
-
-        <form asp-action="Edit"
-              method="post">
-
-            <!-- ID DEL USUARIO -->
-            <input type="hidden"
-                   asp-for="IdUsuario" />
-
-
-            <!-- VALIDACIONES -->
-            <div asp-validation-summary="ModelOnly"
-                 class="resumen-validacion">
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">@Model.Nombre</h2>
+                <p class="sc-panel-subtitle">Edición de ficha de usuario</p>
             </div>
-
-
-            <!-- NOMBRE -->
-            <div class="campo">
-
-                <label asp-for="Nombre">
-                    Nombre completo
-                </label>
-
-                <input asp-for="Nombre"
-                       type="text"
-                       placeholder="Ejemplo: María Pérez" />
-
-                <span asp-validation-for="Nombre"
-                      class="validacion">
-                </span>
-
+            <div style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase;">
+                Modo Edición
             </div>
+        </div>
 
+        <div class="sc-panel-body">
 
-            <!-- CORREO -->
-            <div class="campo">
+            <form asp-action="Edit" method="post">
 
-                <label asp-for="Correo">
-                    Correo electrónico
-                </label>
+                <input type="hidden" asp-for="IdUsuario" />
 
-                <input asp-for="Correo"
-                       type="email"
-                       placeholder="correo@ejemplo.com"
-                       autocomplete="email" />
+                <!-- VALIDACIONES -->
+                <div asp-validation-summary="ModelOnly" class="sc-validation-summary"></div>
 
-                <span asp-validation-for="Correo"
-                      class="validacion">
-                </span>
+                <!-- NOMBRE -->
+                <div class="sc-form-group">
+                    <label asp-for="Nombre" class="sc-form-label">
+                        Nombre completo
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                        </span>
+                        <input asp-for="Nombre" type="text" class="sc-input" placeholder="Ejemplo: María Pérez" />
+                    </div>
+                    <span asp-validation-for="Nombre" class="sc-validation"></span>
+                </div>
 
-            </div>
+                <!-- CORREO -->
+                <div class="sc-form-group">
+                    <label asp-for="Correo" class="sc-form-label">
+                        Correo electrónico
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                        </span>
+                        <input asp-for="Correo" type="email" class="sc-input" placeholder="correo@ejemplo.com" autocomplete="email" />
+                    </div>
+                    <span asp-validation-for="Correo" class="sc-validation"></span>
+                </div>
 
+                <!-- CONTRASEÑA -->
+                <div class="sc-form-group">
+                    <label asp-for="ContrasenaHash" class="sc-form-label">
+                        Nueva contraseña
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                        </span>
+                        <input asp-for="ContrasenaHash" type="password" class="sc-input" placeholder="Dejar vacío si no desea cambiarla" autocomplete="new-password" />
+                    </div>
+                    <span class="sc-help-text">Si no quieres cambiar la contraseña, déjala vacía.</span>
+                    <span asp-validation-for="ContrasenaHash" class="sc-validation"></span>
+                </div>
 
-            <!-- CONTRASEÑA -->
-            <div class="campo">
+                <!-- ROL -->
+                <div class="sc-form-group">
+                    <label asp-for="Rol" class="sc-form-label">
+                        Rol del usuario
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                        </span>
+                        <select asp-for="Rol" class="sc-select" asp-items="Html.GetEnumSelectList<RolUsuario>()">
+                        </select>
+                    </div>
+                    <span class="sc-help-text">El rol determina las funciones y permisos disponibles en el sistema.</span>
+                    <span asp-validation-for="Rol" class="sc-validation"></span>
+                </div>
 
-                <label asp-for="ContrasenaHash">
-                    Nueva contraseña
-                </label>
+                <!-- ESTADO ACTIVO -->
+                <div class="sc-checkbox-container" onclick="document.getElementById('Activo').click(); event.stopPropagation();">
+                    <input asp-for="Activo" type="checkbox" id="Activo" />
+                    <label for="Activo" class="sc-checkbox-label">Usuario activo en el sistema</label>
+                </div>
 
-                <input asp-for="ContrasenaHash"
-                       type="password"
-                       placeholder="Dejar vacío si no desea cambiarla"
-                       autocomplete="new-password" />
+                <!-- ACCIONES -->
+                <div class="sc-actions">
+                    <button type="submit" class="sc-btn sc-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        Guardar cambios
+                    </button>
 
-                <span class="ayuda">
-                    Si no quieres cambiar la contraseña, déjala vacía.
-                </span>
+                    <a asp-action="Details"
+                       asp-route-id="@Model.IdUsuario"
+                       class="sc-btn sc-btn-info">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <line x1="12" y1="16" x2="12" y2="12" />
+                            <line x1="12" y1="8" x2="12.01" y2="8" />
+                        </svg>
+                        Ver detalles
+                    </a>
 
-                <span asp-validation-for="ContrasenaHash"
-                      class="validacion">
-                </span>
+                    <a asp-action="Index" class="sc-btn sc-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
+                        Cancelar
+                    </a>
+                </div>
 
-            </div>
+            </form>
 
-
-            <!-- ROL -->
-            <div class="campo">
-
-                <label asp-for="Rol">
-                    Rol del usuario
-                </label>
-
-                <select asp-for="Rol"
-                        asp-items="Html.GetEnumSelectList<RolUsuario>()">
-                </select>
-
-                <span class="ayuda">
-                    El rol determina las funciones disponibles para el usuario.
-                </span>
-
-                <span asp-validation-for="Rol"
-                      class="validacion">
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="activo">
-
-                <input asp-for="Activo"
-                       type="checkbox"
-                       id="Activo" />
-
-                <label for="Activo">
-                    Usuario activo
-                </label>
-
-            </div>
-
-
-            <!-- BOTONES -->
-            <div class="acciones">
-
-                <button type="submit"
-                        class="btn-guardar">
-                    Guardar cambios
-                </button>
-
-                <a asp-action="Details"
-                   asp-route-id="@Model.IdUsuario"
-                   class="btn-detalles">
-                    Ver detalles
-                </a>
-
-                <a asp-action="Index"
-                   class="btn-cancelar">
-                    Cancelar
-                </a>
-
-            </div>
-
-        </form>
+        </div>
 
     </div>
 
 </div>
 
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

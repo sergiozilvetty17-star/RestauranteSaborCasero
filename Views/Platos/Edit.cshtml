@@ -6,812 +6,599 @@
 
 <style>
     /* =========================================================
-           EDITAR PLATO - SABOR CASERO
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
            ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-danger-bg: #fdf3f2;
+        --sc-danger-text: #c92a2a;
+    }
 
-    .plato-edit-page {
+    .sc-page-container {
         width: 100%;
+        max-width: 1100px;
         padding-top: 12px;
+        color: var(--sc-dark);
     }
 
     /* =========================================================
            ENCABEZADO
            ========================================================= */
-
-    .plato-edit-header {
+    .sc-header {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .plato-edit-header-icon {
-        width: 48px;
-        height: 48px;
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f7eee9;
+        background: var(--sc-primary-soft);
         border-radius: 12px;
         color: var(--sc-primary);
     }
 
-        .plato-edit-header-icon svg {
-            width: 25px;
-            height: 25px;
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
             stroke: currentColor;
         }
 
-    .plato-edit-eyebrow {
+    .sc-eyebrow {
         margin: 0 0 4px;
         color: var(--sc-primary);
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: 800;
         letter-spacing: 1.2px;
         text-transform: uppercase;
     }
 
-    .plato-edit-title {
+    .sc-title {
         margin: 0;
         color: var(--sc-dark);
-        font-size: 1.9rem;
-        font-weight: 800;
-        letter-spacing: -0.7px;
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
         line-height: 1.1;
     }
 
-    .plato-edit-description {
+    .sc-description {
         margin: 6px 0 0;
         color: var(--sc-gray);
-        font-size: 0.82rem;
-    }
-
-    /* =========================================================
-           LAYOUT
-           ========================================================= */
-
-    .plato-edit-layout {
-        display: grid;
-        grid-template-columns: 1fr 310px;
-        gap: 20px;
-        align-items: start;
-    }
-
-    /* =========================================================
-           TARJETA DEL FORMULARIO
-           ========================================================= */
-
-    .plato-edit-form-card {
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 15px;
-        box-shadow: var(--sc-shadow);
-        overflow: hidden;
-    }
-
-    .plato-edit-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 17px 21px;
-        background: #ffffff;
-        border-bottom: 1px solid var(--sc-border);
-    }
-
-    .plato-edit-card-title {
-        margin: 0;
-        color: var(--sc-dark);
-        font-size: 0.92rem;
-        font-weight: 800;
-    }
-
-    .plato-edit-card-subtitle {
-        margin: 3px 0 0;
-        color: var(--sc-gray);
-        font-size: 0.72rem;
-    }
-
-    .plato-edit-id {
-        display: inline-flex;
-        align-items: center;
-        padding: 6px 10px;
-        background: #f5f1ed;
-        border: 1px solid #e7dfd8;
-        border-radius: 7px;
-        color: #776c64;
-        font-size: 0.66rem;
-        font-weight: 800;
-    }
-
-        .plato-edit-id strong {
-            margin-left: 4px;
-            color: var(--sc-primary);
-        }
-
-    .plato-edit-form-body {
-        padding: 24px;
-    }
-
-    /* =========================================================
-           CAMPOS
-           ========================================================= */
-
-    .plato-edit-group {
-        margin-bottom: 20px;
-    }
-
-    .plato-edit-label {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-bottom: 7px;
-        color: var(--sc-dark);
-        font-size: 0.76rem;
-        font-weight: 800;
-    }
-
-    .plato-edit-required {
-        color: var(--sc-danger);
-        font-size: 0.72rem;
-    }
-
-    .plato-edit-input-wrapper {
-        position: relative;
-    }
-
-    .plato-edit-input-icon {
-        position: absolute;
-        left: 13px;
-        top: 50%;
-        width: 17px;
-        height: 17px;
-        color: #9a8d84;
-        transform: translateY(-50%);
-        pointer-events: none;
-    }
-
-        .plato-edit-input-icon svg {
-            width: 100%;
-            height: 100%;
-            stroke: currentColor;
-        }
-
-    .plato-edit-input {
-        width: 100%;
-        height: 45px;
-        padding: 0 13px 0 40px;
-        background: #ffffff;
-        border: 1px solid #ddd5cc;
-        border-radius: 9px;
-        color: var(--sc-dark);
-        font-size: 0.8rem;
-        outline: none;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-        .plato-edit-input:hover {
-            border-color: #cfc2b8;
-        }
-
-        .plato-edit-input:focus {
-            border-color: var(--sc-primary);
-            box-shadow: 0 0 0 3px rgba(139, 58, 43, 0.09);
-        }
-
-        .plato-edit-input::placeholder {
-            color: #aaa19a;
-        }
-
-        .plato-edit-input[type="number"] {
-            padding-right: 14px;
-        }
-
-    /* =========================================================
-           CAMPOS DOBLES
-           ========================================================= */
-
-    .plato-edit-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-    }
-
-    /* =========================================================
-           AYUDA
-           ========================================================= */
-
-    .plato-edit-help {
-        margin: 6px 0 0;
-        color: #918780;
-        font-size: 0.67rem;
-        line-height: 1.4;
-    }
-
-    /* =========================================================
-           VALIDACIÓN
-           ========================================================= */
-
-    .plato-edit-validation {
-        display: block;
-        margin-top: 6px;
-        color: var(--sc-danger);
-        font-size: 0.7rem;
+        font-size: 0.85rem;
         font-weight: 600;
     }
 
     /* =========================================================
-           ACCIONES
+           LAYOUT GRID (FORMULARIO + ASIDE)
            ========================================================= */
-
-    .plato-edit-actions {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        margin-top: 7px;
-        padding-top: 20px;
-        border-top: 1px solid var(--sc-border);
+    .sc-grid-layout {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 24px;
+        align-items: start;
     }
-
-    .plato-update-btn,
-    .plato-cancel-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        height: 40px;
-        padding: 0 16px;
-        border-radius: 9px;
-        font-size: 0.76rem;
-        font-weight: 800;
-        text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-    .plato-update-btn {
-        background: var(--sc-primary);
-        border: 1px solid var(--sc-primary);
-        color: #ffffff;
-    }
-
-        .plato-update-btn:hover {
-            background: var(--sc-primary-dark);
-            border-color: var(--sc-primary-dark);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(139, 58, 43, 0.18);
-        }
-
-    .plato-cancel-btn {
-        background: #f3f0ed;
-        border: 1px solid #e5ddd6;
-        color: #665d57;
-    }
-
-        .plato-cancel-btn:hover {
-            background: #e9e3de;
-            color: var(--sc-dark);
-            transform: translateY(-1px);
-        }
-
-        .plato-update-btn svg,
-        .plato-cancel-btn svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-        }
 
     /* =========================================================
-           TARJETA LATERAL
+           TARJETA (PANEL)
            ========================================================= */
-
-    .plato-edit-info-card {
-        background: #ffffff;
+    .sc-panel {
+        background: var(--sc-bg-panel);
         border: 1px solid var(--sc-border);
-        border-radius: 15px;
+        border-radius: 16px;
         box-shadow: var(--sc-shadow);
         overflow: hidden;
+        margin-bottom: 25px;
     }
 
-    .plato-edit-info-top {
-        padding: 23px 21px;
-        background: linear-gradient( 145deg, #8b3a2b 0%, #68291f 100% );
-        color: #ffffff;
-    }
-
-    .plato-edit-info-icon {
-        width: 44px;
-        height: 44px;
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        margin-bottom: 16px;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.16);
-        border-radius: 11px;
     }
 
-        .plato-edit-info-icon svg {
-            width: 23px;
-            height: 23px;
-            stroke: currentColor;
-        }
-
-    .plato-edit-info-title {
+    .sc-panel-title {
         margin: 0;
-        color: #ffffff;
-        font-size: 1rem;
-        font-weight: 800;
-    }
-
-    .plato-edit-info-text {
-        margin: 7px 0 0;
-        color: rgba(255, 255, 255, 0.72);
-        font-size: 0.72rem;
-        line-height: 1.5;
-    }
-
-    .plato-edit-info-body {
-        padding: 19px 21px;
-    }
-
-    .plato-edit-info-list {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .plato-edit-info-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 10px;
-    }
-
-    .plato-edit-info-item-icon {
-        width: 29px;
-        height: 29px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        background: #f7f1ec;
-        border-radius: 8px;
-        color: var(--sc-primary);
-    }
-
-        .plato-edit-info-item-icon svg {
-            width: 15px;
-            height: 15px;
-            stroke: currentColor;
-        }
-
-    .plato-edit-info-item-title {
-        margin: 1px 0 2px;
         color: var(--sc-dark);
-        font-size: 0.72rem;
-        font-weight: 800;
+        font-size: 1.15rem;
+        font-weight: 900;
     }
 
-    .plato-edit-info-item-text {
-        margin: 0;
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
         color: var(--sc-gray);
-        font-size: 0.67rem;
-        line-height: 1.4;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 24px;
     }
 
     /* =========================================================
-           FOOTER LATERAL
+           BANNER IDENTIFICADOR DEL REGISTRO
            ========================================================= */
-
-    .plato-edit-info-footer {
-        padding: 13px 21px;
-        background: #faf8f6;
-        border-top: 1px solid var(--sc-border);
-        color: #8c827a;
-        font-size: 0.65rem;
-        line-height: 1.4;
-    }
-
-    /* =========================================================
-           IDENTIFICADOR DEL REGISTRO
-           ========================================================= */
-
-    .plato-edit-record {
+    .sc-record-banner {
         display: flex;
         align-items: center;
-        gap: 8px;
-        margin-bottom: 20px;
-        padding: 10px 12px;
-        background: #faf8f6;
+        gap: 12px;
+        margin-bottom: 24px;
+        padding: 14px 18px;
+        background: var(--sc-primary-soft);
         border: 1px solid var(--sc-border);
-        border-radius: 9px;
-        color: #776d66;
-        font-size: 0.69rem;
+        border-radius: 12px;
+        color: var(--sc-gray);
+        font-size: 0.82rem;
+        font-weight: 700;
     }
 
-        .plato-edit-record svg {
-            width: 15px;
-            height: 15px;
+        .sc-record-banner svg {
+            width: 18px;
+            height: 18px;
             flex-shrink: 0;
             color: var(--sc-primary);
             stroke: currentColor;
         }
 
-        .plato-edit-record strong {
-            color: var(--sc-dark);
+        .sc-record-banner strong {
+            color: var(--sc-primary);
+            font-size: 0.95rem;
         }
+
+    /* =========================================================
+           FORMULARIO Y CAMPOS
+           ========================================================= */
+    .sc-form-group {
+        margin-bottom: 22px;
+    }
+
+    .sc-form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+    }
+
+    .sc-form-label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 8px;
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
+
+    .sc-required {
+        color: var(--sc-primary);
+        font-size: 0.85rem;
+    }
+
+    .sc-input-wrapper {
+        position: relative;
+    }
+
+    .sc-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #a3968f;
+        pointer-events: none;
+    }
+
+        .sc-input-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+        }
+
+    .sc-input {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px 0 42px;
+        background: #ffffff;
+        border: 1px solid #dcd2cc;
+        border-radius: 10px;
+        color: var(--sc-dark);
+        font-size: 0.9rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+        .sc-input:hover {
+            border-color: #c4b5ac;
+        }
+
+        .sc-input:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
+            background: #ffffff;
+        }
+
+        .sc-input::placeholder {
+            color: #b5aba4;
+        }
+
+    .sc-help-text {
+        display: block;
+        margin-top: 6px;
+        color: #8c8078;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+    .sc-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger-text);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sc-validation-summary {
+        background-color: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        color: var(--sc-danger-text);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+        margin-top: 10px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+    }
+
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
+        color: #ffffff;
+    }
+
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
+        }
+
+    /* =========================================================
+           TARJETA LATERAL (ASIDE DE AYUDA)
+           ========================================================= */
+    .sc-aside-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+    }
+
+    .sc-aside-top {
+        padding: 24px 20px;
+        background: linear-gradient(135deg, #2b1d19, #4a221b);
+        color: #ffffff;
+    }
+
+    .sc-aside-icon {
+        width: 44px;
+        height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 14px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 11px;
+    }
+
+        .sc-aside-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+        }
+
+    .sc-aside-title {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1.05rem;
+        font-weight: 900;
+    }
+
+    .sc-aside-text {
+        margin: 6px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.78rem;
+        line-height: 1.5;
+        font-weight: 500;
+    }
+
+    .sc-aside-body {
+        padding: 20px;
+    }
+
+    .sc-aside-list {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .sc-aside-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .sc-aside-item-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: var(--sc-primary-soft);
+        border-radius: 8px;
+        color: var(--sc-primary);
+    }
+
+        .sc-aside-item-icon svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+    .sc-aside-item-title {
+        margin: 0 0 2px;
+        color: var(--sc-dark);
+        font-size: 0.8rem;
+        font-weight: 800;
+    }
+
+    .sc-aside-item-text {
+        margin: 0;
+        color: var(--sc-gray);
+        font-size: 0.74rem;
+        line-height: 1.4;
+        font-weight: 500;
+    }
+
+    .sc-aside-footer {
+        padding: 14px 20px;
+        background: #faf8f6;
+        border-top: 1px solid var(--sc-border);
+        color: #8c827a;
+        font-size: 0.72rem;
+        font-weight: 600;
+        line-height: 1.4;
+    }
+
+    @@media (max-width: 950px) {
+        .sc-grid-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .sc-aside-panel {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .sc-form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+    }
 </style>
 
+<div class="sc-page-container">
 
-<div class="plato-edit-page">
-
-    <!-- =====================================================
-         ENCABEZADO
-         ===================================================== -->
-
-    <div class="plato-edit-header">
-
-        <div class="plato-edit-header-icon">
-
-            <svg viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="1.8"
-                 stroke-linecap="round"
-                 stroke-linejoin="round">
-
+    <!-- ENCABEZADO -->
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M12 20h9" />
-                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L8 18l-4 1 1-4Z" />
                 <path d="m15 5 3 3" />
-
             </svg>
-
         </div>
-
         <div>
-
-            <p class="plato-edit-eyebrow">
-                Gestión del menú
-            </p>
-
-            <h1 class="plato-edit-title">
-                Editar plato
-            </h1>
-
-            <p class="plato-edit-description">
-                Modifica la información del plato seleccionado.
-            </p>
-
+            <p class="sc-eyebrow">Gestión del Menú</p>
+            <h1 class="sc-title">Editar plato</h1>
+            <p class="sc-description">Modifica la información del plato seleccionado en el menú.</p>
         </div>
-
     </div>
 
+    <!-- CONTENIDO EN DOS COLUMNAS -->
+    <div class="sc-grid-layout">
 
-    <!-- =====================================================
-         CONTENIDO
-         ===================================================== -->
+        <!-- FORMULARIO -->
+        <div class="sc-panel">
 
-    <div class="plato-edit-layout">
-
-
-        <!-- =================================================
-             FORMULARIO
-             ================================================= -->
-
-        <div class="plato-edit-form-card">
-
-            <div class="plato-edit-card-header">
-
+            <div class="sc-panel-header">
                 <div>
-
-                    <h2 class="plato-edit-card-title">
-                        Información del plato
-                    </h2>
-
-                    <p class="plato-edit-card-subtitle">
-                        Actualiza los datos que necesites modificar.
-                    </p>
-
+                    <h2 class="sc-panel-title">Información del plato</h2>
+                    <p class="sc-panel-subtitle">Actualiza los datos que necesites modificar</p>
                 </div>
-
-                <span class="plato-edit-id">
-                    ID:
-                    <strong>@Model.IdPlato</strong>
-                </span>
-
+                <div style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.72rem; padding: 6px 12px; border-radius: 8px; font-weight: 800;">
+                    ID: <strong>@Model.IdPlato</strong>
+                </div>
             </div>
 
+            <div class="sc-panel-body">
 
-            <div class="plato-edit-form-body">
+                <form asp-action="Edit" method="post">
 
-                <form asp-action="Edit"
-                      method="post">
+                    <input type="hidden" asp-for="IdPlato" />
 
-                    <input type="hidden"
-                           asp-for="IdPlato" />
-
-
-                    <!-- IDENTIFICADOR -->
-
-                    <div class="plato-edit-record">
-
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.8"
-                             stroke-linecap="round"
-                             stroke-linejoin="round">
-
+                    <!-- IDENTIFICADOR VISUAL -->
+                    <div class="sc-record-banner">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="4" width="18" height="16" rx="2" />
                             <path d="M8 8h8" />
                             <path d="M8 12h8" />
                             <path d="M8 16h4" />
-
                         </svg>
-
-                        Registro seleccionado:
-
-                        <strong>
-                            Plato #@Model.IdPlato
-                        </strong>
-
+                        <span>Registro seleccionado: <strong>Plato #@Model.IdPlato</strong></span>
                     </div>
-
 
                     <!-- NOMBRE -->
-
-                    <div class="plato-edit-group">
-
-                        <label asp-for="Nombre"
-                               class="plato-edit-label">
-
-                            Nombre del plato
-
-                            <span class="plato-edit-required">
-                                *
-                            </span>
-
+                    <div class="sc-form-group">
+                        <label asp-for="Nombre" class="sc-form-label">
+                            Nombre del plato <span class="sc-required">*</span>
                         </label>
-
-                        <div class="plato-edit-input-wrapper">
-
-                            <span class="plato-edit-input-icon">
-
-                                <svg viewBox="0 0 24 24"
-                                     fill="none"
-                                     stroke="currentColor"
-                                     stroke-width="1.8"
-                                     stroke-linecap="round"
-                                     stroke-linejoin="round">
-
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="8" />
                                     <path d="M4 12h16" />
-
                                 </svg>
-
                             </span>
-
-                            <input asp-for="Nombre"
-                                   class="plato-edit-input"
-                                   placeholder="Ej. Pollo a la plancha" />
-
+                            <input asp-for="Nombre" class="sc-input" placeholder="Ej. Pollo a la plancha" />
                         </div>
-
-                        <span asp-validation-for="Nombre"
-                              class="plato-edit-validation">
-                        </span>
-
+                        <span asp-validation-for="Nombre" class="sc-validation"></span>
                     </div>
 
-
-                    <!-- PRECIO + TIEMPO -->
-
-                    <div class="plato-edit-row">
-
+                    <!-- PRECIO Y TIEMPO ESTIMADO -->
+                    <div class="sc-form-row">
 
                         <!-- PRECIO -->
-
-                        <div class="plato-edit-group">
-
-                            <label asp-for="Precio"
-                                   class="plato-edit-label">
-
-                                Precio
-
-                                <span class="plato-edit-required">
-                                    *
-                                </span>
-
+                        <div class="sc-form-group">
+                            <label asp-for="Precio" class="sc-form-label">
+                                Precio <span class="sc-required">*</span>
                             </label>
-
-                            <div class="plato-edit-input-wrapper">
-
-                                <span class="plato-edit-input-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
+                            <div class="sc-input-wrapper">
+                                <span class="sc-input-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 3v18" />
                                         <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
-
                                     </svg>
-
                                 </span>
-
-                                <input asp-for="Precio"
-                                       class="plato-edit-input"
-                                       type="number"
-                                       step="0.01"
-                                       min="0"
-                                       placeholder="0.00" />
-
+                                <input asp-for="Precio" class="sc-input" type="number" step="0.01" min="0" placeholder="0.00" />
                             </div>
-
-                            <p class="plato-edit-help">
-                                Precio de venta en bolivianos.
-                            </p>
-
-                            <span asp-validation-for="Precio"
-                                  class="plato-edit-validation">
-                            </span>
-
+                            <span class="sc-help-text">Precio de venta en bolivianos.</span>
+                            <span asp-validation-for="Precio" class="sc-validation"></span>
                         </div>
-
 
                         <!-- TIEMPO -->
-
-                        <div class="plato-edit-group">
-
-                            <label asp-for="TiempoEstimado"
-                                   class="plato-edit-label">
-
-                                Tiempo estimado
-
-                                <span class="plato-edit-required">
-                                    *
-                                </span>
-
+                        <div class="sc-form-group">
+                            <label asp-for="TiempoEstimado" class="sc-form-label">
+                                Tiempo estimado <span class="sc-required">*</span>
                             </label>
-
-                            <div class="plato-edit-input-wrapper">
-
-                                <span class="plato-edit-input-icon">
-
-                                    <svg viewBox="0 0 24 24"
-                                         fill="none"
-                                         stroke="currentColor"
-                                         stroke-width="1.8"
-                                         stroke-linecap="round"
-                                         stroke-linejoin="round">
-
+                            <div class="sc-input-wrapper">
+                                <span class="sc-input-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="9" />
                                         <path d="M12 7v5l3 2" />
-
                                     </svg>
-
                                 </span>
-
-                                <input asp-for="TiempoEstimado"
-                                       class="plato-edit-input"
-                                       type="number"
-                                       min="1"
-                                       placeholder="Ej. 20" />
-
+                                <input asp-for="TiempoEstimado" class="sc-input" type="number" min="1" placeholder="Ej. 20" />
                             </div>
-
-                            <p class="plato-edit-help">
-                                Tiempo aproximado en minutos.
-                            </p>
-
-                            <span asp-validation-for="TiempoEstimado"
-                                  class="plato-edit-validation">
-                            </span>
-
+                            <span class="sc-help-text">Tiempo aproximado en minutos.</span>
+                            <span asp-validation-for="TiempoEstimado" class="sc-validation"></span>
                         </div>
 
                     </div>
-
 
                     <!-- ESTADO -->
-
-                    <div class="plato-edit-group">
-
-                        <label asp-for="Estado"
-                               class="plato-edit-label">
-
-                            Estado del plato
-
-                            <span class="plato-edit-required">
-                                *
-                            </span>
-
+                    <div class="sc-form-group">
+                        <label asp-for="Estado" class="sc-form-label">
+                            Estado del plato <span class="sc-required">*</span>
                         </label>
-
-                        <div class="plato-edit-input-wrapper">
-
-                            <span class="plato-edit-input-icon">
-
-                                <svg viewBox="0 0 24 24"
-                                     fill="none"
-                                     stroke="currentColor"
-                                     stroke-width="1.8"
-                                     stroke-linecap="round"
-                                     stroke-linejoin="round">
-
+                        <div class="sc-input-wrapper">
+                            <span class="sc-input-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="9" />
                                     <path d="m8 12 2.5 2.5L16 9" />
-
                                 </svg>
-
                             </span>
-
-                            <input asp-for="Estado"
-                                   class="plato-edit-input"
-                                   placeholder="Ej. Disponible" />
-
+                            <input asp-for="Estado" class="sc-input" placeholder="Ej. Disponible" />
                         </div>
-
-                        <p class="plato-edit-help">
-                            Indica si el plato está disponible actualmente.
-                        </p>
-
-                        <span asp-validation-for="Estado"
-                              class="plato-edit-validation">
-                        </span>
-
+                        <span class="sc-help-text">Indica si el plato está disponible actualmente.</span>
+                        <span asp-validation-for="Estado" class="sc-validation"></span>
                     </div>
 
-
-                    <!-- ACCIONES -->
-
-                    <div class="plato-edit-actions">
-
-                        <button type="submit"
-                                class="plato-update-btn">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.9"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
+                    <!-- BOTONES DE ACCIÓN -->
+                    <div class="sc-actions">
+                        <button type="submit" class="sc-btn sc-btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M5 4h11l3 3v13H5z" />
                                 <path d="M8 4v6h8V4" />
                                 <path d="M8 17h8" />
-
                             </svg>
-
                             Guardar cambios
-
                         </button>
 
-
-                        <a asp-action="Index"
-                           class="plato-cancel-btn">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <path d="M18 6 6 18" />
-                                <path d="m6 6 12 12" />
-
+                        <a asp-action="Index" class="sc-btn sc-btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12" />
+                                <polyline points="12 19 5 12 12 5" />
                             </svg>
-
                             Cancelar
-
                         </a>
-
                     </div>
 
                 </form>
@@ -820,188 +607,68 @@
 
         </div>
 
+        <!-- INFORMACIÓN LATERAL -->
+        <aside class="sc-aside-panel">
 
-        <!-- =================================================
-             INFORMACIÓN LATERAL
-             ================================================= -->
-
-        <aside class="plato-edit-info-card">
-
-
-            <div class="plato-edit-info-top">
-
-                <div class="plato-edit-info-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
+            <div class="sc-aside-top">
+                <div class="sc-aside-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L8 18l-4 1 1-4Z" />
                         <path d="m15 5 3 3" />
-
                     </svg>
-
                 </div>
-
-                <h2 class="plato-edit-info-title">
-                    Editando información
-                </h2>
-
-                <p class="plato-edit-info-text">
-                    Los cambios realizados se aplicarán al
-                    registro del plato seleccionado.
-                </p>
-
+                <h2 class="sc-aside-title">Editando información</h2>
+                <p class="sc-aside-text">Los cambios realizados se aplicarán al registro del plato seleccionado.</p>
             </div>
 
+            <div class="sc-aside-body">
+                <ul class="sc-aside-list">
 
-            <div class="plato-edit-info-body">
-
-                <ul class="plato-edit-info-list">
-
-
-                    <li class="plato-edit-info-item">
-
-                        <span class="plato-edit-info-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
+                    <li class="sc-aside-item">
+                        <span class="sc-aside-item-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 3v18" />
                                 <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
-
                             </svg>
-
                         </span>
-
                         <div>
-
-                            <p class="plato-edit-info-item-title">
-                                Precio
-                            </p>
-
-                            <p class="plato-edit-info-item-text">
-                                Puedes actualizar el precio de venta del plato.
-                            </p>
-
+                            <p class="sc-aside-item-title">Precio</p>
+                            <p class="sc-aside-item-text">Puedes actualizar el precio de venta del plato en cualquier momento.</p>
                         </div>
-
                     </li>
 
-
-                    <li class="plato-edit-info-item">
-
-                        <span class="plato-edit-info-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
+                    <li class="sc-aside-item">
+                        <span class="sc-aside-item-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="9" />
                                 <path d="M12 7v5l3 2" />
-
                             </svg>
-
                         </span>
-
                         <div>
-
-                            <p class="plato-edit-info-item-title">
-                                Tiempo de preparación
-                            </p>
-
-                            <p class="plato-edit-info-item-text">
-                                Ajusta el tiempo estimado cuando sea necesario.
-                            </p>
-
+                            <p class="sc-aside-item-title">Tiempo estimado</p>
+                            <p class="sc-aside-item-text">Ajusta el tiempo de cocina aproximado para organizar las comandas.</p>
                         </div>
-
                     </li>
 
-
-                    <li class="plato-edit-info-item">
-
-                        <span class="plato-edit-info-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
+                    <li class="sc-aside-item">
+                        <span class="sc-aside-item-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="9" />
                                 <path d="m8 12 2.5 2.5L16 9" />
-
                             </svg>
-
                         </span>
-
                         <div>
-
-                            <p class="plato-edit-info-item-title">
-                                Estado
-                            </p>
-
-                            <p class="plato-edit-info-item-text">
-                                Mantén actualizado el estado de disponibilidad.
-                            </p>
-
+                            <p class="sc-aside-item-title">Disponibilidad</p>
+                            <p class="sc-aside-item-text">Mantén al día el estado para que los meseros sepan si se puede ofrecer.</p>
                         </div>
-
-                    </li>
-
-
-                    <li class="plato-edit-info-item">
-
-                        <span class="plato-edit-info-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <path d="M5 12h14" />
-                                <path d="m13 6 6 6-6 6" />
-
-                            </svg>
-
-                        </span>
-
-                        <div>
-
-                            <p class="plato-edit-info-item-title">
-                                Guardar cambios
-                            </p>
-
-                            <p class="plato-edit-info-item-text">
-                                Presiona el botón de guardar para actualizar el registro.
-                            </p>
-
-                        </div>
-
                     </li>
 
                 </ul>
-
             </div>
 
-
-            <div class="plato-edit-info-footer">
-                Los campos marcados con <strong>*</strong> son obligatorios.
+            <div class="sc-aside-footer">
+                Los campos marcados con <strong style="color: var(--sc-primary);">*</strong> son obligatorios.
             </div>
 
         </aside>
@@ -1009,7 +676,6 @@
     </div>
 
 </div>
-
 
 @section Scripts {
     @{

@@ -1,252 +1,463 @@
-﻿
-@model RestauranteSaborCasero.Models.PlatoIngrediente
+﻿@model RestauranteSaborCasero.Models.PlatoIngrediente
 
 @{
-    ViewData["Title"] = "Eliminar ingrediente";
+    ViewData["Title"] = "Editar ingrediente";
 }
 
 <style>
-    .eliminar-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-danger-bg: #fdf3f2;
+        --sc-danger-text: #c92a2a;
     }
 
-    .eliminar-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 650px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .eliminar-titulo {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #dc3545;
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
     }
 
-    .eliminar-subtitulo {
-        margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
-    }
-
-    .eliminar-card {
-        width: 600px;
-        background-color: white;
-        border: 1px solid #f1aeb5;
-        border-radius: 10px;
-        padding: 30px;
-    }
-
-    .advertencia {
-        background-color: #fff3cd;
-        border: 1px solid #ffecb5;
-        color: #664d03;
-        border-radius: 7px;
-        padding: 14px 16px;
-        margin-bottom: 25px;
-        font-size: 14px;
-        line-height: 1.5;
-    }
-
-        .advertencia strong {
-            display: block;
-            margin-bottom: 3px;
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
         }
 
-    .informacion {
-        border: 1px solid #eeeeee;
-        border-radius: 8px;
-        overflow: hidden;
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
     }
 
-    .dato {
+    .sc-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+    }
+
+    .sc-description {
+        margin: 6px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px;
-        border-bottom: 1px solid #eeeeee;
     }
 
-        .dato:last-child {
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.1rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 24px;
+    }
+
+    /* =========================================================
+           LISTA DE INFORMACIÓN FIJA
+           ========================================================= */
+    .sc-data-list {
+        display: flex;
+        flex-direction: column;
+        margin: 0 0 24px 0;
+        padding: 0;
+        list-style: none;
+        border: 1px solid var(--sc-border);
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .sc-data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--sc-border);
+        background: #ffffff;
+    }
+
+        .sc-data-item:last-child {
             border-bottom: none;
         }
 
-    .dato-titulo {
-        color: #777;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-data-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 700;
     }
 
-    .dato-valor {
-        color: #333;
-        font-size: 15px;
-        font-weight: 600;
+        .sc-data-label svg {
+            width: 17px;
+            height: 17px;
+            color: #a3968f;
+        }
+
+    .sc-data-value {
+        color: var(--sc-dark);
+        font-size: 0.95rem;
+        font-weight: 800;
         text-align: right;
     }
 
-    .plato {
-        color: #198754;
-        font-size: 16px;
+    .sc-highlight {
+        font-size: 1.05rem;
+        color: var(--sc-primary);
+        font-weight: 900;
     }
 
-    .ingrediente {
-        color: #343a40;
+    /* =========================================================
+           FORMULARIO Y CAMPOS
+           ========================================================= */
+    .sc-form-group {
+        margin-bottom: 22px;
     }
 
-    .cantidad {
-        color: #0d6efd;
+    .sc-form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
     }
 
-    .acciones {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding-top: 20px;
-        margin-top: 25px;
-        border-top: 1px solid #eeeeee;
+    .sc-input-wrapper {
+        position: relative;
     }
 
-    .btn-eliminar {
-        border: none;
-        background-color: #dc3545;
-        color: white;
-        padding: 12px 20px;
-        border-radius: 7px;
-        font-size: 14px;
+    .sc-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #a3968f;
+        pointer-events: none;
+    }
+
+        .sc-input-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+        }
+
+    .sc-input {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px 0 42px;
+        background: #ffffff;
+        border: 1px solid #dcd2cc;
+        border-radius: 10px;
+        color: var(--sc-dark);
+        font-size: 0.9rem;
         font-weight: 600;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
+
+        .sc-input:hover {
+            border-color: #c4b5ac;
+        }
+
+        .sc-input:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
+            background: #ffffff;
+        }
+
+        .sc-input::placeholder {
+            color: #b5aba4;
+        }
+
+    .sc-help-text {
+        display: block;
+        margin-top: 6px;
+        color: #8c8078;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+    .sc-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger-text);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sc-validation-summary {
+        background-color: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        color: var(--sc-danger-text);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+        margin-top: 10px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
         cursor: pointer;
     }
 
-        .btn-eliminar:hover {
-            background-color: #bb2d3b;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-cancelar {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 12px 20px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
+        color: #ffffff;
     }
 
-        .btn-cancelar:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
         }
 </style>
 
-
-<div class="eliminar-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="eliminar-header">
-
-        <h1 class="eliminar-titulo">
-            Eliminar ingrediente
-        </h1>
-
-        <p class="eliminar-subtitulo">
-            Confirma que deseas quitar este ingrediente del plato.
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Receta del Plato</p>
+            <h1 class="sc-title">Editar ingrediente</h1>
+            <p class="sc-description">Cambia la cantidad necesaria del insumo en la receta.</p>
+        </div>
     </div>
 
+    <!-- TARJETA FORMULARIO -->
+    <div class="sc-panel">
 
-    <!-- TARJETA -->
-    <div class="eliminar-card">
-
-        <!-- ADVERTENCIA -->
-        <div class="advertencia">
-
-            <strong>
-                Atención
-            </strong>
-
-            Este ingrediente dejará de formar parte de la receta de este plato.
-
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Ajuste de dosis</h2>
+                <p class="sc-panel-subtitle">Proporciones para costeo y salidas de inventario</p>
+            </div>
+            <div style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase;">
+                Modo Edición
+            </div>
         </div>
 
+        <div class="sc-panel-body">
 
-        <!-- INFORMACIÓN -->
-        <div class="informacion">
+            <form asp-action="Edit"
+                  asp-route-idPlato="@Model.IdPlato"
+                  asp-route-idIngrediente="@Model.IdIngrediente"
+                  method="post">
 
-            <!-- PLATO -->
-            <div class="dato">
+                <!-- CLAVE COMPUESTA -->
+                <input type="hidden" asp-for="IdPlato" />
+                <input type="hidden" asp-for="IdIngrediente" />
 
-                <span class="dato-titulo">
-                    Plato
-                </span>
+                <!-- VALIDACIONES -->
+                <div asp-validation-summary="ModelOnly" class="sc-validation-summary"></div>
 
-                <span class="dato-valor plato">
-                    @Model.Plato.Nombre
-                </span>
+                <!-- INFORMACIÓN FIJA -->
+                <ul class="sc-data-list">
 
-            </div>
+                    <li class="sc-data-item">
+                        <span class="sc-data-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="8" />
+                                <path d="M4 12h16" />
+                                <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
+                            </svg>
+                            Plato asignado
+                        </span>
+                        <span class="sc-data-value sc-highlight">@Model.Plato.Nombre</span>
+                    </li>
 
+                    <li class="sc-data-item">
+                        <span class="sc-data-label">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 8l6-3 6 3v8l-6 3-6-3V8" />
+                                <path d="M12 11v7" />
+                                <path d="M6 11l6 3 6-3" />
+                            </svg>
+                            Ingrediente
+                        </span>
+                        <span class="sc-data-value" style="font-weight: 800; color: var(--sc-dark);">@Model.Ingrediente.Nombre</span>
+                    </li>
 
-            <!-- INGREDIENTE -->
-            <div class="dato">
+                </ul>
 
-                <span class="dato-titulo">
-                    Ingrediente
-                </span>
+                <!-- CANTIDAD -->
+                <div class="sc-form-group">
+                    <label asp-for="CantidadNecesaria" class="sc-form-label">
+                        Cantidad necesaria
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="4" y1="21" x2="4" y2="14" />
+                                <line x1="4" y1="10" x2="4" y2="3" />
+                                <line x1="12" y1="21" x2="12" y2="12" />
+                                <line x1="12" y1="8" x2="12" y2="3" />
+                                <line x1="20" y1="21" x2="20" y2="16" />
+                                <line x1="20" y1="12" x2="20" y2="3" />
+                                <line x1="1" y1="14" x2="7" y2="14" />
+                                <line x1="9" y1="8" x2="15" y2="8" />
+                                <line x1="17" y1="16" x2="23" y2="16" />
+                            </svg>
+                        </span>
+                        <input asp-for="CantidadNecesaria"
+                               type="number"
+                               step="0.01"
+                               min="0.01"
+                               class="sc-input"
+                               placeholder="Ejemplo: 0.50" />
+                    </div>
+                    <span class="sc-help-text">Unidad de consumo: @Model.Ingrediente.UnidadMedida</span>
+                    <span asp-validation-for="CantidadNecesaria" class="sc-validation"></span>
+                </div>
 
-                <span class="dato-valor ingrediente">
-                    @Model.Ingrediente.Nombre
-                </span>
+                <!-- BOTONES -->
+                <div class="sc-actions">
+                    <button type="submit" class="sc-btn sc-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        Guardar cambios
+                    </button>
 
-            </div>
+                    <a asp-action="Index" class="sc-btn sc-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
+                        Cancelar
+                    </a>
+                </div>
 
-
-            <!-- CANTIDAD -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Cantidad necesaria
-                </span>
-
-                <span class="dato-valor cantidad">
-                    @Model.CantidadNecesaria
-                    @Model.Ingrediente.UnidadMedida
-                </span>
-
-            </div>
+            </form>
 
         </div>
-
-
-        <!-- CONFIRMACIÓN -->
-        <form asp-action="Delete"
-              asp-route-idPlato="@Model.IdPlato"
-              asp-route-idIngrediente="@Model.IdIngrediente"
-              method="post">
-
-            <input type="hidden"
-                   name="idPlato"
-                   value="@Model.IdPlato" />
-
-            <input type="hidden"
-                   name="idIngrediente"
-                   value="@Model.IdIngrediente" />
-
-
-            <div class="acciones">
-
-                <button type="submit"
-                        class="btn-eliminar">
-                    Sí, eliminar ingrediente
-                </button>
-
-                <a asp-action="Index"
-                   class="btn-cancelar">
-                    Cancelar
-                </a>
-
-            </div>
-
-        </form>
 
     </div>
 
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

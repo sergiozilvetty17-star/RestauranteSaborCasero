@@ -6,178 +6,194 @@
 
 <style>
     /* =========================================================
-           DETALLE DEL PLATO - SABOR CASERO
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
            ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-success: #198754;
+        --sc-success-bg: #edf6f0;
+    }
 
-    .plato-details-page {
+    .sc-page-container {
         width: 100%;
+        max-width: 1100px;
         padding-top: 12px;
+        color: var(--sc-dark);
     }
 
     /* =========================================================
            ENCABEZADO
            ========================================================= */
-
-    .plato-details-header {
+    .sc-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: 20px;
         margin-bottom: 25px;
     }
 
-    .plato-details-heading {
+    .sc-header-left {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 16px;
     }
 
-    .plato-details-header-icon {
-        width: 48px;
-        height: 48px;
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f7eee9;
+        background: var(--sc-primary-soft);
         border-radius: 12px;
         color: var(--sc-primary);
     }
 
-        .plato-details-header-icon svg {
+        .sc-header-icon svg {
             width: 25px;
             height: 25px;
             stroke: currentColor;
         }
 
-    .plato-details-eyebrow {
+    .sc-eyebrow {
         margin: 0 0 4px;
         color: var(--sc-primary);
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: 800;
         letter-spacing: 1.2px;
         text-transform: uppercase;
     }
 
-    .plato-details-title {
+    .sc-title {
         margin: 0;
         color: var(--sc-dark);
-        font-size: 1.9rem;
-        font-weight: 800;
-        letter-spacing: -0.7px;
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
-    .plato-details-subtitle {
+    .sc-description {
         margin: 6px 0 0;
         color: var(--sc-gray);
-        font-size: 0.82rem;
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
-    /* =========================================================
-           IDENTIFICADOR
-           ========================================================= */
-
-    .plato-details-code {
-        display: flex;
+    .sc-record-badge {
+        display: inline-flex;
         align-items: center;
-        gap: 7px;
-        padding: 8px 12px;
+        gap: 8px;
+        padding: 8px 14px;
         background: #faf8f6;
         border: 1px solid var(--sc-border);
-        border-radius: 9px;
+        border-radius: 10px;
         color: #81766e;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: 700;
+        box-shadow: 0 2px 8px rgba(49, 31, 25, 0.04);
     }
 
-        .plato-details-code svg {
-            width: 15px;
-            height: 15px;
+        .sc-record-badge svg {
+            width: 16px;
+            height: 16px;
             color: var(--sc-primary);
             stroke: currentColor;
         }
 
-        .plato-details-code strong {
+        .sc-record-badge strong {
             color: var(--sc-dark);
         }
 
     /* =========================================================
-           CONTENEDOR PRINCIPAL
+           LAYOUT GRID (PRINCIPAL + ASIDE)
            ========================================================= */
-
-    .plato-details-layout {
+    .sc-grid-layout {
         display: grid;
-        grid-template-columns: 1fr 310px;
-        gap: 20px;
+        grid-template-columns: 1fr 340px;
+        gap: 24px;
         align-items: start;
     }
 
     /* =========================================================
-           TARJETA PRINCIPAL
+           TARJETA (PANEL)
            ========================================================= */
-
-    .plato-details-card {
-        background: #ffffff;
+    .sc-panel {
+        background: var(--sc-bg-panel);
         border: 1px solid var(--sc-border);
-        border-radius: 15px;
+        border-radius: 16px;
         box-shadow: var(--sc-shadow);
         overflow: hidden;
+        margin-bottom: 25px;
     }
 
-    .plato-details-card-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 18px 21px;
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
         border-bottom: 1px solid var(--sc-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .plato-details-card-header-title {
+    .sc-panel-title {
         margin: 0;
         color: var(--sc-dark);
-        font-size: 0.92rem;
-        font-weight: 800;
+        font-size: 1.15rem;
+        font-weight: 900;
     }
 
-    .plato-details-card-header-text {
-        margin: 3px 0 0;
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
         color: var(--sc-gray);
-        font-size: 0.71rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 24px;
     }
 
     /* =========================================================
-           INFORMACIÓN
+           GRID DE INFORMACIÓN DEL PLATO
            ========================================================= */
-
-    .plato-details-info {
+    .sc-info-grid {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 14px;
-        padding: 22px;
+        gap: 16px;
     }
 
-    .plato-details-item {
-        padding: 17px;
+    .sc-info-card {
+        padding: 18px;
         background: #faf8f6;
         border: 1px solid #eee7e1;
-        border-radius: 11px;
+        border-radius: 12px;
         transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
 
-        .plato-details-item:hover {
+        .sc-info-card:hover {
             border-color: #e2d6cc;
-            box-shadow: 0 5px 14px rgba(70, 45, 30, 0.06);
-            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(70, 45, 30, 0.06);
+            transform: translateY(-2px);
         }
 
-    .plato-details-item-top {
+    .sc-info-card-top {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-bottom: 11px;
+        margin-bottom: 12px;
     }
 
-    .plato-details-item-icon {
-        width: 32px;
-        height: 32px;
+    .sc-info-card-icon {
+        width: 34px;
+        height: 34px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -186,55 +202,55 @@
         color: var(--sc-primary);
     }
 
-        .plato-details-item-icon svg {
-            width: 16px;
-            height: 16px;
+        .sc-info-card-icon svg {
+            width: 17px;
+            height: 17px;
             stroke: currentColor;
         }
 
-    .plato-details-label {
+    .sc-info-label {
         margin: 0;
         color: #857a72;
-        font-size: 0.67rem;
+        font-size: 0.7rem;
         font-weight: 800;
         letter-spacing: 0.5px;
         text-transform: uppercase;
     }
 
-    .plato-details-value {
+    .sc-info-value {
         margin: 0;
         color: var(--sc-dark);
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-weight: 800;
     }
 
-        .plato-details-value.price {
+        .sc-info-value.price {
             color: var(--sc-primary);
-            font-size: 1.25rem;
+            font-size: 1.3rem;
+            font-weight: 900;
         }
 
-        .plato-details-value.time {
+        .sc-info-value.time {
             color: #665e58;
         }
 
     /* =========================================================
-           ESTADO
+           BADGE DE ESTADO
            ========================================================= */
-
-    .plato-details-status {
+    .sc-status-badge {
         display: inline-flex;
         align-items: center;
         gap: 7px;
-        padding: 6px 10px;
-        background: #edf6f0;
+        padding: 6px 12px;
+        background: var(--sc-success-bg);
         border: 1px solid #d5e9dc;
-        border-radius: 7px;
+        border-radius: 8px;
         color: var(--sc-success);
-        font-size: 0.72rem;
+        font-size: 0.75rem;
         font-weight: 800;
     }
 
-    .plato-details-status-dot {
+    .sc-status-dot {
         width: 7px;
         height: 7px;
         background: currentColor;
@@ -242,129 +258,123 @@
     }
 
     /* =========================================================
-           ACCIONES
+           BOTONES Y ACCIONES
            ========================================================= */
-
-    .plato-details-actions {
+    .sc-actions {
         display: flex;
         align-items: center;
-        gap: 9px;
-        padding: 17px 22px;
+        gap: 12px;
+        padding: 18px 24px;
         background: #faf8f6;
         border-top: 1px solid var(--sc-border);
     }
 
-    .plato-details-btn {
+    .sc-btn {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 7px;
-        height: 39px;
-        padding: 0 15px;
-        border-radius: 9px;
-        font-size: 0.75rem;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
         font-weight: 800;
         text-decoration: none;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
     }
 
-        .plato-details-btn svg {
-            width: 16px;
-            height: 16px;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
             stroke: currentColor;
         }
 
-    .plato-details-btn-edit {
-        background: var(--sc-primary);
-        border: 1px solid var(--sc-primary);
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
         color: #ffffff;
     }
 
-        .plato-details-btn-edit:hover {
-            background: var(--sc-primary-dark);
-            border-color: var(--sc-primary-dark);
-            color: #ffffff;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(139, 58, 43, 0.18);
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
         }
 
-    .plato-details-btn-back {
-        background: #ffffff;
-        border: 1px solid #ddd5cc;
+    .sc-btn-secondary {
+        background-color: #ffffff;
         color: #665e58;
+        border-color: #ddd5cc;
     }
 
-        .plato-details-btn-back:hover {
-            background: #f3efeb;
+        .sc-btn-secondary:hover {
+            background-color: #f3efeb;
             color: var(--sc-dark);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
     /* =========================================================
-           TARJETA LATERAL
+           TARJETA LATERAL (ASIDE DE RESUMEN)
            ========================================================= */
-
-    .plato-details-side {
-        background: #ffffff;
+    .sc-aside-panel {
+        background: var(--sc-bg-panel);
         border: 1px solid var(--sc-border);
-        border-radius: 15px;
+        border-radius: 16px;
         box-shadow: var(--sc-shadow);
         overflow: hidden;
     }
 
-    .plato-details-side-top {
-        padding: 23px 21px;
-        background: linear-gradient( 145deg, #8b3a2b 0%, #68291f 100% );
+    .sc-aside-top {
+        padding: 24px 20px;
+        background: linear-gradient(135deg, #2b1d19, #4a221b);
         color: #ffffff;
     }
 
-    .plato-details-side-icon {
-        width: 45px;
-        height: 45px;
+    .sc-aside-icon {
+        width: 44px;
+        height: 44px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.14);
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        margin-bottom: 14px;
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.16);
         border-radius: 11px;
     }
 
-        .plato-details-side-icon svg {
-            width: 23px;
-            height: 23px;
+        .sc-aside-icon svg {
+            width: 22px;
+            height: 22px;
             stroke: currentColor;
         }
 
-    .plato-details-side-title {
+    .sc-aside-title {
         margin: 0;
         color: #ffffff;
-        font-size: 1rem;
-        font-weight: 800;
+        font-size: 1.05rem;
+        font-weight: 900;
     }
 
-    .plato-details-side-text {
-        margin: 7px 0 0;
-        color: rgba(255, 255, 255, 0.72);
-        font-size: 0.72rem;
+    .sc-aside-text {
+        margin: 6px 0 0;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 0.78rem;
         line-height: 1.5;
+        font-weight: 500;
     }
 
-    /* =========================================================
-           RESUMEN LATERAL
-           ========================================================= */
-
-    .plato-details-side-body {
-        padding: 19px 21px;
+    .sc-aside-body {
+        padding: 20px;
     }
 
-    .plato-details-summary {
+    .sc-summary-list {
         display: flex;
         flex-direction: column;
         gap: 13px;
     }
 
-    .plato-details-summary-row {
+    .sc-summary-row {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -372,500 +382,265 @@
         border-bottom: 1px solid #eee8e2;
     }
 
-        .plato-details-summary-row:last-child {
+        .sc-summary-row:last-child {
             padding-bottom: 0;
             border-bottom: none;
         }
 
-    .plato-details-summary-label {
+    .sc-summary-label {
         color: #857b74;
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         font-weight: 600;
     }
 
-    .plato-details-summary-value {
+    .sc-summary-value {
         color: var(--sc-dark);
-        font-size: 0.72rem;
+        font-size: 0.8rem;
         font-weight: 800;
         text-align: right;
     }
 
-        .plato-details-summary-value.price {
+        .sc-summary-value.price {
             color: var(--sc-primary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            font-weight: 900;
         }
 
-    /* =========================================================
-           NOTA
-           ========================================================= */
-
-    .plato-details-note {
-        margin-top: 17px;
-        padding: 12px;
+    .sc-aside-note {
+        margin-top: 18px;
+        padding: 14px;
         background: #fdf8ed;
         border: 1px solid #f0dfbd;
-        border-radius: 9px;
+        border-radius: 10px;
         color: #816a43;
-        font-size: 0.67rem;
-        line-height: 1.45;
+        font-size: 0.72rem;
+        line-height: 1.5;
+        font-weight: 500;
     }
 
-        .plato-details-note strong {
+        .sc-aside-note strong {
             color: #70552d;
         }
+
+    @@media (max-width: 950px) {
+        .sc-grid-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .sc-aside-panel {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 600px) {
+        .sc-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .sc-info-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+    }
 </style>
 
+<div class="sc-page-container">
 
-<div class="plato-details-page">
-
-
-    <!-- =====================================================
-         ENCABEZADO
-         ===================================================== -->
-
-    <div class="plato-details-header">
-
-        <div class="plato-details-heading">
-
-            <div class="plato-details-header-icon">
-
-                <svg viewBox="0 0 24 24"
-                     fill="none"
-                     stroke="currentColor"
-                     stroke-width="1.8"
-                     stroke-linecap="round"
-                     stroke-linejoin="round">
-
+    <!-- ENCABEZADO -->
+    <div class="sc-header">
+        <div class="sc-header-left">
+            <div class="sc-header-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="9" />
                     <path d="M12 8v4l2.5 2" />
-
                 </svg>
-
             </div>
-
             <div>
-
-                <p class="plato-details-eyebrow">
-                    Gestión del menú
-                </p>
-
-                <h1 class="plato-details-title">
-                    Detalle del plato
-                </h1>
-
-                <p class="plato-details-subtitle">
-                    Consulta toda la información registrada del plato.
-                </p>
-
+                <p class="sc-eyebrow">Gestión del Menú</p>
+                <h1 class="sc-title">Detalle del plato</h1>
+                <p class="sc-description">Consulta toda la información registrada del plato.</p>
             </div>
-
         </div>
 
-
-        <div class="plato-details-code">
-
-            <svg viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="1.8"
-                 stroke-linecap="round"
-                 stroke-linejoin="round">
-
+        <div class="sc-record-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="4" width="18" height="16" rx="2" />
                 <path d="M8 8h8" />
                 <path d="M8 12h8" />
                 <path d="M8 16h4" />
-
             </svg>
-
-            Registro
-            <strong>#@Model.IdPlato</strong>
-
+            <span>Registro <strong>#@Model.IdPlato</strong></span>
         </div>
-
     </div>
 
+    <!-- CONTENIDO EN DOS COLUMNAS -->
+    <div class="sc-grid-layout">
 
-    <!-- =====================================================
-         CONTENIDO
-         ===================================================== -->
+        <!-- INFORMACIÓN PRINCIPAL -->
+        <div class="sc-panel">
 
-    <div class="plato-details-layout">
-
-
-        <!-- =================================================
-             INFORMACIÓN PRINCIPAL
-             ================================================= -->
-
-        <div class="plato-details-card">
-
-
-            <div class="plato-details-card-header">
-
+            <div class="sc-panel-header">
                 <div>
-
-                    <h2 class="plato-details-card-header-title">
-                        Información del plato
-                    </h2>
-
-                    <p class="plato-details-card-header-text">
-                        Datos actuales registrados en el sistema.
-                    </p>
-
+                    <h2 class="sc-panel-title">Información del plato</h2>
+                    <p class="sc-panel-subtitle">Datos actuales registrados en el sistema</p>
                 </div>
-
             </div>
 
+            <div class="sc-panel-body">
+                <div class="sc-info-grid">
 
-            <div class="plato-details-info">
-
-
-                <!-- ID -->
-
-                <div class="plato-details-item">
-
-                    <div class="plato-details-item-top">
-
-                        <span class="plato-details-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <path d="M4 6h16" />
-                                <path d="M4 12h16" />
-                                <path d="M4 18h16" />
-
-                            </svg>
-
-                        </span>
-
-                        <p class="plato-details-label">
-                            Identificador
-                        </p>
-
+                    <!-- ID -->
+                    <div class="sc-info-card">
+                        <div class="sc-info-card-top">
+                            <span class="sc-info-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 6h16" />
+                                    <path d="M4 12h16" />
+                                    <path d="M4 18h16" />
+                                </svg>
+                            </span>
+                            <p class="sc-info-label">Identificador</p>
+                        </div>
+                        <p class="sc-info-value">#@Model.IdPlato</p>
                     </div>
 
-                    <p class="plato-details-value">
-                        #@Model.IdPlato
-                    </p>
-
-                </div>
-
-
-                <!-- NOMBRE -->
-
-                <div class="plato-details-item">
-
-                    <div class="plato-details-item-top">
-
-                        <span class="plato-details-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <path d="M4 7h16" />
-                                <path d="M6 7v10" />
-                                <path d="M18 7v10" />
-                                <path d="M8 17h8" />
-                                <path d="M9 11h6" />
-
-                            </svg>
-
-                        </span>
-
-                        <p class="plato-details-label">
-                            Nombre
-                        </p>
-
+                    <!-- NOMBRE -->
+                    <div class="sc-info-card">
+                        <div class="sc-info-card-top">
+                            <span class="sc-info-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 7h16" />
+                                    <path d="M6 7v10" />
+                                    <path d="M18 7v10" />
+                                    <path d="M8 17h8" />
+                                    <path d="M9 11h6" />
+                                </svg>
+                            </span>
+                            <p class="sc-info-label">Nombre</p>
+                        </div>
+                        <p class="sc-info-value">@Model.Nombre</p>
                     </div>
 
-                    <p class="plato-details-value">
-                        @Model.Nombre
-                    </p>
-
-                </div>
-
-
-                <!-- PRECIO -->
-
-                <div class="plato-details-item">
-
-                    <div class="plato-details-item-top">
-
-                        <span class="plato-details-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <path d="M12 3v18" />
-                                <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
-
-                            </svg>
-
-                        </span>
-
-                        <p class="plato-details-label">
-                            Precio
-                        </p>
-
+                    <!-- PRECIO -->
+                    <div class="sc-info-card">
+                        <div class="sc-info-card-top">
+                            <span class="sc-info-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 3v18" />
+                                    <path d="M17 7c0-2-2-3-5-3S7 5 7 7s2 3 5 3 5 1 5 3-2 3-5 3-5-1-5-3" />
+                                </svg>
+                            </span>
+                            <p class="sc-info-label">Precio</p>
+                        </div>
+                        <p class="sc-info-value price">Bs. @Model.Precio.ToString("0.00")</p>
                     </div>
 
-                    <p class="plato-details-value price">
-                        Bs. @Model.Precio.ToString("0.00")
-                    </p>
-
-                </div>
-
-
-                <!-- ESTADO -->
-
-                <div class="plato-details-item">
-
-                    <div class="plato-details-item-top">
-
-                        <span class="plato-details-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="m8 12 2.5 2.5L16 9" />
-
-                            </svg>
-
+                    <!-- ESTADO -->
+                    <div class="sc-info-card">
+                        <div class="sc-info-card-top">
+                            <span class="sc-info-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="m8 12 2.5 2.5L16 9" />
+                                </svg>
+                            </span>
+                            <p class="sc-info-label">Estado</p>
+                        </div>
+                        <span class="sc-status-badge">
+                            <span class="sc-status-dot"></span>
+                            @Model.Estado
                         </span>
-
-                        <p class="plato-details-label">
-                            Estado
-                        </p>
-
                     </div>
 
-                    <span class="plato-details-status">
-
-                        <span class="plato-details-status-dot"></span>
-
-                        @Model.Estado
-
-                    </span>
-
-                </div>
-
-
-                <!-- TIEMPO -->
-
-                <div class="plato-details-item">
-
-                    <div class="plato-details-item-top">
-
-                        <span class="plato-details-item-icon">
-
-                            <svg viewBox="0 0 24 24"
-                                 fill="none"
-                                 stroke="currentColor"
-                                 stroke-width="1.8"
-                                 stroke-linecap="round"
-                                 stroke-linejoin="round">
-
-                                <circle cx="12" cy="12" r="9" />
-                                <path d="M12 7v5l3 2" />
-
-                            </svg>
-
-                        </span>
-
-                        <p class="plato-details-label">
-                            Tiempo estimado
-                        </p>
-
+                    <!-- TIEMPO ESTIMADO -->
+                    <div class="sc-info-card" style="grid-column: 1 / -1;">
+                        <div class="sc-info-card-top">
+                            <span class="sc-info-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9" />
+                                    <path d="M12 7v5l3 2" />
+                                </svg>
+                            </span>
+                            <p class="sc-info-label">Tiempo estimado</p>
+                        </div>
+                        <p class="sc-info-value time">@Model.TiempoEstimado minutos</p>
                     </div>
 
-                    <p class="plato-details-value time">
-                        @Model.TiempoEstimado minutos
-                    </p>
-
                 </div>
-
             </div>
 
-
-            <!-- =================================================
-                 ACCIONES
-                 ================================================= -->
-
-            <div class="plato-details-actions">
-
+            <!-- ACCIONES -->
+            <div class="sc-actions">
                 <a asp-action="Edit"
                    asp-route-id="@Model.IdPlato"
-                   class="plato-details-btn plato-details-btn-edit">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
+                   class="sc-btn sc-btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M12 20h9" />
-                        <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" />
+                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L8 18l-4 1 1-4Z" />
                         <path d="m15 5 3 3" />
-
                     </svg>
-
                     Editar plato
-
                 </a>
-
 
                 <a asp-action="Index"
-                   class="plato-details-btn plato-details-btn-back">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
+                   class="sc-btn sc-btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 12H5" />
                         <path d="m12 19-7-7 7-7" />
-
                     </svg>
-
                     Volver a platos
-
                 </a>
-
             </div>
 
         </div>
 
+        <!-- PANEL LATERAL (RESUMEN) -->
+        <aside class="sc-aside-panel">
 
-        <!-- =================================================
-             PANEL LATERAL
-             ================================================= -->
-
-        <aside class="plato-details-side">
-
-
-            <div class="plato-details-side-top">
-
-                <div class="plato-details-side-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
+            <div class="sc-aside-top">
+                <div class="sc-aside-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 3v7" />
                         <path d="M9 3v7" />
                         <path d="M12 3v7" />
                         <path d="M9 10v11" />
                         <path d="M16 3v18" />
                         <path d="M16 3c3 2 3 5 0 7" />
-
                     </svg>
-
                 </div>
-
-                <h2 class="plato-details-side-title">
-                    Resumen del plato
-                </h2>
-
-                <p class="plato-details-side-text">
-                    Información rápida para consultar el estado
-                    y características principales.
-                </p>
-
+                <h2 class="sc-aside-title">Resumen del plato</h2>
+                <p class="sc-aside-text">Información rápida para consultar el estado y características principales.</p>
             </div>
 
+            <div class="sc-aside-body">
+                <div class="sc-summary-list">
 
-            <div class="plato-details-side-body">
-
-                <div class="plato-details-summary">
-
-
-                    <div class="plato-details-summary-row">
-
-                        <span class="plato-details-summary-label">
-                            Plato
-                        </span>
-
-                        <span class="plato-details-summary-value">
-                            @Model.Nombre
-                        </span>
-
+                    <div class="sc-summary-row">
+                        <span class="sc-summary-label">Plato</span>
+                        <span class="sc-summary-value">@Model.Nombre</span>
                     </div>
 
-
-                    <div class="plato-details-summary-row">
-
-                        <span class="plato-details-summary-label">
-                            Precio
-                        </span>
-
-                        <span class="plato-details-summary-value price">
-                            Bs. @Model.Precio.ToString("0.00")
-                        </span>
-
+                    <div class="sc-summary-row">
+                        <span class="sc-summary-label">Precio</span>
+                        <span class="sc-summary-value price">Bs. @Model.Precio.ToString("0.00")</span>
                     </div>
 
-
-                    <div class="plato-details-summary-row">
-
-                        <span class="plato-details-summary-label">
-                            Preparación
-                        </span>
-
-                        <span class="plato-details-summary-value">
-                            @Model.TiempoEstimado min.
-                        </span>
-
+                    <div class="sc-summary-row">
+                        <span class="sc-summary-label">Preparación</span>
+                        <span class="sc-summary-value">@Model.TiempoEstimado min.</span>
                     </div>
 
-
-                    <div class="plato-details-summary-row">
-
-                        <span class="plato-details-summary-label">
-                            Estado
-                        </span>
-
-                        <span class="plato-details-summary-value">
-                            @Model.Estado
-                        </span>
-
+                    <div class="sc-summary-row">
+                        <span class="sc-summary-label">Estado</span>
+                        <span class="sc-summary-value">@Model.Estado</span>
                     </div>
 
                 </div>
 
-
-                <div class="plato-details-note">
-
-                    <strong>Nota:</strong>
-                    verifica que la información del plato
-                    esté actualizada antes de realizar cambios
-                    en el menú.
-
+                <div class="sc-aside-note">
+                    <strong>Nota:</strong> verifica que la información del plato esté actualizada antes de realizar cambios en el menú o generar comandas de cocina.
                 </div>
-
             </div>
 
         </aside>

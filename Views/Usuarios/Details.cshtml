@@ -1,295 +1,424 @@
-﻿
-@model RestauranteSaborCasero.Models.Usuario
+﻿@model RestauranteSaborCasero.Models.Usuario
 
 @{
     ViewData["Title"] = "Detalles del usuario";
 }
 
 <style>
-    .detalles-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Dashboard - Sabor Casero)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-success: #198754;
+        --sc-success-bg: #e3f2eb;
     }
 
-    .detalles-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 650px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .detalles-titulo {
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+        }
+
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
-    .detalles-subtitulo {
+    .sc-description {
         margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
-    .detalles-card {
-        width: 600px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
-    }
-
-    .informacion {
-        border: 1px solid #eeeeee;
-        border-radius: 8px;
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
         overflow: hidden;
+        margin-bottom: 25px;
     }
 
-    .dato {
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px;
-        border-bottom: 1px solid #eeeeee;
     }
 
-        .dato:last-child {
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.15rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 0;
+    }
+
+    /* =========================================================
+           LISTA DE DATOS
+           ========================================================= */
+    .sc-data-list {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .sc-data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--sc-border);
+    }
+
+        .sc-data-item:last-child {
             border-bottom: none;
         }
 
-    .dato-nombre {
-        color: #777;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-data-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 700;
     }
 
-    .dato-valor {
-        color: #333;
-        font-size: 14px;
-        font-weight: 600;
+        .sc-data-label svg {
+            width: 17px;
+            height: 17px;
+            color: #a3968f;
+        }
+
+    .sc-data-value {
+        color: var(--sc-dark);
+        font-size: 0.95rem;
+        font-weight: 800;
         text-align: right;
     }
 
-    .rol {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
+    .sc-highlight {
+        font-size: 1.05rem;
+        color: var(--sc-primary);
+        font-weight: 900;
     }
 
-    .rol-admin {
-        background-color: #f8d7da;
-        color: #842029;
-    }
-
-    .rol-cocinero {
-        background-color: #fff3cd;
-        color: #664d03;
-    }
-
-    .rol-mesero {
-        background-color: #cfe2ff;
-        color: #084298;
-    }
-
-    .estado {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 700;
-    }
-
-    .estado-activo {
-        background-color: #d1e7dd;
-        color: #0f5132;
-    }
-
-    .estado-inactivo {
-        background-color: #e2e3e5;
-        color: #41464b;
-    }
-
-    .acciones {
-        display: flex;
-        gap: 10px;
+    /* =========================================================
+           BADGES & ROLES
+           ========================================================= */
+    .sc-badge {
+        display: inline-flex;
         align-items: center;
-        padding-top: 20px;
-        margin-top: 25px;
-        border-top: 1px solid #eeeeee;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .btn-editar {
-        background-color: #ffc107;
-        color: #212529;
+    .sc-rol-admin {
+        background-color: #fdf3f2;
+        color: #c92a2a;
+    }
+
+    .sc-rol-cocinero {
+        background-color: #fcf1d4;
+        color: #8a6a1c;
+    }
+
+    .sc-rol-mesero {
+        background-color: #e6f0fa;
+        color: #0b5ed7;
+    }
+
+    .sc-estado-activo {
+        background-color: var(--sc-success-bg);
+        color: var(--sc-success);
+    }
+
+    .sc-estado-inactivo {
+        background-color: #f3f0ed;
+        color: #756b65;
+    }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
         text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
     }
 
-        .btn-editar:hover {
-            background-color: #ffca2c;
-            color: #212529;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-btn-warning {
+        background-color: #f2d7a0;
+        color: #5f430f;
+        border-color: #e8c785;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-warning:hover {
+            background-color: #e8c785;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(242, 215, 160, 0.4);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
         }
 </style>
 
-
-<div class="detalles-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="detalles-header">
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                <circle cx="12" cy="7" r="4" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Personal</p>
+            <h1 class="sc-title">Detalles del usuario</h1>
+            <p class="sc-description">Información registrada del colaborador en el sistema.</p>
+        </div>
+    </div>
 
-        <h1 class="detalles-titulo">
-            Detalles del usuario
-        </h1>
+    <!-- TARJETA DE INFORMACIÓN -->
+    <div class="sc-panel">
 
-        <p class="detalles-subtitulo">
-            Información del usuario seleccionado.
-        </p>
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">@Model.Nombre</h2>
+                <p class="sc-panel-subtitle">Ficha técnica de colaborador</p>
+            </div>
+            <div class="sc-header-icon" style="width: 40px; height: 40px; background: #ffffff; border: 1px solid var(--sc-border);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; color: var(--sc-gray);">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+            </div>
+        </div>
+
+        <div class="sc-panel-body">
+            <ul class="sc-data-list">
+
+                <!-- ID -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="16" rx="2" />
+                            <line x1="7" y1="8" x2="17" y2="8" />
+                            <line x1="7" y1="12" x2="17" y2="12" />
+                            <line x1="7" y1="16" x2="11" y2="16" />
+                        </svg>
+                        ID de registro
+                    </span>
+                    <span class="sc-data-value">@Model.IdUsuario</span>
+                </li>
+
+                <!-- NOMBRE -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        Nombre completo
+                    </span>
+                    <span class="sc-data-value sc-highlight">@Model.Nombre</span>
+                </li>
+
+                <!-- CORREO -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                            <polyline points="22,6 12,13 2,6" />
+                        </svg>
+                        Correo electrónico
+                    </span>
+                    <span class="sc-data-value">@Model.Correo</span>
+                </li>
+
+                <!-- ROL -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                        </svg>
+                        Rol asignado
+                    </span>
+                    <span class="sc-data-value">
+                        @if (Model.Rol == RolUsuario.Administrador)
+                        {
+                            <span class="sc-badge sc-rol-admin">Administrador</span>
+                        }
+                        else if (Model.Rol == RolUsuario.Cocinero)
+                        {
+                            <span class="sc-badge sc-rol-cocinero">Cocinero</span>
+                        }
+                        else
+                        {
+                            <span class="sc-badge sc-rol-mesero">Mesero</span>
+                        }
+                    </span>
+                </li>
+
+                <!-- ESTADO -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
+                        </svg>
+                        Estado del usuario
+                    </span>
+                    <span class="sc-data-value">
+                        @if (Model.Activo)
+                        {
+                            <span class="sc-badge sc-estado-activo">
+                                <span style="display: inline-block; width: 6px; height: 6px; background: currentColor; border-radius: 50%; margin-right: 6px;"></span>
+                                Activo
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="sc-badge sc-estado-inactivo">
+                                <span style="display: inline-block; width: 6px; height: 6px; background: currentColor; border-radius: 50%; margin-right: 6px;"></span>
+                                Inactivo
+                            </span>
+                        }
+                    </span>
+                </li>
+
+            </ul>
+        </div>
 
     </div>
 
+    <!-- ACCIONES -->
+    <div class="sc-actions">
 
-    <!-- INFORMACIÓN -->
-    <div class="detalles-card">
+        <a asp-action="Edit"
+           asp-route-id="@Model.IdUsuario"
+           class="sc-btn sc-btn-warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+            Editar usuario
+        </a>
 
-        <div class="informacion">
-
-            <!-- ID -->
-            <div class="dato">
-
-                <span class="dato-nombre">
-                    ID
-                </span>
-
-                <span class="dato-valor">
-                    @Model.IdUsuario
-                </span>
-
-            </div>
-
-
-            <!-- NOMBRE -->
-            <div class="dato">
-
-                <span class="dato-nombre">
-                    Nombre
-                </span>
-
-                <span class="dato-valor">
-                    @Model.Nombre
-                </span>
-
-            </div>
-
-
-            <!-- CORREO -->
-            <div class="dato">
-
-                <span class="dato-nombre">
-                    Correo
-                </span>
-
-                <span class="dato-valor">
-                    @Model.Correo
-                </span>
-
-            </div>
-
-
-            <!-- ROL -->
-            <div class="dato">
-
-                <span class="dato-nombre">
-                    Rol
-                </span>
-
-                <span class="dato-valor">
-
-                    @if (Model.Rol == RolUsuario.Administrador)
-                    {
-                        <span class="rol rol-admin">
-                            Administrador
-                        </span>
-                    }
-                    else if (Model.Rol == RolUsuario.Cocinero)
-                    {
-                        <span class="rol rol-cocinero">
-                            Cocinero
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="rol rol-mesero">
-                            Mesero
-                        </span>
-                    }
-
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="dato">
-
-                <span class="dato-nombre">
-                    Estado
-                </span>
-
-                <span class="dato-valor">
-
-                    @if (Model.Activo)
-                    {
-                        <span class="estado estado-activo">
-                            Activo
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="estado estado-inactivo">
-                            Inactivo
-                        </span>
-                    }
-
-                </span>
-
-            </div>
-
-        </div>
-
-
-        <!-- BOTONES -->
-        <div class="acciones">
-
-            <a asp-action="Edit"
-               asp-route-id="@Model.IdUsuario"
-               class="btn-editar">
-                Editar usuario
-            </a>
-
-            <a asp-action="Index"
-               class="btn-volver">
-                Volver
-            </a>
-
-        </div>
+        <a asp-action="Index"
+           class="sc-btn sc-btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+            </svg>
+            Volver a usuarios
+        </a>
 
     </div>
 
 </div>
-
