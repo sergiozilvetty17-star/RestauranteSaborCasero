@@ -1,249 +1,386 @@
-﻿
-@model RestauranteSaborCasero.Models.Mesa
+﻿@model RestauranteSaborCasero.Models.Mesa
 
 @{
     ViewData["Title"] = "Editar Mesa";
 }
 
 <style>
-    .editar-mesa-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Basado en el Dashboard)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
+        --sc-danger-bg: #fdf3f2;
+        --sc-danger-text: #c92a2a;
     }
 
-    .editar-mesa-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 650px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .editar-mesa-titulo {
-        margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
     }
 
-    .editar-mesa-subtitulo {
-        margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
-    }
-
-    .editar-mesa-card {
-        width: 550px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
-    }
-
-    .identificacion {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
-        border-radius: 8px;
-        padding: 15px;
-        margin-bottom: 25px;
-        color: #343a40;
-    }
-
-        .identificacion strong {
-            font-size: 18px;
+        .sc-header-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
         }
 
-    .campo {
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
+    }
+
+    .sc-description {
+        margin: 6px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
+        overflow: hidden;
+        margin-bottom: 25px;
+    }
+
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.1rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 24px;
+    }
+
+    /* =========================================================
+           FORMULARIO Y CAMPOS
+           ========================================================= */
+    .sc-form-group {
         margin-bottom: 22px;
     }
 
-        .campo label {
-            display: block;
-            margin-bottom: 7px;
-            font-weight: 600;
-            color: #333;
-        }
+    .sc-form-label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--sc-dark);
+        font-size: 0.85rem;
+        font-weight: 800;
+    }
 
-        .campo input,
-        .campo select {
+    .sc-input-wrapper {
+        position: relative;
+    }
+
+    .sc-input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: #a3968f;
+        pointer-events: none;
+    }
+
+        .sc-input-icon svg {
             width: 100%;
-            box-sizing: border-box;
-            padding: 12px;
-            border: 1px solid #ced4da;
-            border-radius: 7px;
-            background-color: white;
-            color: #333;
-            font-size: 15px;
+            height: 100%;
+            stroke: currentColor;
         }
 
-            .campo input:focus,
-            .campo select:focus {
-                outline: none;
-                border-color: #198754;
-                box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.12);
-            }
+    .sc-input,
+    .sc-select {
+        width: 100%;
+        height: 48px;
+        padding: 0 16px 0 42px;
+        background: #ffffff;
+        border: 1px solid #dcd2cc;
+        border-radius: 10px;
+        color: var(--sc-dark);
+        font-size: 0.9rem;
+        font-weight: 600;
+        outline: none;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+    }
 
-    .ayuda {
+    .sc-select {
+        cursor: pointer;
+        appearance: auto;
+        padding-right: 36px;
+    }
+
+        .sc-input:hover,
+        .sc-select:hover {
+            border-color: #c4b5ac;
+        }
+
+        .sc-input:focus,
+        .sc-select:focus {
+            border-color: var(--sc-primary);
+            box-shadow: 0 0 0 3px rgba(141, 48, 36, 0.1);
+            background: #ffffff;
+        }
+
+    .sc-help-text {
         display: block;
         margin-top: 6px;
-        color: #888;
-        font-size: 12px;
-    }
-
-    .validation {
-        display: block;
-        margin-top: 5px;
-        color: #dc3545;
-        font-size: 13px;
-    }
-
-    .validation-summary {
-        background-color: #f8d7da;
-        border: 1px solid #f1aeb5;
-        color: #842029;
-        border-radius: 7px;
-        padding: 12px 15px;
-        margin-bottom: 20px;
-    }
-
-    .acciones {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding-top: 20px;
-        border-top: 1px solid #eeeeee;
-    }
-
-    .btn-guardar {
-        border: none;
-        background-color: #198754;
-        color: white;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
+        color: #8c8078;
+        font-size: 0.75rem;
         font-weight: 600;
+    }
+
+    /* =========================================================
+           VALIDACIÓN
+           ========================================================= */
+    .sc-validation {
+        display: block;
+        margin-top: 6px;
+        color: var(--sc-danger-text);
+        font-size: 0.75rem;
+        font-weight: 700;
+    }
+
+    .sc-validation-summary {
+        background-color: var(--sc-danger-bg);
+        border: 1px solid #f5c2c2;
+        color: var(--sc-danger-text);
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 24px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        padding-top: 24px;
+        border-top: 1px solid var(--sc-border);
+        margin-top: 10px;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 44px;
+        padding: 0 22px;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
         cursor: pointer;
     }
 
-        .btn-guardar:hover {
-            background-color: #157347;
+        .sc-btn svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
-        text-decoration: none;
-        padding: 12px 22px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+    .sc-btn-primary {
+        background-color: var(--sc-primary);
+        color: #ffffff;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-primary:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
         }
 </style>
 
-
-<div class="editar-mesa-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="editar-mesa-header">
-
-        <h1 class="editar-mesa-titulo">
-            Editar mesa
-        </h1>
-
-        <p class="editar-mesa-subtitulo">
-            Modifica la información de la mesa seleccionada
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Mesas</p>
+            <h1 class="sc-title">Editar mesa</h1>
+            <p class="sc-description">Modifica la configuración de la mesa en el sistema.</p>
+        </div>
     </div>
 
-
     <!-- FORMULARIO -->
-    <div class="editar-mesa-card">
+    <div class="sc-panel">
 
-        <div class="identificacion">
-            Mesa <strong>#@Model.NumeroMesa</strong>
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Mesa #@Model.NumeroMesa</h2>
+                <p class="sc-panel-subtitle">Actualización de datos</p>
+            </div>
+            <div class="sc-badge" style="background: var(--sc-primary-soft); color: var(--sc-primary); font-size: 0.7rem; padding: 6px 10px; border-radius: 8px; font-weight: 800; text-transform: uppercase;">
+                Modo Edición
+            </div>
         </div>
 
+        <div class="sc-panel-body">
 
-        <form asp-action="Edit" method="post">
+            <form asp-action="Edit" method="post">
 
-            <input type="hidden"
-                   asp-for="IdMesa" />
+                <input type="hidden" asp-for="IdMesa" />
 
+                <div asp-validation-summary="ModelOnly" class="sc-validation-summary"></div>
 
-            <div asp-validation-summary="ModelOnly"
-                 class="validation-summary">
-            </div>
+                <!-- NÚMERO DE MESA -->
+                <div class="sc-form-group">
+                    <label asp-for="NumeroMesa" class="sc-form-label">
+                        Número de mesa
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="4" y1="9" x2="20" y2="9" />
+                                <line x1="4" y1="15" x2="20" y2="15" />
+                                <line x1="10" y1="3" x2="8" y2="21" />
+                                <line x1="16" y1="3" x2="14" y2="21" />
+                            </svg>
+                        </span>
+                        <input asp-for="NumeroMesa" type="number" min="1" max="999" class="sc-input" placeholder="Ej: 5" />
+                    </div>
+                    <span class="sc-help-text">El número identificador físico de la mesa (entre 1 y 999).</span>
+                    <span asp-validation-for="NumeroMesa" class="sc-validation"></span>
+                </div>
 
+                <!-- ESTADO -->
+                <div class="sc-form-group">
+                    <label asp-for="Estado" class="sc-form-label">
+                        Estado de la mesa
+                    </label>
+                    <div class="sc-input-wrapper">
+                        <span class="sc-input-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
+                            </svg>
+                        </span>
+                        <select asp-for="Estado" class="sc-select" asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoMesa>()">
+                        </select>
+                    </div>
+                    <span class="sc-help-text">Indica si la mesa está disponible u ocupada actualmente.</span>
+                    <span asp-validation-for="Estado" class="sc-validation"></span>
+                </div>
 
-            <!-- NÚMERO DE MESA -->
-            <div class="campo">
+                <!-- BOTONES -->
+                <div class="sc-actions">
+                    <button type="submit" class="sc-btn sc-btn-primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                            <polyline points="17 21 17 13 7 13 7 21" />
+                            <polyline points="7 3 7 8 15 8" />
+                        </svg>
+                        Guardar cambios
+                    </button>
 
-                <label asp-for="NumeroMesa">
-                    Número de mesa
-                </label>
+                    <a asp-action="Index" class="sc-btn sc-btn-secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="19" y1="12" x2="5" y2="12" />
+                            <polyline points="12 19 5 12 12 5" />
+                        </svg>
+                        Cancelar
+                    </a>
+                </div>
 
-                <input asp-for="NumeroMesa"
-                       type="number"
-                       min="1"
-                       max="999" />
+            </form>
 
-                <span class="ayuda">
-                    El número debe estar entre 1 y 999.
-                </span>
-
-                <span asp-validation-for="NumeroMesa"
-                      class="validation">
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="campo">
-
-                <label asp-for="Estado">
-                    Estado de la mesa
-                </label>
-
-                <select asp-for="Estado"
-                        asp-items="Html.GetEnumSelectList<RestauranteSaborCasero.Models.EstadoMesa>()">
-                </select>
-
-                <span class="ayuda">
-                    Indica si la mesa está disponible u ocupada.
-                </span>
-
-                <span asp-validation-for="Estado"
-                      class="validation">
-                </span>
-
-            </div>
-
-
-            <!-- BOTONES -->
-            <div class="acciones">
-
-                <button type="submit"
-                        class="btn-guardar">
-                    Guardar cambios
-                </button>
-
-                <a asp-action="Index"
-                   class="btn-volver">
-                    Volver a mesas
-                </a>
-
-            </div>
-
-        </form>
-
+        </div>
     </div>
 
 </div>
 
-
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
-

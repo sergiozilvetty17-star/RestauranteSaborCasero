@@ -1,235 +1,348 @@
-﻿
-@model RestauranteSaborCasero.Models.Mesa
+﻿@model RestauranteSaborCasero.Models.Mesa
 
 @{
     ViewData["Title"] = "Detalles de la Mesa";
 }
 
 <style>
-    .mesa-detalles-container {
-        padding: 30px;
+    /* =========================================================
+           VARIABLES DE TEMA (Basado en el Dashboard)
+           ========================================================= */
+    :root {
+        --sc-primary: #8d3024;
+        --sc-primary-dark: #7d2b21;
+        --sc-primary-soft: #f9f2f0;
+        --sc-dark: #3c2c27;
+        --sc-gray: #756b65;
+        --sc-border: #eee8e3;
+        --sc-bg-panel: #ffffff;
+        --sc-shadow: 0 8px 24px rgba(49, 31, 25, .07);
     }
 
-    .mesa-detalles-header {
+    .sc-page-container {
+        width: 100%;
+        max-width: 650px;
+        padding-top: 12px;
+        color: var(--sc-dark);
+    }
+
+    /* =========================================================
+           ENCABEZADO
+           ========================================================= */
+    .sc-header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
         margin-bottom: 25px;
     }
 
-    .mesa-detalles-titulo {
+    .sc-header-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sc-primary-soft);
+        border-radius: 12px;
+        color: var(--sc-primary);
+    }
+
+        .sc-header-icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: currentColor;
+        }
+
+    .sc-eyebrow {
+        margin: 0 0 4px;
+        color: var(--sc-primary);
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+    }
+
+    .sc-title {
         margin: 0;
-        font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        color: var(--sc-dark);
+        font-size: 2rem;
+        font-weight: 900;
+        letter-spacing: -0.5px;
+        line-height: 1.1;
     }
 
-    .mesa-detalles-subtitulo {
+    .sc-description {
         margin: 6px 0 0;
-        color: #777;
-        font-size: 15px;
+        color: var(--sc-gray);
+        font-size: 0.85rem;
+        font-weight: 600;
     }
 
-    .mesa-detalles-card {
-        width: 600px;
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
-        padding: 30px;
-        margin-bottom: 20px;
-    }
-
-    .mesa-identificacion {
-        font-size: 22px;
-        font-weight: 700;
-        color: #343a40;
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eeeeee;
-    }
-
-    .informacion-mesa {
-        border: 1px solid #eeeeee;
-        border-radius: 8px;
+    /* =========================================================
+           TARJETA (PANEL)
+           ========================================================= */
+    .sc-panel {
+        background: var(--sc-bg-panel);
+        border: 1px solid var(--sc-border);
+        border-radius: 16px;
+        box-shadow: var(--sc-shadow);
         overflow: hidden;
+        margin-bottom: 25px;
     }
 
-    .dato {
+    .sc-panel-header {
+        padding: 20px 24px;
+        background: #faf8f6;
+        border-bottom: 1px solid var(--sc-border);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px;
-        border-bottom: 1px solid #eeeeee;
     }
 
-        .dato:last-child {
+    .sc-panel-title {
+        margin: 0;
+        color: var(--sc-dark);
+        font-size: 1.1rem;
+        font-weight: 900;
+    }
+
+    .sc-panel-subtitle {
+        margin: 4px 0 0;
+        color: var(--sc-gray);
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .sc-panel-body {
+        padding: 0;
+    }
+
+    /* =========================================================
+           LISTA DE DATOS
+           ========================================================= */
+    .sc-data-list {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .sc-data-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--sc-border);
+    }
+
+        .sc-data-item:last-child {
             border-bottom: none;
         }
 
-    .dato-titulo {
-        color: #777;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .dato-valor {
-        color: #333;
-        font-size: 15px;
-        font-weight: 600;
-    }
-
-    .numero-mesa {
-        font-size: 18px;
+    .sc-data-label {
+        color: var(--sc-gray);
+        font-size: 0.85rem;
         font-weight: 700;
     }
 
-    .estado {
-        display: inline-block;
-        padding: 6px 11px;
-        border-radius: 20px;
-        font-size: 13px;
-        font-weight: 600;
-        background-color: #d1e7dd;
-        color: #0f5132;
+    .sc-data-value {
+        color: var(--sc-dark);
+        font-size: 0.95rem;
+        font-weight: 800;
+        text-align: right;
     }
 
-    .acciones {
-        display: flex;
-        gap: 10px;
+    .sc-highlight {
+        font-size: 1.1rem;
+        color: var(--sc-primary);
+        font-weight: 900;
+    }
+
+    /* =========================================================
+           BADGE ESTADO
+           ========================================================= */
+    .sc-badge {
+        display: inline-flex;
         align-items: center;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        background-color: #f3f0ed;
+        color: #5f534d;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
-    .btn {
-        display: inline-block;
+    /* =========================================================
+           BOTONES Y ACCIONES
+           ========================================================= */
+    .sc-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .sc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 42px;
+        padding: 0 20px;
+        border-radius: 10px;
+        font-size: 0.8rem;
+        font-weight: 800;
         text-decoration: none;
-        padding: 11px 20px;
-        border-radius: 7px;
-        font-size: 14px;
-        font-weight: 600;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
     }
 
-    .btn-editar {
-        background-color: #ffc107;
-        color: #212529;
-    }
-
-        .btn-editar:hover {
-            background-color: #ffca2c;
-            color: #212529;
+        .sc-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
         }
 
-    .btn-eliminar {
-        background-color: #dc3545;
-        color: white;
+    .sc-btn-warning {
+        background-color: #f2d7a0;
+        color: #5f430f;
+        border-color: #e8c785;
     }
 
-        .btn-eliminar:hover {
-            background-color: #bb2d3b;
-            color: white;
+        .sc-btn-warning:hover {
+            background-color: #e8c785;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(242, 215, 160, 0.4);
         }
 
-    .btn-volver {
-        background-color: #6c757d;
-        color: white;
+    .sc-btn-danger {
+        background-color: var(--sc-primary);
+        color: #ffffff;
     }
 
-        .btn-volver:hover {
-            background-color: #5c636a;
-            color: white;
+        .sc-btn-danger:hover {
+            background-color: var(--sc-primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(141, 48, 36, 0.2);
+        }
+
+    .sc-btn-secondary {
+        background-color: #f3f0ed;
+        color: #665d57;
+        border-color: #e5ddd6;
+    }
+
+        .sc-btn-secondary:hover {
+            background-color: #e9e3de;
+            color: var(--sc-dark);
+            transform: translateY(-2px);
         }
 </style>
 
-
-<div class="mesa-detalles-container">
+<div class="sc-page-container">
 
     <!-- ENCABEZADO -->
-    <div class="mesa-detalles-header">
-
-        <h1 class="mesa-detalles-titulo">
-            Detalles de la mesa
-        </h1>
-
-        <p class="mesa-detalles-subtitulo">
-            Información de la mesa registrada
-        </p>
-
+    <div class="sc-header">
+        <div class="sc-header-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="8" width="18" height="4" rx="1" />
+                <path d="M12 8v13" />
+                <path d="M19 12v9" />
+                <path d="M5 12v9" />
+                <path d="M7 4h10" />
+            </svg>
+        </div>
+        <div>
+            <p class="sc-eyebrow">Gestión de Mesas</p>
+            <h1 class="sc-title">Detalles de la mesa</h1>
+            <p class="sc-description">Información registrada de la mesa en el sistema.</p>
+        </div>
     </div>
-
 
     <!-- INFORMACIÓN DE LA MESA -->
-    <div class="mesa-detalles-card">
+    <div class="sc-panel">
 
-        <div class="mesa-identificacion">
-            Mesa #@Model.NumeroMesa
+        <div class="sc-panel-header">
+            <div>
+                <h2 class="sc-panel-title">Mesa #@Model.NumeroMesa</h2>
+                <p class="sc-panel-subtitle">Datos de identificación y estado</p>
+            </div>
+            <div class="sc-header-icon" style="width: 40px; height: 40px; background: #ffffff; border: 1px solid var(--sc-border);">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width: 20px; height: 20px; color: var(--sc-gray);">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="16" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12.01" y2="8" />
+                </svg>
+            </div>
         </div>
 
+        <div class="sc-panel-body">
+            <ul class="sc-data-list">
 
-        <div class="informacion-mesa">
+                <!-- ID -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">ID interno de registro</span>
+                    <span class="sc-data-value">@Model.IdMesa</span>
+                </li>
 
-            <!-- ID -->
-            <div class="dato">
+                <!-- NÚMERO -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">Número asignado a la mesa</span>
+                    <span class="sc-data-value sc-highlight">@Model.NumeroMesa</span>
+                </li>
 
-                <span class="dato-titulo">
-                    ID de mesa
-                </span>
+                <!-- ESTADO -->
+                <li class="sc-data-item">
+                    <span class="sc-data-label">Disponibilidad actual</span>
+                    <span class="sc-badge">
+                        <span style="display: inline-block; width: 6px; height: 6px; background: currentColor; border-radius: 50%; margin-right: 6px;"></span>
+                        @Model.Estado
+                    </span>
+                </li>
 
-                <span class="dato-valor">
-                    @Model.IdMesa
-                </span>
-
-            </div>
-
-
-            <!-- NÚMERO -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Número de mesa
-                </span>
-
-                <span class="dato-valor numero-mesa">
-                    @Model.NumeroMesa
-                </span>
-
-            </div>
-
-
-            <!-- ESTADO -->
-            <div class="dato">
-
-                <span class="dato-titulo">
-                    Estado
-                </span>
-
-                <span class="estado">
-                    @Model.Estado
-                </span>
-
-            </div>
-
+            </ul>
         </div>
 
     </div>
 
-
     <!-- ACCIONES -->
-    <div class="acciones">
+    <div class="sc-actions">
 
         <a asp-action="Edit"
            asp-route-id="@Model.IdMesa"
-           class="btn btn-editar">
+           class="sc-btn sc-btn-warning">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 20h9" />
+                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" />
+            </svg>
             Editar mesa
         </a>
 
         <a asp-action="Delete"
            asp-route-id="@Model.IdMesa"
-           class="btn btn-eliminar">
-            Eliminar
+           class="sc-btn sc-btn-danger">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                <line x1="10" y1="11" x2="10" y2="17" />
+                <line x1="14" y1="11" x2="14" y2="17" />
+            </svg>
+            Eliminar mesa
         </a>
 
         <a asp-action="Index"
-           class="btn btn-volver">
+           class="sc-btn sc-btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12" />
+                <polyline points="12 19 5 12 12 5" />
+            </svg>
             Volver a mesas
         </a>
 
     </div>
 
 </div>
-
