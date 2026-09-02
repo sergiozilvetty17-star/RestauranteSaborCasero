@@ -5,9 +5,17 @@
 }
 
 <style>
+    /* =========================================================
+       PEDIDOS - SABOR CASERO
+       ========================================================= */
+
     .pedidos-container {
         padding: 30px;
     }
+
+    /* =========================================================
+       ENCABEZADO
+       ========================================================= */
 
     .pedidos-header {
         display: flex;
@@ -19,34 +27,40 @@
     .pedidos-titulo {
         margin: 0;
         font-size: 30px;
-        font-weight: 700;
-        color: #2c2c2c;
+        font-weight: 800;
+        color: #3a211c;
+        letter-spacing: -0.5px;
     }
 
     .pedidos-subtitulo {
         margin: 6px 0 0;
-        color: #777;
+        color: #766a66;
         font-size: 15px;
     }
 
     .btn-nuevo {
-        background-color: #198754;
+        background-color: #7a2e24;
         color: white;
         text-decoration: none;
         padding: 14px 22px;
-        border-radius: 8px;
+        border-radius: 9px;
         font-weight: 700;
         font-size: 16px;
+        border: 1px solid #68251d;
+        box-shadow: 0 5px 14px rgba(104, 37, 29, 0.18);
+        transition: all 0.2s ease;
     }
 
-        .btn-nuevo:hover {
-            background-color: #157347;
-            color: white;
-        }
+    .btn-nuevo:hover {
+        background-color: #5f241c;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(104, 37, 29, 0.24);
+    }
 
-    /* ==========================================
-           TARJETAS DE PEDIDOS
-           ========================================== */
+    /* =========================================================
+       TARJETAS DE PEDIDOS
+       ========================================================= */
 
     .pedidos-grid {
         display: grid;
@@ -55,36 +69,80 @@
     }
 
     .pedido-card {
-        background: white;
-        border: 1px solid #e1e1e1;
-        border-radius: 12px;
+        position: relative;
+        border-radius: 14px;
         padding: 22px;
+        overflow: hidden;
+
+        border: 1px solid;
+        box-shadow: 0 7px 20px rgba(50, 35, 30, 0.08);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            border-color 0.2s ease;
     }
 
-        .pedido-card:hover {
-            border-color: #c8c8c8;
-        }
+    .pedido-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 13px 30px rgba(50, 35, 30, 0.13);
+    }
 
-    /* ==========================================
-           CABECERA DEL PEDIDO
-           ========================================== */
+    /* =========================================================
+       FONDOS SEGÚN ESTADO DEL PEDIDO
+       ========================================================= */
+
+    /* PENDIENTE - Amarillo cálido */
+.pedido-card.estado-pedido-pendiente {
+    background: #f8e7a8;
+    border-color: #d6b84c;
+}
+
+/* EN PREPARACIÓN - Azul más marcado */
+.pedido-card.estado-pedido-preparacion {
+    background: #c9dcf5;
+    border-color: #7fa6d5;
+}
+
+/* LISTO - Cian más marcado */
+.pedido-card.estado-pedido-listo {
+    background: #bfe5eb;
+    border-color: #6fb8c5;
+}
+
+/* ENTREGADO - Verde más marcado */
+.pedido-card.estado-pedido-entregado {
+    background: #c5e2ce;
+    border-color: #79b58b;
+}
+
+/* CANCELADO - Rojo rosado */
+.pedido-card.estado-pedido-cancelado {
+    background: #edc4c8;
+    border-color: #c77b84;
+}
+
+    /* =========================================================
+       CABECERA DEL PEDIDO
+       ========================================================= */
 
     .pedido-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 15px;
         margin-bottom: 18px;
     }
 
     .pedido-numero {
         font-size: 24px;
         font-weight: 800;
-        color: #343a40;
+        color: #3a211c;
     }
 
-    /* ==========================================
-           INFORMACIÓN
-           ========================================== */
+    /* =========================================================
+       INFORMACIÓN
+       ========================================================= */
 
     .pedido-info {
         display: flex;
@@ -94,17 +152,18 @@
     }
 
     .info-item {
-        background-color: #f1f3f5;
+        background-color: rgba(255, 255, 255, 0.65);
+        border: 1px solid rgba(100, 80, 70, 0.12);
         padding: 9px 13px;
         border-radius: 7px;
         font-size: 14px;
-        color: #444;
+        color: #4d403b;
         font-weight: 600;
     }
 
-    /* ==========================================
-           ESTADOS
-           ========================================== */
+    /* =========================================================
+       ESTADOS
+       ========================================================= */
 
     .estado {
         display: inline-block;
@@ -112,6 +171,7 @@
         border-radius: 20px;
         font-size: 14px;
         font-weight: 700;
+        white-space: nowrap;
     }
 
     .estado-pendiente {
@@ -139,59 +199,59 @@
         color: #842029;
     }
 
-    /* ==========================================
-           PLATOS
-           ========================================== */
+    /* =========================================================
+       PLATOS
+       ========================================================= */
 
     .platos-titulo {
         font-size: 16px;
-        font-weight: 700;
-        color: #343a40;
+        font-weight: 800;
+        color: #3a211c;
         margin-bottom: 10px;
     }
 
     .plato {
         padding: 12px 0;
-        border-bottom: 1px solid #eeeeee;
+        border-bottom: 1px solid rgba(90, 70, 60, 0.14);
     }
 
-        .plato:last-child {
-            border-bottom: none;
-        }
+    .plato:last-child {
+        border-bottom: none;
+    }
 
     .plato-nombre {
         font-size: 16px;
         font-weight: 700;
-        color: #333;
+        color: #3f3430;
     }
 
     .plato-cantidad {
-        color: #198754;
+        color: #7a2e24;
         font-weight: 800;
         margin-right: 6px;
     }
 
-    /* ==========================================
-           INDICACIONES
-           ========================================== */
+    /* =========================================================
+       INDICACIONES
+       ========================================================= */
 
     .indicacion {
         margin-top: 6px;
         padding: 8px 10px;
-        background-color: #fff8e1;
-        border-left: 4px solid #ffc107;
+        background-color: rgba(255, 248, 225, 0.90);
+        border-left: 4px solid #d69b45;
         border-radius: 4px;
         font-size: 14px;
         color: #5f5100;
     }
 
-        .indicacion strong {
-            color: #443b00;
-        }
+    .indicacion strong {
+        color: #443b00;
+    }
 
-    /* ==========================================
-           ACCIONES GRANDES
-           ========================================== */
+    /* =========================================================
+       ACCIONES GRANDES
+       ========================================================= */
 
     .acciones {
         display: grid;
@@ -209,57 +269,68 @@
         font-weight: 800;
         cursor: pointer;
         padding: 12px;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease;
     }
 
     .btn-estado-grande {
-        background-color: #198754;
+        background-color: #7a2e24;
         color: white;
+        box-shadow: 0 5px 12px rgba(122, 46, 36, 0.18);
     }
 
-        .btn-estado-grande:hover {
-            background-color: #157347;
-        }
+    .btn-estado-grande:hover {
+        background-color: #60231c;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 17px rgba(122, 46, 36, 0.25);
+    }
 
     .btn-cancelar-grande {
-        background-color: #dc3545;
+        background-color: #9e3038;
         color: white;
+        box-shadow: 0 5px 12px rgba(158, 48, 56, 0.15);
     }
 
-        .btn-cancelar-grande:hover {
-            background-color: #bb2d3b;
-        }
+    .btn-cancelar-grande:hover {
+        background-color: #81262e;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 17px rgba(158, 48, 56, 0.23);
+    }
 
-    /* ==========================================
-           PEDIDO FINALIZADO
-           ========================================== */
+    /* =========================================================
+       PEDIDO FINALIZADO
+       ========================================================= */
 
     .pedido-finalizado {
         margin-top: 20px;
         padding: 14px;
         text-align: center;
         border-radius: 8px;
-        background-color: #f1f3f5;
-        color: #666;
-        font-weight: 600;
+        background-color: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(80, 70, 60, 0.12);
+        color: #665d59;
+        font-weight: 700;
     }
 
-    /* ==========================================
-           SIN PEDIDOS
-           ========================================== */
+    /* =========================================================
+       SIN PEDIDOS
+       ========================================================= */
 
     .tabla-vacia {
-        background-color: white;
-        border: 1px solid #e5e5e5;
-        border-radius: 10px;
+        background-color: #f8f3ef;
+        border: 1px solid #dfd3ca;
+        border-radius: 12px;
         text-align: center;
         padding: 50px;
-        color: #777;
+        color: #776b65;
         font-size: 17px;
+        box-shadow: 0 6px 18px rgba(50, 35, 30, 0.06);
     }
 
-    /* ==========================================
-           RESPONSIVE
-           ========================================== */
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
 
     @@media (max-width: 700px) {
 
@@ -281,6 +352,11 @@
             grid-template-columns: 1fr;
         }
 
+        .pedido-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
         .acciones {
             grid-template-columns: 1fr;
         }
@@ -295,8 +371,8 @@
 <div class="pedidos-container">
 
     <!-- ==========================================
-     ENCABEZADO
-     ========================================== -->
+         ENCABEZADO
+         ========================================== -->
 
     <div class="pedidos-header">
 
@@ -320,15 +396,26 @@
 
 
     <!-- ==========================================
-     PEDIDOS
-     ========================================== -->
+         PEDIDOS
+         ========================================== -->
+
     @if (Model != null && Model.Any())
     {
         <div class="pedidos-grid">
 
             @foreach (var pedido in Model)
             {
-                <div class="pedido-card">
+                <!-- ==========================================
+                     TARJETA DEL PEDIDO
+                     EL COLOR DEPENDE DEL ESTADO
+                     ========================================== -->
+
+                <div class="pedido-card
+                    @(pedido.Estado == EstadoPedido.Pendiente ? "estado-pedido-pendiente" :
+                      pedido.Estado == EstadoPedido.EnPreparacion ? "estado-pedido-preparacion" :
+                      pedido.Estado == EstadoPedido.Listo ? "estado-pedido-listo" :
+                      pedido.Estado == EstadoPedido.Entregado ? "estado-pedido-entregado" :
+                      pedido.Estado == EstadoPedido.Cancelado ? "estado-pedido-cancelado" : "")">
 
                     <!-- CABECERA -->
 
@@ -337,7 +424,6 @@
                         <span class="pedido-numero">
                             Pedido #@pedido.IdPedido
                         </span>
-
 
                         @switch (pedido.Estado)
                         {
@@ -402,7 +488,6 @@
                             </div>
                         }
 
-
                         <div class="info-item">
                             Mesero: @(pedido.Usuario?.Nombre ?? "Sin asignar")
                         </div>
@@ -457,9 +542,10 @@
                     }
 
 
-                    <!-- ==================================
-                     ACCIONES
-                     ================================== -->
+                    <!-- ==========================================
+                         ACCIONES - PEDIDO PENDIENTE
+                         ========================================== -->
+
                     @if (pedido.Estado == EstadoPedido.Pendiente)
                     {
                         <div class="acciones">
@@ -512,6 +598,10 @@
                         </div>
                     }
 
+
+                    <!-- ==========================================
+                         ACCIONES - EN PREPARACIÓN
+                         ========================================== -->
 
                     @if (pedido.Estado == EstadoPedido.EnPreparacion)
                     {
@@ -566,6 +656,10 @@
                     }
 
 
+                    <!-- ==========================================
+                         ACCIONES - LISTO
+                         ========================================== -->
+
                     @if (pedido.Estado == EstadoPedido.Listo)
                     {
                         <div class="acciones">
@@ -619,6 +713,10 @@
                     }
 
 
+                    <!-- ==========================================
+                         PEDIDO ENTREGADO
+                         ========================================== -->
+
                     @if (pedido.Estado == EstadoPedido.Entregado)
                     {
                         <div class="pedido-finalizado">
@@ -626,6 +724,10 @@
                         </div>
                     }
 
+
+                    <!-- ==========================================
+                         PEDIDO CANCELADO
+                         ========================================== -->
 
                     @if (pedido.Estado == EstadoPedido.Cancelado)
                     {
@@ -647,9 +749,11 @@
     }
 
 </div>
-<!-- ========================================================= -->
-<!-- SIGNALR - ACTUALIZACIÓN DE PEDIDOS EN TIEMPO REAL -->
-<!-- ========================================================= -->
+
+
+<!-- =========================================================
+     SIGNALR - ACTUALIZACIÓN DE PEDIDOS EN TIEMPO REAL
+     ========================================================= -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
 

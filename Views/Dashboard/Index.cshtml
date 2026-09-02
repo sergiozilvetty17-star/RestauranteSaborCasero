@@ -1,1000 +1,1539 @@
 ﻿@{
-    ViewData["Title"] = "Panel de Administrador";
+ViewData["Title"] = "Dashboard";
+string periodo = ViewBag.Periodo as string ?? "hoy";
+
+decimal ingresos = ViewBag.Ingresos ?? 0m;
+int pedidosEntregados = ViewBag.PedidosEntregados ?? 0;
+int platosVendidos = ViewBag.PlatosVendidos ?? 0;
+decimal ticketPromedio = ViewBag.TicketPromedio ?? 0m;
+
+string platoMasVendido =
+    ViewBag.PlatoMasVendido as string ?? "Sin ventas";
+
+int cantidadPlatoMasVendido =
+    ViewBag.CantidadPlatoMasVendido ?? 0;
+
+decimal ingresosPlatoMasVendido =
+    ViewBag.IngresosPlatoMasVendido ?? 0m;
+
+var topPlatos = ViewBag.TopPlatos;
+var ingresosPorDia = ViewBag.IngresosPorDia;
+
+decimal ingresosMesa = ViewBag.IngresosMesa ?? 0m;
+decimal ingresosParaLlevar = ViewBag.IngresosParaLlevar ?? 0m;
+
+int pedidosMesa = ViewBag.PedidosMesa ?? 0;
+int pedidosParaLlevar = ViewBag.PedidosParaLlevar ?? 0;
+
+int totalTiposPedido = pedidosMesa + pedidosParaLlevar;
+
+double porcentajeMesa = totalTiposPedido > 0
+    ? pedidosMesa * 100.0 / totalTiposPedido
+    : 0;
+
+double porcentajeParaLlevar = totalTiposPedido > 0
+    ? pedidosParaLlevar * 100.0 / totalTiposPedido
+    : 0;
+
 }
 
 <style>
-    /* =========================================================
-           DASHBOARD - SABOR CASERO
-           ========================================================= */
 
     .dashboard-page {
-        width: 100%;
+        max-width: 1500px;
+        margin: auto;
+        padding: 28px 24px 45px;
+        color: #2d2522;
     }
-
-    /* =========================================================
-           HEADER
-           ========================================================= */
 
     .dashboard-header {
         display: flex;
-        align-items: flex-end;
         justify-content: space-between;
-        margin-bottom: 28px;
+        align-items: flex-end;
+        gap: 25px;
+        margin-bottom: 24px;
     }
 
-    .dashboard-header-content {
-        max-width: 750px;
-    }
-
-    .dashboard-eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 8px;
-        color: var(--sc-primary);
-        font-size: 0.72rem;
-        font-weight: 800;
-        letter-spacing: 1.4px;
-        text-transform: uppercase;
-    }
-
-    .dashboard-eyebrow-line {
-        width: 25px;
-        height: 2px;
-        border-radius: 10px;
-        background: var(--sc-secondary);
-    }
-
-    .dashboard-title {
+    .dashboard-title-area h1 {
         margin: 0;
-        color: var(--sc-dark);
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -0.8px;
-        line-height: 1.15;
+        font-size: 34px;
+        font-weight: 900;
+        color: #5f2118;
+        letter-spacing: -.8px;
     }
 
-    .dashboard-description {
-        margin: 8px 0 0;
-        color: var(--sc-gray);
-        font-size: 0.9rem;
+    .dashboard-title-area p {
+        margin: 7px 0 0;
+        color: #756b65;
+        font-size: 15px;
+        font-weight: 600;
     }
 
     .dashboard-date {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        padding: 10px 14px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 10px;
-        color: var(--sc-gray);
-        font-size: 0.8rem;
-        font-weight: 600;
-        box-shadow: var(--sc-shadow-sm);
+        background: #211a18;
+        color: #fff;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-weight: 800;
+        box-shadow: 0 8px 20px rgba(40, 24, 20, .12);
     }
 
-        .dashboard-date svg {
-            width: 17px;
-            height: 17px;
-            color: var(--sc-primary);
-        }
+    /* =====================================================
+       FILTROS
+       ===================================================== */
 
-    /* =========================================================
-           SECCIÓN
-           ========================================================= */
+    .filter-card {
+        background: #211a18;
+        border: 1px solid #3c2c27;
+        border-radius: 18px;
+        padding: 20px;
+        margin-bottom: 25px;
+        box-shadow: 0 10px 28px rgba(38, 24, 20, .14);
+    }
+
+    .filter-title {
+        color: #f2d7a0;
+        font-size: 15px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        margin-bottom: 13px;
+    }
+
+    .filter-form {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .filter-group label {
+        color: #d8cbc5;
+        font-size: 12px;
+        font-weight: 800;
+    }
+
+    .filter-group select,
+    .filter-group input {
+        min-height: 43px;
+        border: 1px solid #59423a;
+        background: #30231f;
+        color: #fff;
+        border-radius: 9px;
+        padding: 0 13px;
+        font-weight: 700;
+        outline: none;
+    }
+
+    .filter-group select:focus,
+    .filter-group input:focus {
+        border-color: #a84c3d;
+        box-shadow: 0 0 0 3px rgba(168, 76, 61, .18);
+    }
+
+    .btn-filter {
+        min-height: 43px;
+        padding: 0 22px;
+        border: none;
+        border-radius: 9px;
+        background: #8d3024;
+        color: #fff;
+        font-weight: 900;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+    .btn-filter:hover {
+        background: #a23b2e;
+        transform: translateY(-1px);
+    }
+
+    .custom-dates {
+        display: none;
+        gap: 12px;
+        flex-wrap: wrap;
+        width: 100%;
+        margin-top: 3px;
+    }
+
+    .custom-dates.visible {
+        display: flex;
+    }
+
+    /* =====================================================
+       KPIs
+       ===================================================== */
+
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 17px;
+        margin-bottom: 25px;
+    }
+
+    .kpi-card {
+        position: relative;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid #e3d9d1;
+        border-radius: 17px;
+        padding: 22px;
+        min-height: 145px;
+        box-shadow: 0 8px 24px rgba(49, 31, 25, .08);
+    }
+
+    .kpi-card::after {
+        content: "";
+        position: absolute;
+        width: 95px;
+        height: 95px;
+        right: -35px;
+        bottom: -35px;
+        border-radius: 50%;
+        background: rgba(141, 48, 36, .07);
+    }
+
+    .kpi-label {
+        color: #746a64;
+        font-size: 13px;
+        font-weight: 850;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .kpi-value {
+        margin-top: 8px;
+        color: #332723;
+        font-size: 31px;
+        font-weight: 950;
+        line-height: 1.1;
+    }
+
+    .kpi-card.revenue {
+        background: #281c19;
+        border-color: #3f2b25;
+    }
+
+    .kpi-card.revenue .kpi-label,
+    .kpi-card.revenue .kpi-value {
+        color: #fff;
+    }
+
+    .kpi-card.revenue .kpi-value {
+        color: #f0c978;
+    }
+
+    .kpi-icon {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        font-size: 28px;
+    }
+
+    .kpi-sub {
+        margin-top: 8px;
+        font-size: 12px;
+        color: #837871;
+        font-weight: 700;
+    }
+
+    .kpi-card.revenue .kpi-sub {
+        color: #cdbeb7;
+    }
+
+    /* =====================================================
+       SECCIONES
+       ===================================================== */
 
     .dashboard-section {
-        margin-bottom: 28px;
+        margin-bottom: 25px;
     }
 
-    .dashboard-section-header {
+    .section-title {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-bottom: 14px;
+        gap: 10px;
+        margin: 0 0 13px;
+        color: #4c3029;
+        font-size: 19px;
+        font-weight: 950;
     }
 
-    .dashboard-section-title {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        margin: 0;
-        color: var(--sc-dark);
-        font-size: 1rem;
-        font-weight: 800;
+    .section-title::before {
+        content: "";
+        width: 5px;
+        height: 23px;
+        background: #8d3024;
+        border-radius: 5px;
     }
 
-        .dashboard-section-title::before {
-            content: "";
-            width: 4px;
-            height: 19px;
-            border-radius: 10px;
-            background: var(--sc-primary);
-        }
-
-    .dashboard-section-label {
-        color: var(--sc-gray-light);
-        font-size: 0.75rem;
-        font-weight: 600;
-    }
-
-    /* =========================================================
-           PRINCIPALES INDICADORES
-           ========================================================= */
-
-    .dashboard-primary-grid {
+    .dashboard-grid-2 {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: 1.5fr 1fr;
         gap: 18px;
     }
 
-    .dashboard-stat {
-        position: relative;
-        min-height: 145px;
-        padding: 20px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 15px;
-        box-shadow: var(--sc-shadow);
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-
-        .dashboard-stat:hover {
-            transform: translateY(-3px);
-            border-color: #ddcfc4;
-            box-shadow: var(--sc-shadow-lg);
-        }
-
-        .dashboard-stat::after {
-            content: "";
-            position: absolute;
-            width: 100px;
-            height: 100px;
-            right: -35px;
-            bottom: -45px;
-            border-radius: 50%;
-            background: var(--stat-soft);
-        }
-
-    .dashboard-stat-top {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-    }
-
-    .dashboard-stat-label {
-        margin: 0;
-        color: var(--sc-gray);
-        font-size: 0.78rem;
-        font-weight: 700;
-        line-height: 1.3;
-    }
-
-    .dashboard-stat-icon {
-        width: 42px;
-        height: 42px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        border-radius: 11px;
-        background: var(--stat-soft);
-        color: var(--stat-color);
-    }
-
-        .dashboard-stat-icon svg {
-            width: 21px;
-            height: 21px;
-            stroke: currentColor;
-        }
-
-    .dashboard-stat-number {
-        position: relative;
-        z-index: 2;
-        margin: 17px 0 0;
-        color: var(--sc-dark);
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -0.8px;
-        line-height: 1;
-    }
-
-    .dashboard-stat-status {
-        position: relative;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        margin-top: 9px;
-        color: var(--stat-color);
-        font-size: 0.7rem;
-        font-weight: 700;
-    }
-
-    .dashboard-stat-status-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: currentColor;
-    }
-
-    /* =========================================================
-           COLORES DE INDICADORES
-           ========================================================= */
-
-    .stat-primary {
-        --stat-color: var(--sc-primary);
-        --stat-soft: var(--sc-primary-soft);
-    }
-
-    .stat-success {
-        --stat-color: var(--sc-success);
-        --stat-soft: var(--sc-success-soft);
-    }
-
-    .stat-danger {
-        --stat-color: var(--sc-danger);
-        --stat-soft: var(--sc-danger-soft);
-    }
-
-    .stat-info {
-        --stat-color: var(--sc-info);
-        --stat-soft: var(--sc-info-soft);
-    }
-
-    /* =========================================================
-           RESUMEN GENERAL
-           ========================================================= */
-
-    .dashboard-summary-grid {
+    .dashboard-grid-3 {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 18px;
     }
 
-    .dashboard-summary {
-        display: flex;
-        align-items: center;
-        min-height: 91px;
-        padding: 17px 18px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 13px;
-        box-shadow: var(--sc-shadow-sm);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-        .dashboard-summary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--sc-shadow);
-        }
-
-    .dashboard-summary-icon {
-        width: 43px;
-        height: 43px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 13px;
-        flex-shrink: 0;
-        border-radius: 10px;
-        background: #f5eee8;
-        color: var(--sc-primary);
-    }
-
-        .dashboard-summary-icon svg {
-            width: 21px;
-            height: 21px;
-            stroke: currentColor;
-        }
-
-    .dashboard-summary-content {
-        min-width: 0;
-    }
-
-    .dashboard-summary-label {
-        margin: 0 0 3px;
-        color: var(--sc-gray);
-        font-size: 0.73rem;
-        font-weight: 600;
-    }
-
-    .dashboard-summary-number {
-        margin: 0;
-        color: var(--sc-dark);
-        font-size: 1.45rem;
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    /* =========================================================
-           OPERACIÓN
-           ========================================================= */
-
-    .dashboard-operation-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 18px;
-    }
-
-    .dashboard-operation-card {
-        position: relative;
-        display: flex;
-        align-items: center;
-        min-height: 120px;
-        padding: 22px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 15px;
-        box-shadow: var(--sc-shadow);
+    .panel {
+        background: #fff;
+        border: 1px solid #e3d9d1;
+        border-radius: 17px;
+        box-shadow: 0 8px 24px rgba(49, 31, 25, .07);
         overflow: hidden;
     }
 
-    .dashboard-operation-icon {
-        width: 54px;
-        height: 54px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 17px;
-        flex-shrink: 0;
-        border-radius: 13px;
-        background: var(--sc-primary-soft);
-        color: var(--sc-primary);
-    }
-
-        .dashboard-operation-icon svg {
-            width: 26px;
-            height: 26px;
-            stroke: currentColor;
-        }
-
-    .dashboard-operation-content {
-        flex: 1;
-    }
-
-    .dashboard-operation-label {
-        margin: 0 0 5px;
-        color: var(--sc-gray);
-        font-size: 0.78rem;
-        font-weight: 700;
-    }
-
-    .dashboard-operation-number {
-        margin: 0;
-        color: var(--sc-dark);
-        font-size: 1.75rem;
-        font-weight: 800;
-        line-height: 1;
-    }
-
-    .dashboard-operation-description {
-        margin: 7px 0 0;
-        color: var(--sc-gray-light);
-        font-size: 0.72rem;
-    }
-
-    .dashboard-operation-accent {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--sc-primary);
-    }
-
-        .dashboard-operation-accent.warning {
-            background: var(--sc-secondary);
-        }
-
-    /* =========================================================
-           QUICK STATUS
-           ========================================================= */
-
-    .dashboard-status {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 8px;
+    .panel-header {
         padding: 17px 20px;
-        background: #ffffff;
-        border: 1px solid var(--sc-border);
-        border-radius: 13px;
-    }
-
-    .dashboard-status-left {
+        border-bottom: 1px solid #eee6e0;
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 11px;
+        gap: 15px;
     }
 
-    .dashboard-status-indicator {
-        width: 9px;
-        height: 9px;
-        border-radius: 50%;
-        background: var(--sc-success);
-        box-shadow: 0 0 0 4px var(--sc-success-soft);
-    }
-
-    .dashboard-status-text {
+    .panel-header h3 {
         margin: 0;
-        color: var(--sc-dark);
-        font-size: 0.82rem;
+        color: #3c2c27;
+        font-size: 16px;
+        font-weight: 900;
+    }
+
+    .panel-header span {
+        color: #857972;
+        font-size: 12px;
         font-weight: 700;
     }
 
-    .dashboard-status-subtext {
-        margin: 2px 0 0;
-        color: var(--sc-gray);
-        font-size: 0.7rem;
+    .panel-body {
+        padding: 20px;
     }
 
-    .dashboard-status-badge {
-        padding: 6px 10px;
-        background: var(--sc-success-soft);
-        border-radius: 7px;
-        color: var(--sc-success);
-        font-size: 0.7rem;
+    /* =====================================================
+       PLATO MÁS VENDIDO
+       ===================================================== */
+
+    .best-dish {
+        min-height: 240px;
+        background: linear-gradient(135deg, #291c19, #49221b);
+        color: #fff;
+        border-radius: 17px;
+        padding: 25px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(55, 27, 20, .17);
+    }
+
+    .best-dish::after {
+        content: "★";
+        position: absolute;
+        right: -8px;
+        top: -22px;
+        font-size: 145px;
+        color: rgba(255, 255, 255, .045);
+    }
+
+    .best-dish-label {
+        color: #e9c77f;
+        font-size: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .best-dish h2 {
+        margin: 12px 0 10px;
+        font-size: 29px;
+        font-weight: 950;
+        position: relative;
+        z-index: 1;
+    }
+
+    .best-dish-quantity {
+        color: #d9cbc5;
+        font-size: 14px;
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+    }
+
+    .best-dish-revenue {
+        margin-top: 24px;
+        font-size: 22px;
+        font-weight: 950;
+        color: #f0c978;
+        position: relative;
+        z-index: 1;
+    }
+
+    /* =====================================================
+       RANKING
+       ===================================================== */
+
+    .ranking-item {
+        display: grid;
+        grid-template-columns: 42px 1fr auto;
+        align-items: center;
+        gap: 13px;
+        padding: 13px 0;
+        border-bottom: 1px solid #eee8e3;
+    }
+
+    .ranking-item:last-child {
+        border-bottom: none;
+    }
+
+    .ranking-number {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f3e7e2;
+        color: #7c2c21;
+        font-weight: 950;
+    }
+
+    .ranking-name {
+        color: #382b27;
+        font-weight: 900;
+        font-size: 14px;
+    }
+
+    .ranking-quantity {
+        color: #81766f;
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 3px;
+    }
+
+    .ranking-revenue {
+        color: #7d2b21;
+        font-size: 14px;
+        font-weight: 950;
+    }
+
+    .empty-state {
+        padding: 30px 10px;
+        text-align: center;
+        color: #897e77;
+        font-weight: 700;
+    }
+
+    /* =====================================================
+       BARRAS
+       ===================================================== */
+
+    .bar-chart {
+        display: flex;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .bar-row {
+        display: grid;
+        grid-template-columns: 100px 1fr 80px;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .bar-label {
+        color: #5f534d;
+        font-size: 12px;
+        font-weight: 800;
+        text-align: right;
+    }
+
+    .bar-track {
+        height: 13px;
+        background: #eee8e3;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .bar-fill {
+        height: 100%;
+        background: #8d3024;
+        border-radius: 20px;
+        min-width: 4px;
+    }
+
+    .bar-value {
+        color: #49332d;
+        font-size: 12px;
+        font-weight: 900;
+    }
+
+    /* =====================================================
+       TIPO DE PEDIDO
+       ===================================================== */
+
+    .type-card {
+        padding: 10px 0 20px;
+    }
+
+    .type-title {
+        font-size: 13px;
+        color: #756a63;
+        font-weight: 850;
+        text-transform: uppercase;
+    }
+
+    .type-value {
+        margin-top: 7px;
+        font-size: 29px;
+        font-weight: 950;
+        color: #3d2b26;
+    }
+
+    .type-money {
+        margin-top: 3px;
+        color: #8d3024;
+        font-weight: 900;
+    }
+
+    .progress {
+        margin-top: 15px;
+        height: 10px;
+        background: #eee8e3;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: #8d3024;
+        border-radius: 20px;
+    }
+
+    /* =====================================================
+       OPERACIÓN
+       ===================================================== */
+
+    .operation-card {
+        padding: 20px;
+    }
+
+    .operation-value {
+        font-size: 32px;
+        font-weight: 950;
+        color: #342723;
+    }
+
+    .operation-label {
+        margin-top: 5px;
+        color: #776c65;
+        font-size: 13px;
         font-weight: 800;
     }
-</style>
 
+    .operation-card.alert {
+        background: #3a211d;
+        color: #fff;
+    }
+
+    .operation-card.alert .operation-value {
+        color: #f0c978;
+    }
+
+    .operation-card.alert .operation-label {
+        color: #d7c4bd;
+    }
+
+    /* =====================================================
+       TABLA
+       ===================================================== */
+
+    .summary-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .summary-table td {
+        padding: 13px 8px;
+        border-bottom: 1px solid #eee8e3;
+        color: #44342e;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .summary-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .summary-table td:last-child {
+        text-align: right;
+        font-weight: 900;
+    }
+
+    /* =====================================================
+       RESPONSIVE
+       ===================================================== */
+
+    @@media (max-width: 1100px) {
+
+        .kpi-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .dashboard-grid-2 {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-grid-3 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @@media (max-width: 650px) {
+
+        .dashboard-page {
+            padding: 20px 13px 35px;
+        }
+
+        .dashboard-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .dashboard-title-area h1 {
+            font-size: 28px;
+        }
+
+        .dashboard-date {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .kpi-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .dashboard-grid-3 {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-form {
+            align-items: stretch;
+            flex-direction: column;
+        }
+
+        .filter-group {
+            width: 100%;
+        }
+
+        .filter-group select,
+        .filter-group input,
+        .btn-filter {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .bar-row {
+            grid-template-columns: 65px 1fr 65px;
+        }
+
+        .bar-value {
+            font-size: 11px;
+        }
+
+        .panel-body {
+            padding: 15px;
+        }
+
+        .best-dish h2 {
+            font-size: 25px;
+        }
+    }
+
+</style>
 
 <div class="dashboard-page">
 
-    <!-- =====================================================
-         HEADER
-         ===================================================== -->
+```
+<!-- =====================================================
+     CABECERA
+     ===================================================== -->
 
-    <div class="dashboard-header">
+<div class="dashboard-header">
 
-        <div class="dashboard-header-content">
+    <div class="dashboard-title-area">
 
-            <div class="dashboard-eyebrow">
+        <h1>
+            Dashboard Administrativo
+        </h1>
 
-                <span class="dashboard-eyebrow-line"></span>
+        <p>
+            Control general de ventas, pedidos, mesas e inventario.
+        </p>
 
-                Panel de administración
+    </div>
 
-            </div>
+    <div class="dashboard-date">
 
-            <h1 class="dashboard-title">
-                Resumen del Restaurante
-            </h1>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px; height:18px; margin-right:8px; display:inline-block; vertical-align:middle;">
+            <rect x="3" y="4" width="18" height="17" rx="2"/>
+            <path d="M16 2v4"/>
+            <path d="M8 2v4"/>
+            <path d="M3 10h18"/>
+        </svg>
+        @ViewBag.FechaDesdeTexto
 
-            <p class="dashboard-description">
-                Consulta rápidamente el estado actual de las operaciones
-                y los principales recursos de Sabor Casero.
-            </p>
+        @if (ViewBag.FechaDesdeTexto != ViewBag.FechaHastaTexto)
+        {
+            <span>
+                — @ViewBag.FechaHastaTexto
+            </span>
+        }
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     FILTRO
+     ===================================================== -->
+
+<div class="filter-card">
+
+    <div class="filter-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:16px; height:16px; margin-right:8px; display:inline-block; vertical-align:middle;">
+            <path d="M12 3v18"/>
+            <path d="M4 9h16"/>
+            <rect x="3" y="14" width="4" height="7"/>
+            <rect x="10" y="9" width="4" height="12"/>
+            <rect x="17" y="5" width="4" height="16"/>
+        </svg>
+        Período de análisis de ventas
+    </div>
+
+    <form asp-controller="Dashboard"
+          asp-action="Index"
+          method="get"
+          class="filter-form">
+
+        <div class="filter-group">
+
+            <label for="periodo">
+                Período
+            </label>
+
+            <select id="periodo"
+                    name="periodo"
+                    onchange="mostrarFechasPersonalizadas()">
+
+                @if (periodo == "hoy")
+                {
+                    <option value="hoy" selected>Hoy</option>
+                }
+                else
+                {
+                    <option value="hoy">Hoy</option>
+                }
+
+                @if (periodo == "ayer")
+                {
+                    <option value="ayer" selected>Ayer</option>
+                }
+                else
+                {
+                    <option value="ayer">Ayer</option>
+                }
+
+                @if (periodo == "7dias")
+                {
+                    <option value="7dias" selected>Últimos 7 días</option>
+                }
+                else
+                {
+                    <option value="7dias">Últimos 7 días</option>
+                }
+
+                @if (periodo == "30dias")
+                {
+                    <option value="30dias" selected>Últimos 30 días</option>
+                }
+                else
+                {
+                    <option value="30dias">Últimos 30 días</option>
+                }
+
+                @if (periodo == "mes")
+                {
+                    <option value="mes" selected>Este mes</option>
+                }
+                else
+                {
+                    <option value="mes">Este mes</option>
+                }
+
+                @if (periodo == "mesanterior")
+                {
+                    <option value="mesanterior" selected>Mes anterior</option>
+                }
+                else
+                {
+                    <option value="mesanterior">Mes anterior</option>
+                }
+
+                @if (periodo == "personalizado")
+                {
+                    <option value="personalizado" selected>
+                        Personalizado
+                    </option>
+                }
+                else
+                {
+                    <option value="personalizado">
+                        Personalizado
+                    </option>
+                }
+
+            </select>
 
         </div>
 
 
-        <div class="dashboard-date">
+        <div id="customDates"
+             class="custom-dates @(periodo == "personalizado" ? "visible" : "")">
 
-            <svg viewBox="0 0 24 24"
-                 fill="none"
-                 stroke="currentColor"
-                 stroke-width="1.8"
-                 stroke-linecap="round"
-                 stroke-linejoin="round">
+            <div class="filter-group">
 
-                <rect x="3" y="4" width="18" height="17" rx="2" />
-                <path d="M16 2v4" />
-                <path d="M8 2v4" />
-                <path d="M3 10h18" />
+                <label for="fechaDesde">
+                    Desde
+                </label>
 
+                <input type="date"
+                       id="fechaDesde"
+                       name="fechaDesde"
+                       value="@ViewBag.FechaDesde" />
+
+            </div>
+
+            <div class="filter-group">
+
+                <label for="fechaHasta">
+                    Hasta
+                </label>
+
+                <input type="date"
+                       id="fechaHasta"
+                       name="fechaHasta"
+                       value="@ViewBag.FechaHasta" />
+
+            </div>
+
+        </div>
+
+
+        <button type="submit"
+                class="btn-filter">
+
+             Aplicar período
+
+        </button>
+
+    </form>
+
+</div>
+
+
+<!-- =====================================================
+     KPI
+     ===================================================== -->
+
+<div class="kpi-grid">
+
+    <div class="kpi-card revenue">
+
+        <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <circle cx="12" cy="12" r="10" fill="#f0c978" opacity="0.3"/>
+                <path d="M12 6v12M8 9h8c1 0 1.5 0.5 1.5 1.5v3c0 1-0.5 1.5-1.5 1.5H8c-1 0-1.5-0.5-1.5-1.5v-3c0-1 0.5-1.5 1.5-1.5" fill="#f0c978"/>
             </svg>
+        </div>
 
-            Panel general
+        <div class="kpi-label">
+            Ingresos
+        </div>
 
+        <div class="kpi-value">
+            Bs. @ingresos.ToString("N2")
+        </div>
+
+        <div class="kpi-sub">
+            Ventas entregadas del período
         </div>
 
     </div>
 
 
-    <!-- =====================================================
-         INDICADORES PRINCIPALES
-         ===================================================== -->
+    <div class="kpi-card">
 
-    <section class="dashboard-section">
-
-        <div class="dashboard-section-header">
-
-            <h2 class="dashboard-section-title">
-                Indicadores principales
-            </h2>
-
-            <span class="dashboard-section-label">
-                Estado actual
-            </span>
-
+        <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h12c1 0 2 1 2 2v14c0 1-1 2-2 2H6c-1 0-2-1-2-2V5c0-1 1-2 2-2"/>
+                <path d="M9 7h6"/>
+                <path d="M9 11h6"/>
+                <path d="M9 15h4"/>
+            </svg>
         </div>
 
-
-        <div class="dashboard-primary-grid">
-
-
-            <!-- PEDIDOS PENDIENTES -->
-
-            <div class="dashboard-stat stat-primary">
-
-                <div class="dashboard-stat-top">
-
-                    <p class="dashboard-stat-label">
-                        Pedidos pendientes
-                    </p>
-
-                    <div class="dashboard-stat-icon">
-
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.8"
-                             stroke-linecap="round"
-                             stroke-linejoin="round">
-
-                            <path d="M6 3h12v18H6z" />
-                            <path d="M9 7h6" />
-                            <path d="M9 11h6" />
-                            <path d="M9 15h4" />
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="dashboard-stat-number">
-                    @ViewBag.PedidosPendientes
-                </p>
-
-                <div class="dashboard-stat-status">
-                    <span class="dashboard-stat-status-dot"></span>
-                    Requieren atención
-                </div>
-
-            </div>
-
-
-            <!-- MESAS DISPONIBLES -->
-
-            <div class="dashboard-stat stat-success">
-
-                <div class="dashboard-stat-top">
-
-                    <p class="dashboard-stat-label">
-                        Mesas disponibles
-                    </p>
-
-                    <div class="dashboard-stat-icon">
-
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.8"
-                             stroke-linecap="round"
-                             stroke-linejoin="round">
-
-                            <rect x="4" y="7" width="16" height="8" rx="2" />
-                            <path d="M7 15v5" />
-                            <path d="M17 15v5" />
-                            <path d="M3 7h18" />
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="dashboard-stat-number">
-                    @ViewBag.MesasDisponibles
-                </p>
-
-                <div class="dashboard-stat-status">
-                    <span class="dashboard-stat-status-dot"></span>
-                    Disponibilidad actual
-                </div>
-
-            </div>
-
-
-            <!-- ALERTAS -->
-
-            <div class="dashboard-stat stat-danger">
-
-                <div class="dashboard-stat-top">
-
-                    <p class="dashboard-stat-label">
-                        Alertas de inventario
-                    </p>
-
-                    <div class="dashboard-stat-icon">
-
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.8"
-                             stroke-linecap="round"
-                             stroke-linejoin="round">
-
-                            <path d="M12 3 2.8 19h18.4L12 3Z" />
-                            <path d="M12 9v4" />
-                            <path d="M12 16h.01" />
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="dashboard-stat-number">
-                    @ViewBag.AlertasInventario
-                </p>
-
-                <div class="dashboard-stat-status">
-                    <span class="dashboard-stat-status-dot"></span>
-                    Revisar existencias
-                </div>
-
-            </div>
-
-
-            <!-- EMPLEADOS -->
-
-            <div class="dashboard-stat stat-info">
-
-                <div class="dashboard-stat-top">
-
-                    <p class="dashboard-stat-label">
-                        Empleados activos
-                    </p>
-
-                    <div class="dashboard-stat-icon">
-
-                        <svg viewBox="0 0 24 24"
-                             fill="none"
-                             stroke="currentColor"
-                             stroke-width="1.8"
-                             stroke-linecap="round"
-                             stroke-linejoin="round">
-
-                            <circle cx="12" cy="8" r="3" />
-                            <path d="M5 21c0-3.5 2.8-6 7-6s7 2.5 7 6" />
-
-                        </svg>
-
-                    </div>
-
-                </div>
-
-                <p class="dashboard-stat-number">
-                    @ViewBag.EmpleadosActivos
-                </p>
-
-                <div class="dashboard-stat-status">
-                    <span class="dashboard-stat-status-dot"></span>
-                    Personal activo
-                </div>
-
-            </div>
-
+        <div class="kpi-label">
+            Pedidos entregados
         </div>
 
-    </section>
-
-
-    <!-- =====================================================
-         RESUMEN GENERAL
-         ===================================================== -->
-
-    <section class="dashboard-section">
-
-        <div class="dashboard-section-header">
-
-            <h2 class="dashboard-section-title">
-                Resumen general
-            </h2>
-
-            <span class="dashboard-section-label">
-                Recursos registrados
-            </span>
-
+        <div class="kpi-value">
+            @pedidosEntregados
         </div>
 
-
-        <div class="dashboard-summary-grid">
-
-
-            <!-- USUARIOS -->
-
-            <div class="dashboard-summary">
-
-                <div class="dashboard-summary-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
-                        <circle cx="9" cy="8" r="3" />
-                        <path d="M3 21c0-3.5 2.4-6 6-6" />
-                        <path d="M16 11a3 3 0 1 0 0-6" />
-                        <path d="M15 15c3.5 0 6 2.5 6 6" />
-
-                    </svg>
-
-                </div>
-
-                <div class="dashboard-summary-content">
-
-                    <p class="dashboard-summary-label">
-                        Total usuarios
-                    </p>
-
-                    <p class="dashboard-summary-number">
-                        @ViewBag.TotalUsuarios
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- MESAS -->
-
-            <div class="dashboard-summary">
-
-                <div class="dashboard-summary-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
-                        <rect x="4" y="7" width="16" height="8" rx="2" />
-                        <path d="M7 15v5" />
-                        <path d="M17 15v5" />
-
-                    </svg>
-
-                </div>
-
-                <div class="dashboard-summary-content">
-
-                    <p class="dashboard-summary-label">
-                        Total mesas
-                    </p>
-
-                    <p class="dashboard-summary-number">
-                        @ViewBag.TotalMesas
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- PLATOS -->
-
-            <div class="dashboard-summary">
-
-                <div class="dashboard-summary-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
-                        <circle cx="12" cy="12" r="8" />
-                        <path d="M4 12h16" />
-                        <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8" />
-
-                    </svg>
-
-                </div>
-
-                <div class="dashboard-summary-content">
-
-                    <p class="dashboard-summary-label">
-                        Total platos
-                    </p>
-
-                    <p class="dashboard-summary-number">
-                        @ViewBag.TotalPlatos
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <!-- INGREDIENTES -->
-
-            <div class="dashboard-summary">
-
-                <div class="dashboard-summary-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
-                        <path d="M12 3c-3 3-6 6.5-6 10a6 6 0 0 0 12 0c0-3.5-3-7-6-10Z" />
-                        <path d="M9 15c.5 1.3 1.5 2 3 2" />
-
-                    </svg>
-
-                </div>
-
-                <div class="dashboard-summary-content">
-
-                    <p class="dashboard-summary-label">
-                        Total ingredientes
-                    </p>
-
-                    <p class="dashboard-summary-number">
-                        @ViewBag.TotalIngredientes
-                    </p>
-
-                </div>
-
-            </div>
-
+        <div class="kpi-sub">
+            Pedidos considerados como venta
         </div>
 
-    </section>
+    </div>
 
 
-    <!-- =====================================================
-         OPERACIÓN
-         ===================================================== -->
+    <div class="kpi-card">
 
-    <section class="dashboard-section">
-
-        <div class="dashboard-section-header">
-
-            <h2 class="dashboard-section-title">
-                Operación de pedidos
-            </h2>
-
-            <span class="dashboard-section-label">
-                Flujo de trabajo
-            </span>
-
+        <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="8"/>
+                <path d="M4 12h16"/>
+                <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8"/>
+                <path d="M12 4c-2.5 2-3.5 4.5-3.5 8s1 6 3.5 8"/>
+            </svg>
         </div>
 
-
-        <div class="dashboard-operation-grid">
-
-
-            <!-- TOTAL PEDIDOS -->
-
-            <div class="dashboard-operation-card">
-
-                <div class="dashboard-operation-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
-                        <path d="M6 3h12v18H6z" />
-                        <path d="M9 7h6" />
-                        <path d="M9 11h6" />
-                        <path d="M9 15h4" />
-
-                    </svg>
-
-                </div>
-
-                <div class="dashboard-operation-content">
-
-                    <p class="dashboard-operation-label">
-                        Total de pedidos
-                    </p>
-
-                    <p class="dashboard-operation-number">
-                        @ViewBag.TotalPedidos
-                    </p>
-
-                    <p class="dashboard-operation-description">
-                        Pedidos registrados en el sistema.
-                    </p>
-
-                </div>
-
-                <div class="dashboard-operation-accent"></div>
-
-            </div>
-
-
-            <!-- EN PREPARACIÓN -->
-
-            <div class="dashboard-operation-card">
-
-                <div class="dashboard-operation-icon">
-
-                    <svg viewBox="0 0 24 24"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="1.8"
-                         stroke-linecap="round"
-                         stroke-linejoin="round">
-
-                        <circle cx="12" cy="12" r="9" />
-                        <path d="M12 7v5l3 2" />
-
-                    </svg>
-
-                </div>
-
-                <div class="dashboard-operation-content">
-
-                    <p class="dashboard-operation-label">
-                        Pedidos en preparación
-                    </p>
-
-                    <p class="dashboard-operation-number">
-                        @ViewBag.PedidosEnPreparacion
-                    </p>
-
-                    <p class="dashboard-operation-description">
-                        Pedidos actualmente en proceso.
-                    </p>
-
-                </div>
-
-                <div class="dashboard-operation-accent warning"></div>
-
-            </div>
-
+        <div class="kpi-label">
+            Platos vendidos
         </div>
 
-
-        <!-- ESTADO DEL SISTEMA -->
-
-        <div class="dashboard-status">
-
-            <div class="dashboard-status-left">
-
-                <span class="dashboard-status-indicator"></span>
-
-                <div>
-
-                    <p class="dashboard-status-text">
-                        Sistema operativo
-                    </p>
-
-                    <p class="dashboard-status-subtext">
-                        El panel de administración está funcionando correctamente.
-                    </p>
-
-                </div>
-
-            </div>
-
-            <span class="dashboard-status-badge">
-                ACTIVO
-            </span>
-
+        <div class="kpi-value">
+            @platosVendidos
         </div>
 
-    </section>
+        <div class="kpi-sub">
+            Unidades vendidas
+        </div>
+
+    </div>
+
+
+    <div class="kpi-card">
+
+        <div class="kpi-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="6" width="20" height="12" rx="2"/>
+                <path d="M6 10h12"/>
+                <path d="M6 14h12"/>
+                <circle cx="12" cy="12" r="1.5"/>
+            </svg>
+        </div>
+
+        <div class="kpi-label">
+            Ticket promedio
+        </div>
+
+        <div class="kpi-value">
+            Bs. @ticketPromedio.ToString("N2")
+        </div>
+
+        <div class="kpi-sub">
+            Ingreso promedio por pedido
+        </div>
+
+    </div>
 
 </div>
-```
+
+
+<!-- =====================================================
+     PLATO MÁS VENDIDO
+     ===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-title">
+        Rendimiento de platos
+    </div>
+
+    <div class="dashboard-grid-2">
+
+        <div class="best-dish">
+
+            <div class="best-dish-label">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <path d="M8 4h8l1 2h-10zM7 6h10v8c0 2-1 3-2 3h-6c-1 0-2-1-2-3V6zM9 18h6v2H9z" fill="#e9c77f"/>
+                </svg>
+                Plato más vendido
+            </div>
+
+            <h2>
+                @platoMasVendido
+            </h2>
+
+            <div class="best-dish-quantity">
+                @cantidadPlatoMasVendido unidades vendidas
+            </div>
+
+            <div class="best-dish-revenue">
+                Bs. @ingresosPlatoMasVendido.ToString("N2")
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Top 5 platos
+                </h3>
+
+                <span>
+                    Por cantidad vendida
+                </span>
+
+            </div>
+
+            <div class="panel-body">
+
+                @if (topPlatos != null && topPlatos.Count > 0)
+                {
+                    int posicion = 1;
+
+                    foreach (var plato in topPlatos)
+                    {
+                        <div class="ranking-item">
+
+                            <div class="ranking-number">
+                                @posicion
+                            </div>
+
+                            <div>
+
+                                <div class="ranking-name">
+                                    @plato.Nombre
+                                </div>
+
+                                <div class="ranking-quantity">
+                                    @plato.Cantidad unidades
+                                </div>
+
+                            </div>
+
+                            <div class="ranking-revenue">
+                                Bs. @plato.Ingresos.ToString("N2")
+                            </div>
+
+                        </div>
+
+                        posicion++;
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">
+                        No existen ventas en el período seleccionado.
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INGRESOS POR DÍA
+     ===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-title">
+        Evolución de ingresos
+    </div>
+
+    <div class="panel">
+
+        <div class="panel-header">
+
+            <h3>
+                Ingresos por día
+            </h3>
+
+            <span>
+                Solo pedidos entregados
+            </span>
+
+        </div>
+
+        <div class="panel-body">
+
+            @if (ingresosPorDia != null && ingresosPorDia.Count > 0)
+            {
+                decimal maxIngreso = 0;
+
+                foreach (var dia in ingresosPorDia)
+                {
+                    if (dia.Ingresos > maxIngreso)
+                    {
+                        maxIngreso = dia.Ingresos;
+                    }
+                }
+
+                <div class="bar-chart">
+
+                    @foreach (var dia in ingresosPorDia)
+                    {
+                        double porcentaje = maxIngreso > 0
+                            ? (double)(dia.Ingresos / maxIngreso) * 100
+                            : 0;
+
+                        <div class="bar-row">
+
+                            <div class="bar-label">
+                                @dia.Fecha.ToString("dd/MM")
+                            </div>
+
+                            <div class="bar-track">
+
+                                <div class="bar-fill"
+                                     style="width:@porcentaje.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%">
+                                </div>
+
+                            </div>
+
+                            <div class="bar-value">
+                                Bs. @dia.Ingresos.ToString("N2")
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+            }
+            else
+            {
+                <div class="empty-state">
+                    No hay ingresos registrados en este período.
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TIPO DE SERVICIO
+     ===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-title">
+        Tipo de servicio
+    </div>
+
+    <div class="dashboard-grid-2">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Pedidos por modalidad
+                </h3>
+
+                <span>
+                    Distribución del período
+                </span>
+
+            </div>
+
+            <div class="panel-body">
+
+                <div class="type-card">
+
+                    <div class="type-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                            <circle cx="12" cy="10" r="7"/>
+                            <path d="M8 17v3"/>
+                            <path d="M12 17v3"/>
+                            <path d="M16 17v3"/>
+                        </svg>
+                        En mesa
+                    </div>
+
+                    <div class="type-value">
+                        @pedidosMesa
+                    </div>
+
+                    <div class="type-money">
+                        Bs. @ingresosMesa.ToString("N2")
+                    </div>
+
+                    <div class="progress">
+
+                        <div class="progress-fill"
+                             style="width:@porcentajeMesa.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%">
+                        </div>
+
+                    </div>
+
+                    <div class="ranking-quantity">
+                        @porcentajeMesa.ToString("0.0")% de los pedidos
+                    </div>
+
+                </div>
+
+
+                <div class="type-card">
+
+                    <div class="type-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                            <path d="M3 5h2l2 12h10l2-12h2"/>
+                            <circle cx="9" cy="19" r="1"/>
+                            <circle cx="17" cy="19" r="1"/>
+                        </svg>
+                        Para llevar
+                    </div>
+
+                    <div class="type-value">
+                        @pedidosParaLlevar
+                    </div>
+
+                    <div class="type-money">
+                        Bs. @ingresosParaLlevar.ToString("N2")
+                    </div>
+
+                    <div class="progress">
+
+                        <div class="progress-fill"
+                             style="width:@porcentajeParaLlevar.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)%">
+                        </div>
+
+                    </div>
+
+                    <div class="ranking-quantity">
+                        @porcentajeParaLlevar.ToString("0.0")% de los pedidos
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <h3>
+                    Resumen del período
+                </h3>
+
+                <span>
+                    Información comercial
+                </span>
+
+            </div>
+
+            <div class="panel-body">
+
+                <table class="summary-table">
+
+                    <tbody>
+
+                        <tr>
+                            <td>Ingresos totales</td>
+                            <td>
+                                Bs. @ingresos.ToString("N2")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Pedidos entregados</td>
+                            <td>
+                                @pedidosEntregados
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Platos vendidos</td>
+                            <td>
+                                @platosVendidos
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Ticket promedio</td>
+                            <td>
+                                Bs. @ticketPromedio.ToString("N2")
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Plato líder</td>
+                            <td>
+                                @platoMasVendido
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ESTADO ACTUAL
+     ===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-title">
+        Estado actual del restaurante
+    </div>
+
+    <div class="dashboard-grid-3">
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.MesasDisponibles
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <rect x="5" y="8" width="14" height="8" rx="1"/>
+                    <path d="M7 16v4"/>
+                    <path d="M17 16v4"/>
+                </svg>
+                Mesas disponibles de @ViewBag.TotalMesas
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.PedidosPendientes
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M12 7v5l3 2"/>
+                </svg>
+                Pedidos pendientes
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.PedidosEnPreparacion
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <circle cx="12" cy="6" r="2.5"/>
+                    <path d="M9 9h6"/>
+                    <path d="M8 12v6h8v-6"/>
+                    <path d="M11 18v2h2v-2"/>
+                </svg>
+                Pedidos en preparación
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.PedidosListos
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <path d="M8 3h8v8c0 3-1.5 4-4 4s-4-1-4-4V3"/>
+                    <path d="M9 19h6"/>
+                    <circle cx="12" cy="21" r="1"/>
+                </svg>
+                Pedidos listos
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.PlatosDisponibles
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <path d="M5 3v7c0 2 1 3 2 3h10c1 0 2-1 2-3V3"/>
+                    <path d="M7 10h10"/>
+                    <path d="M5 15h14"/>
+                    <circle cx="12" cy="18" r="2"/>
+                </svg>
+                Platos disponibles
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card alert">
+
+            <div class="operation-value">
+                @ViewBag.AlertasInventario
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <path d="M12 2L2 18h20L12 2M12 10v4M12 16h0.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Ingredientes bajo mínimo
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     INFORMACIÓN GENERAL
+     ===================================================== -->
+
+<div class="dashboard-section">
+
+    <div class="section-title">
+        Información general
+    </div>
+
+    <div class="dashboard-grid-3">
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.EmpleadosActivos
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <circle cx="8" cy="7" r="2.5"/>
+                    <path d="M3 19c0-3 2-5 5-5s5 2 5 5"/>
+                    <circle cx="16" cy="7" r="2.5"/>
+                    <path d="M11 19c0-2.5 1.5-4 3.5-4"/>
+                </svg>
+                Empleados activos
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.TotalPlatos
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <circle cx="12" cy="12" r="8"/>
+                    <path d="M4 12h16"/>
+                    <path d="M12 4c2.5 2 3.5 4.5 3.5 8s-1 6-3.5 8"/>
+                    <path d="M12 4c-2.5 2-3.5 4.5-3.5 8s1 6 3.5 8"/>
+                </svg>
+                Platos registrados
+            </div>
+
+        </div>
+
+
+        <div class="panel operation-card">
+
+            <div class="operation-value">
+                @ViewBag.TotalIngredientes
+            </div>
+
+            <div class="operation-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px; height:14px; margin-right:6px; display:inline-block; vertical-align:middle;">
+                    <path d="M6 8l6-3 6 3v8l-6 3-6-3V8"/>
+                    <path d="M12 11v7"/>
+                    <path d="M6 11l6 3 6-3"/>
+                </svg>
+                Ingredientes registrados
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<script>
+
+    function mostrarFechasPersonalizadas() {
+
+        const periodo =
+            document.getElementById("periodo");
+
+        const customDates =
+            document.getElementById("customDates");
+
+        if (periodo.value === "personalizado") {
+
+            customDates.classList.add("visible");
+
+        } else {
+
+            customDates.classList.remove("visible");
+
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        mostrarFechasPersonalizadas();
+
+    });
+
+</script>
